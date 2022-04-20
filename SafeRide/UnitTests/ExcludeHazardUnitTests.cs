@@ -18,6 +18,21 @@ namespace SRUnitTests
 	public class ExcludeHazardUnitTests
 	{
 
+		// two random step coordinates taken from the route response used in this UnitTest
+		// the actual actual distance between them is 10.820 miles (17413.807 meters)
+		// calculated using "https://www.cqsrg.org/tools/GCDistance/"
+		[Theory]
+		[InlineData(37.77904292167199, -121.5519422062582,  37.711694879433495,-121.39962701098186, 17413.807, false)] // test if the target coord is within a 10 mile radius of the center 
+		[InlineData(37.77904292167199, -121.5519422062582,  37.711694879433495,-121.39962701098186, 24140.2, true)] // test if the target coord is within a 15 mile radius of the center 
+		public void IsInsideRadius(double centerX, double centerY, double targetX, double targetY, double radius, bool expected)
+        {
+			ExcludeHazardService excludeService = new ExcludeHazardService();
+			var actual = excludeService.IsInside(centerX, centerY, targetX, targetY, radius);
+
+			Assert.True(actual);
+        }
+
+
 		[Fact]
 		public async Task FindSearchCoordinates()
 		{

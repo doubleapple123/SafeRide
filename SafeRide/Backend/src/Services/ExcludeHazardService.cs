@@ -2,6 +2,8 @@
 using SafeRide.src.Models;
 using SafeRide.src.DataAccess;
 using Route = SafeRide.src.Models.Route;
+using System.Device.Location;
+using CoordinateSharp;
 
 namespace SafeRide.src.Services
 {
@@ -16,6 +18,10 @@ namespace SafeRide.src.Services
         private const double RADIUS_METERS = 80467.12;
         private const int EXCLUSION_LIMIT = 50; // the maximum amount of exclusion arguments for a single directions request set by MapBox API
 
+        public ExcludeHazardService()
+        {
+
+        }
         /// <summary>
         /// initialize a HazardExclusionService by passing in a
         /// Route object from the directions response
@@ -28,6 +34,8 @@ namespace SafeRide.src.Services
             this._distance = route.Distance;
             this._searchCount = 0;
         }
+
+        
 
         /// <summary>
         /// finds nearby hazard types by searching radially around each searchCoordinate on the route 
@@ -77,11 +85,16 @@ namespace SafeRide.src.Services
                 double endY = routeSteps[i+1].Maneuver.Location[1];
 
                 // automatically add the first and last steps of the route as search coordinates
-                if (i == 0 || i == routeSteps.Count - 1)
+                if (i == 0) 
                 {
                     results.Add(startX, startY);
                     _searchCount += 1;
                 }
+                else if (i == routeSteps.Count - 2) {
+                    results.Add(endX, endY);
+                    _searchCount += 1;
+                }
+
                 // for each step in between them, check if still covered under the radius of the last searchCoordinate 
                 else
                 {
@@ -131,9 +144,16 @@ namespace SafeRide.src.Services
         /// <param name="radius"></param>
         /// <returns></returns>
         public bool IsInside(double centerX, double centerY, double targetX, double targetY, double radius)
-        {  
-            double distanceBetween = Math.Sqrt((Math.Pow(centerX - targetX, 2) + Math.Pow(centerY - targetY, 2)));
-            return (distanceBetween <= radius);
+        {
+
+            Coordinate center = new Coordinate(centerX, centerY);
+            Coordinate target = new Coordinate(centerX, centerY);
+            //center.FormatOptions.Format = CoordinateFormatType.Decimal_Degree;
+            //target.FormatOptions.Format = CoordinateFormatType.Decimal_Degree;
+            Distance distance = new Distance(center, target);
+            double distanceInMeters = (double) distance.Meters;
+            //double distanceBetween = Math.Sqrt((Math.Pow(centerX - targetX, 2) + Math.Pow(centerY - targetY, 2)));
+            return (distanceInMeters <= radius);
         }
     }        
 }

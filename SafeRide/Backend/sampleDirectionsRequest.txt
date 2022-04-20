@@ -1,4 +1,4 @@
-input coordinates: 
+﻿input coordinates: 
 -73.99045550189928,40.73225479503364;-73.97962084116241,40.73551564560131;-73.9886679569091,40.72716860725768
 
 token:
@@ -7,3 +7,14 @@ pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2z
 request URL: 
 https://api.mapbox.com/directions/v5/mapbox/driving/-73.99045550189928%2C40.73225479503364%3B-73.97962084116241%2C40.73551564560131%3B-73.9886679569091%2C40.72716860725768?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ
 
+
+pk:
+pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ
+
+input coordinates:
+-121.5519422062582,37.77904292167199;-121.39962701098186,37.711694879433495
+
+request URL: https://api.mapbox.com/directions/v5/mapbox/driving/-121.5519422062582%2C37.77904292167199%3B-121.39962701098186%2C37.711694879433495?alternatives=true&annotations=distance&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ
+
+search coordinates using 5mi radius:
+-121.552052, 37.778987;

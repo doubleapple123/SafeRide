@@ -14,6 +14,8 @@
     <EmbeddedResource Remove="NewFolder\**" />
     <None Remove="NewFolder\**" />
     <Content Remove="package-lock.json" />
+    <None Remove="System.Device.Location.Portable" />
+    <None Remove="CoordinateSharp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -93,6 +95,8 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
+    <PackageReference Include="System.Device.Location.Portable" Version="1.0.0" />
+    <PackageReference Include="CoordinateSharp" Version="2.13.1.1" />
   </ItemGroup>
 
 </Project>
