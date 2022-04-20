@@ -10,58 +10,9 @@ namespace SafeRide.src.DataAccess
     {
         private string _cs = "Data Source=tcp:saferidedbserver.database.windows.net,1433;Initial Catalog=SafeRide_db;User Id=SafeRideAdmin@saferidedbserver;Password=applepw123!";
 
-        //private ApplicationUser _user;
-        //private Hazard _hazard;
-
-        //public HazardDAO() {
-        //    this._user = new ApplicationUser();
-        //}
-
-        //public HazardDAO(ApplicationUser user, Hazard hazard) {
-
-        //    this._user = user;
-        //    this._hazard = hazard;
-        //}
-
         public Dictionary<double, double> FindHazardInRadius(HazardType hazardType, double searchX, double targetY, double radius)
         {
-            // initialize empty dictionary of doubles to store the set of queried coordinates
-            return new Dictionary<double, double>();
-            // convert meters from meters to miles
-            //const float RADIUS_MILES = radius * 0.000621371;
-
-            //// attempt connecting to the database to query for mathing hazards
-            //try
-            //{
-            //    using (SqlConnection conn = new SqlConnection(_cs))
-            //    {
-            //        conn.Open();
-
-            //        // build query using trigonometry function to search for the coordinates of all hazards of the provided type within the set radius around a coordinate defined by the provided targetX and targetY values
-            //        string queryString = $"SELECT latitude, longitude FROM Hazards WHERE hazardType = {hazardType} AND (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - ({targetY} * 0.0175)) * 3959 <= {RADIUS_MILES})";
-
-            //        using (SqlCommand cmd = new SqlCommand(queryString, conn)) 
-            //        {
-            //            using (SqlDataReader reader = cmd.ExecuteReader())
-            //            {
-            //                while (reader.Read())
-            //                {
-            //                    // add each set of queried coordinates to the return dictionary
-            //                    double hazardX = (double) (reader["latitude"] ?? 0);
-            //                    double hazardY = (double) (reader["longitude"] ?? 0);
-            //                    foundCoordinates.Add(hazardX, hazardY);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //    return foundCoordinates;
-            //}
-            //return foundCoordinates;
+            throw  new NotImplementedException();
         }
 
         public int Report(Hazard hazard)

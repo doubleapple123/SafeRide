@@ -27,7 +27,7 @@ namespace SafeRide.src.Controllers
         [HttpPost]
         [DisableCors]
         [Route("report")]
-        public IActionResult Report()
+        public IActionResult Report(Hazard h)
         {
             Hazard hazard = new Hazard(HazardType.BikeLane, 32, 76, "3424315", "CA", 92602, "Irvine", DateTime.Now, 0);
             return Ok(this._reportHazardService.Report(hazard));
@@ -38,7 +38,11 @@ namespace SafeRide.src.Controllers
         public IActionResult GetHazards()
         {
             var hazards = _reportHazardService.GetHazards();
-            return Ok(new { hazards });
+            if (hazards == null)
+            {
+                return NotFound();
+            }
+            return Ok(hazards);
         }
         //private readonly IHazardReportingService _hazardReportingService;
 

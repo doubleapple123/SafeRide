@@ -87,5 +87,32 @@ namespace SafeRide.src.Models
             _city = city;
             _expired = expired;
         }
+
+        public static bool operator == (Hazard h1, Hazard h2)
+        {
+            if ((object)h1 == null)
+                return (object)h2 == null;
+
+            return h1.Equals(h2);
+        }
+
+        public static bool operator != (Hazard h1, Hazard h2)
+        {
+            return !(h1 == h2);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                    return false;
+
+            var h2 = (Hazard)obj;
+            return _type == h2.Type && _latitude == h2.Latitude && _longitude == h2.Longitude && _reportedBy == h2.ReportedBy && _timeReported == h2.TimeReported && _state == h2.State && _city == h2.City && _zip == h2.Zip && _expired == h2.Expired;
+        }
+
+        public override int GetHashCode()
+        {
+            return _type.GetHashCode() ^ _latitude.GetHashCode() ^  _longitude.GetHashCode() ^ _reportedBy.GetHashCode() ^ _timeReported.GetHashCode() ^ _state.GetHashCode() ^ _city.GetHashCode() ^ _zip.GetHashCode() ^ _expired.GetHashCode();
+        }
     }
 }
