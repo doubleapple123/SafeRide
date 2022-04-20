@@ -13,7 +13,6 @@ export default {
   name: 'MapSearchRectangle',
   methods: {
     onSearchEnter: function () {
-      
     }
   }
 }
