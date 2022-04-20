@@ -39,9 +39,10 @@ namespace SafeRide.src.DataAccess
                             while (reader.Read())
                             {
                                 // add each set of queried coordinates to the return dictionary
-                                double hazardX = (double) (reader["latitude"] ?? 0);
                                 double hazardY = (double) (reader["longitude"] ?? 0);
-                                results.Add(hazardX, hazardY);
+                                double hazardX= (double) (reader["latitude"] ?? 0);
+                                
+                                results.Add(hazardY, hazardX);
                             }
                         }
                     }

@@ -156,13 +156,16 @@ namespace SafeRide.src.Services
         public bool IsInside(double centerX, double centerY, double targetX, double targetY, double radius)
         {
 
-            Coordinate center = new Coordinate(centerX, centerY);
-            Coordinate target = new Coordinate(centerX, centerY);
+            Coordinate center = new Coordinate(centerY, centerX);
+            Coordinate target = new Coordinate(targetY, targetX);
             //center.FormatOptions.Format = CoordinateFormatType.Decimal_Degree;
             //target.FormatOptions.Format = CoordinateFormatType.Decimal_Degree;
             Distance distance = new Distance(center, target);
             double distanceInMeters = (double) distance.Meters;
             //double distanceBetween = Math.Sqrt((Math.Pow(centerX - targetX, 2) + Math.Pow(centerY - targetY, 2)));
+            Console.WriteLine("Centre latitude: " + center.Latitude.DecimalDegree);
+            Console.WriteLine("Centre longitude: " + center.Longitude.DecimalDegree);
+            Console.WriteLine(distanceInMeters);
             return (distanceInMeters <= radius);
         }
     }        
