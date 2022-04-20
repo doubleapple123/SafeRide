@@ -7,8 +7,8 @@ namespace SafeRide.src.Services
 {
     public class ParseResponseService : IParseResponseService
     {
-        private string _jsonResponse { get; set; } 
-        private DirectionsResponse _directionsResponse { get; set; } 
+        private string _jsonResponse;
+        private DirectionsResponse _directionsResponse;
 
         public ParseResponseService(string jsonResponse) {
             this._jsonResponse = jsonResponse;
@@ -16,18 +16,16 @@ namespace SafeRide.src.Services
         }
 
         // helps simplify HazardExclusion by extracting a single route from the response
-        public MapRoute ParseRoute(int routeNum) {
+        public MapRoute GetRoute(int routeNum) {
             return _directionsResponse.Routes[routeNum];
         }
 
         // helps simplify finding the hazard search radii in the initial route by extracting coordinates from whenever the route takes a step in a new direction
-        public Dictionary<double, double> ParseStepCoordinates() {
-            // initialize dict to store parsed results
+        public Dictionary<double, double> GetStepCoordinates() {
             Dictionary<double, double> results = new Dictionary<double, double>();          
             
-            // iterate all Steps taken by the initial route
             // assume initial route was requested with no additional waypoints beside starting and ending coordinates, so it has only 1 leg
-            MapRoute initialRoute = ParseRoute(0);
+            MapRoute initialRoute = GetRoute(0);
             List<Step> steps = initialRoute.Legs[0].Steps;
             // add each extracted coordinate to the turn coordinatees
             for (int i = 0; i < steps.Count; i++) {
