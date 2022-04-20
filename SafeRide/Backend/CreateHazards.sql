@@ -24,7 +24,24 @@ state, city, zip, expired) VALUES
 
 
 # using the coordinate (-74.002917, 40.73992) and a radius of 5 miles
-SELECT hazardID, longitude, latitude FROM Hazards WHERE hazardType = 0 AND 
-(acos(sin(latitude * 0.0175) * sin(40.73992 * 0.0175) + 
-cos(latitude * 0.0175) * cos(40.73992 * 0.0175) * 
-cos((-74.002917 * 0.0175) - (longitude * 0.0175))) * 3959 <= 5);
+SELECT longitude, latitude FROM Hazards WHERE hazardType = 0 AND (acos(sin(latitude * 0.0175) * sin(40.73992 * 0.0175) + cos(latitude * 0.0175) * cos(40.73992 * 0.0175) * cos((-74.002917 * 0.0175) - (longitude * 0.0175)) * 3959) <= 0.003106855)
+
+
+
+SELECT longitude, latitude FROM Hazards 
+	WHERE hazardType = 0 AND (
+		acos(
+			sin(latitude * 0.0175) * sin(40.73992 * 0.0175) 
+			+ cos(latitude * 0.0175) * cos(40.73992 * 0.0175) 
+			* cos((-74.002917 * 0.0175) - (longitude* 0.0175)) 
+			- 0.0000000000001) 
+			* 3959) <= 5;
+
+SELECT longitude, latitude FROM Hazards WHERE (
+	(SELECT acos(
+			(SELECT MIN(x) FROM (VALUES (
+			(sin(latitude * 0.0175) * sin(40.73992 * 0.0175) 
+		+ cos(latitude * 0.0175) * cos(40.73992 * 0.0175) 
+		* cos((-74.002917 * 0.0175) - (longitude * 0.0175))
+		), (1)) AS value(x)) * 3959 <= 0.003106855)
+		AND hazardType = 0;

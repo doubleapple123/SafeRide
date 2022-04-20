@@ -10,7 +10,7 @@ namespace SafeRide.src.DataAccess
     {
         // TODO Uncomment when done unit testing
         //private string _cs = System.Configuration.ConfigurationManager.ConnectionStrings["SafeRideDB"].ConnectionString;
-        private string _cs = "Server=tcp:updatedbackend.database.windows.net,1433;Initial Catalog=UpdatedDatabase;Persist Security Info=False;User ID=colincreasman;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private string _cs = "Server=tcp:updatedbackend.database.windows.net,1433;Initial Catalog=UpdatedDatabase;Persist Security Info=False;User ID=colincreasman;Password=saferide.714;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         private ApplicationUser _user;
 
         public HazardDAO() {
@@ -21,16 +21,19 @@ namespace SafeRide.src.DataAccess
             // initialize empty dictionary of doubles to store the set of queried coordinates
             Dictionary<double, double> results = new Dictionary<double, double>();
             // convert meters from meters to miles
-            double RADIUS_MILES = radius * 0.000621371;
+            //double RADIUS_MILES = radius * 0.000621371;
 
             // attempt connecting to the database to query for mathing hazards
             try
             {
                 using (SqlConnection conn = new SqlConnection(_cs))
                 {
-                    conn.Open();    
+                    conn.Open();
                     // build query using trigonometry function to search for the coordinates of all hazards of the provided type within the set radius around a coordinate defined by the provided targetX and targetY values
-                    string queryString = $"SELECT longitude, latitude FROM Hazards WHERE hazardType = {hazardType} AND (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - ({targetY} * 0.0175)) * 3959 <= {RADIUS_MILES})";
+                    Console.WriteLine("successfully connected");
+
+                    string queryString = $"SELECT longitude, latitude FROM Hazards WHERE {hazardType} = 0 AND (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - (longitude * 0.0175)) - 0.0000000000000000000000001) * 3959) <= {radius}";
+                    //Console.WriteLine(queryString);
 
                     using (SqlCommand cmd = new SqlCommand(queryString, conn)) 
                     {
