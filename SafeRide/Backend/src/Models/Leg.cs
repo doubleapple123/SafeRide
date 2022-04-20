@@ -11,32 +11,32 @@ namespace SafeRide.src.Models
     /// </summary>
     public class Leg
     {
-        private List<Object> _viaWaypoints;
-        private List<Object> _admins;
-        private double _weight;
-        private double _duration;
-        private List<Step> _steps;
-        private double _distance;
-        private string _summary;
+        private List<object> via_waypoints;
+        private List<object> admins;
+        private double weight;
+        private double duration;
+        private List<Step> steps;
+        private double distance;
+        private string summary;
 
-        public Leg(List<object> viaWaypoints, List<object> admins, double weight, double duration, List<Step> steps, double distance, string summary)
+        public Leg(List<object> via_waypoints, List<object> admins, double weight, double duration, List<Step> steps, double distance, string summary)
         {
-            _viaWaypoints = viaWaypoints;
-            _admins = admins;
-            _weight = weight;
-            _duration = duration;
-            _steps = steps;
-            _distance = distance;
-            _summary = summary;
+            this.via_waypoints = via_waypoints;
+            this.admins = admins;
+            this.weight = weight;
+            this.duration = duration;
+            this.steps = steps;
+            this.distance = distance;
+            this.summary = summary;
         }
 
-        public List<object> ViaWaypoints { get => _viaWaypoints; set => _viaWaypoints = value; }
-        public List<object> Admins { get => _admins; set => _admins = value; }
-        public double Weight { get => _weight; set => _weight = value; }
-        public double Duration { get => _duration; set => _duration = value; }
-        public List<Step> Steps { get => _steps; set => _steps = value; }
-        public double Distance { get => _distance; set => _distance = value; }
-        public string Summary { get => _summary; set => _summary = value; }
+        public List<object> ViaWaypoints { get => via_waypoints; set => via_waypoints = value; }
+        public List<object> Admins { get => admins; set => admins = value; }
+        public double Weight { get => weight; set => weight = value; }
+        public double Duration { get => duration; set => duration = value; }
+        public List<Step> Steps { get => steps; set => steps = value; }
+        public double Distance { get => distance; set => distance = value; }
+        public string Summary { get => summary; set => summary = value; }
     }
 }
 

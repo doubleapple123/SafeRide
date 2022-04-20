@@ -2,6 +2,7 @@
 using SafeRide.src.Models;
 using SafeRide.src.DataAccess;
 using Newtonsoft.Json;
+using Route = SafeRide.src.Models.Route;
 
 namespace SafeRide.src.Services
 {
@@ -10,13 +11,25 @@ namespace SafeRide.src.Services
         private string _jsonResponse;
         private DirectionsResponse _directionsResponse;
 
-        public ParseResponseService(string jsonResponse) {
-            this._jsonResponse = jsonResponse;
-            this._directionsResponse = JsonConvert.DeserializeObject<DirectionsResponse>(_jsonResponse); 
+        public ParseResponseService()
+        {
         }
 
+        public ParseResponseService(string jsonResponse)
+        {
+            this._jsonResponse = jsonResponse;
+            this._directionsResponse = JsonConvert.DeserializeObject<DirectionsResponse>(jsonResponse); 
+        }
+
+
+        public DirectionsResponse GetDirectionsResponse()
+        {
+            return this._directionsResponse;
+        }
+
+
         // helps simplify HazardExclusion by extracting a single route from the response
-        public MapRoute GetRoute(int routeNum) {
+        public Route GetRoute(int routeNum) {
             return _directionsResponse.Routes[routeNum];
         }
 
@@ -25,7 +38,7 @@ namespace SafeRide.src.Services
             Dictionary<double, double> results = new Dictionary<double, double>();          
             
             // assume initial route was requested with no additional waypoints beside starting and ending coordinates, so it has only 1 leg
-            MapRoute initialRoute = GetRoute(0);
+            Route initialRoute = GetRoute(0);
             List<Step> steps = initialRoute.Legs[0].Steps;
             // add each extracted coordinate to the turn coordinatees
             for (int i = 0; i < steps.Count; i++) {

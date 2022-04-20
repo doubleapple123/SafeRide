@@ -10,13 +10,13 @@ namespace SafeRide.src.Models
     /// </summary>
     public class DirectionsResponse 
     {
-        private List<MapRoute> routes;
-        private List<Object> waypoints;
+        private List<Route> routes;
+        private List<object> waypoints;
         private string code;
         private string uuid;
 
 
-        public DirectionsResponse(List<MapRoute> routes, List<object> waypoints, string code, string uuid)
+        public DirectionsResponse(List<Route> routes, List<object> waypoints, string code, string uuid)
         {
             this.routes = routes;
             this.waypoints = waypoints;
@@ -24,7 +24,7 @@ namespace SafeRide.src.Models
             this.uuid = uuid;
         }
 
-        public List<MapRoute> Routes { get => routes; set => routes = value; }
+        public List<Route> Routes { get => routes; set => routes = value; }
         public List<object> Waypoints { get => waypoints; set => waypoints = value; }
         public string Code { get => code; set => code = value; }
         public string Uuid { get => uuid; set => uuid = value; }

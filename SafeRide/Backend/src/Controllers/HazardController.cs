@@ -6,6 +6,7 @@ using SafeRide.src.Models;
 using SafeRide.src.Services;
 using FromBodyAttribute = System.Web.Http.FromBodyAttribute;
 using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
+using Route = SafeRide.src.Models.Route;
 using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace SafeRide.Controllers
@@ -16,7 +17,7 @@ namespace SafeRide.Controllers
     public class HazardController : ControllerBase
     {
         //private readonly ApplicationUser _user;
-        private readonly MapRoute _route;
+        private readonly Route _route;
         private readonly IHazardExclusionService _hazardExclusionService;
         private readonly IParseResponseService _parseResponseService;
                 
@@ -37,7 +38,7 @@ namespace SafeRide.Controllers
         [Route("exclude")]
         public IActionResult Exclude([FromBody] List<int> hazards)
         {
-            MapRoute firstRoute = _parseResponseService.GetRoute(0);
+            Route firstRoute = _parseResponseService.GetRoute(0);
             var results = _hazardExclusionService.FindHazardsNearRoute(hazards);
             return Ok(new { results });
 
@@ -47,11 +48,5 @@ namespace SafeRide.Controllers
         //public bool Report(List<int> hazards) {
         //    _hazardExclusionService.FindHazardsNearRoute(hazards);
         //}
-
-
-
-
-
-
     }
 }

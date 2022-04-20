@@ -10,37 +10,38 @@ namespace SafeRide.src.Models
     /// each maneuver represents a part of the route where the direction has changed 
     /// </summary>
     public class Step {
-        private List<Object> _intersections;
-        private Maneuver _maneuver;
-        private string _name;
-        private double _duration;
-        private double _distance;
-        private string _drivingSide;
-        private double _weight;
-        private string _mode;
-        private string _geometry;
+        private List<object> intersections;
+        private Maneuver maneuver;
+        private string name;
+        private double duration;
+        private double distance;
+        private string driving_side;
+        private double weight;
+        private string mode;
+        private object geometry;
 
-        public Step(List<object> intersections, Maneuver maneuver, string name, double duration, double distance, string drivingSide, double weight, string mode, string geometry)
+        public Step(List<object> intersections, Maneuver maneuver, string name, double duration, double distance, string driving_side, double weight, string mode, object geometry)
         {
-            _intersections = intersections;
-            _maneuver = maneuver;
-            _name = name;
-            _duration = duration;
-            _distance = distance;
-            _drivingSide = drivingSide;
-            _weight = weight;
-            _mode = mode;
-            _geometry = geometry;
+            this.intersections = intersections;
+            this.maneuver = maneuver;
+            this.name = name;
+            this.duration = duration;
+            this.distance = distance;
+            this.driving_side = driving_side;
+            this.weight = weight;
+            this.driving_side = driving_side;
+            this.mode = mode;
+            this.geometry = geometry;
         }
 
-        public List<object> Intersections { get => _intersections; set => _intersections = value; }
-        public Maneuver Maneuver { get => _maneuver; set => _maneuver = value; }
-        public string Name { get => _name; set => _name = value; }
-        public double Duration { get => _duration; set => _duration = value; }
-        public double Distance { get => _distance; set => _distance = value; }
-        public string DrivingSide { get => _drivingSide; set => _drivingSide = value; }
-        public double Weight { get => _weight; set => _weight = value; }
-        public string Mode { get => _mode; set => _mode = value; }
-        public string Geometry { get => _geometry; set => _geometry = value; }
+        public List<object> Intersections { get => intersections; set => intersections = value; }
+        public Maneuver Maneuver { get => maneuver; set => maneuver = value; }
+        public string Name { get => name; set => name = value; }
+        public double Duration { get => duration; set => duration = value; }
+        public double Distance { get => distance; set => distance = value; }
+        public string DrivingSide { get => driving_side; set => driving_side = value; }
+        public double Weight { get => weight; set => weight = value; }
+        public string Mode { get => mode; set => mode = value; }
+        public object Geometry { get => geometry; set => geometry = value; }
     }
 }

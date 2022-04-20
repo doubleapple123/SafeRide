@@ -25,8 +25,7 @@ namespace SafeRide.src.DataAccess
             {
                 using (SqlConnection conn = new SqlConnection(_cs))
                 {
-                    conn.Open();
-                    
+                    conn.Open();    
                     // build query using trigonometry function to search for the coordinates of all hazards of the provided type within the set radius around a coordinate defined by the provided targetX and targetY values
                     string queryString = $"SELECT latitude, longitude FROM Hazards WHERE hazardType = {hazardType} AND (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - ({targetY} * 0.0175)) * 3959 <= {RADIUS_MILES})";
 
