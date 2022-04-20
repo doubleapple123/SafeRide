@@ -42,9 +42,9 @@ namespace SafeRide.src.Services
             List<Step> steps = initialRoute.Legs[0].Steps;
             // add each extracted coordinate to the turn coordinatees
             for (int i = 0; i < steps.Count; i++) {
-                double stepX = steps[i].Maneuver.Location[0];
-                double stepY = steps[i].Maneuver.Location[1];
-                results.Add(stepX, stepY);
+                double stepY = steps[i].Maneuver.Location[0];
+                double stepX = steps[i].Maneuver.Location[1];
+                results.Add(stepY, stepX);
             }
             return results;
         }

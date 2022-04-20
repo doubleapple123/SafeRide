@@ -13,6 +13,8 @@ using SafeRide.src.Models;
 using SafeRide.src.Services;
 using Newtonsoft.Json;
 using System;
+using SafeRide.src.DataAccess;
+
 namespace SRUnitTests
 {
 	public class ExcludeHazardUnitTests
@@ -22,15 +24,15 @@ namespace SRUnitTests
 		// the actual actual distance between them is 10.820 miles (17413.807 meters)
 		// calculated using "https://www.cqsrg.org/tools/GCDistance/"
 		[Theory]
-		[InlineData(37.77904292167199, -121.5519422062582,  37.711694879433495,-121.39962701098186, 17413.807, false)] // test if the target coord is within a 10 mile radius of the center 
-		[InlineData(37.77904292167199, -121.5519422062582,  37.711694879433495,-121.39962701098186, 24140.2, true)] // test if the target coord is within a 15 mile radius of the center 
+		[InlineData(37.77904292167199, -121.5519422062582, 37.711694879433495, -121.39962701098186, 17413.807, false)] // test if the target coord is within a 10 mile radius of the center 
+		[InlineData(37.77904292167199, -121.5519422062582, 37.711694879433495, -121.39962701098186, 24140.2, true)] // test if the target coord is within a 15 mile radius of the center 
 		public void IsInsideRadius(double centerX, double centerY, double targetX, double targetY, double radius, bool expected)
-        {
+		{
 			ExcludeHazardService excludeService = new ExcludeHazardService();
 			var actual = excludeService.IsInside(centerX, centerY, targetX, targetY, radius);
 
 			Assert.True(actual);
-        }
+		}
 
 
 		[Fact]
@@ -59,8 +61,19 @@ namespace SRUnitTests
 
 			Assert.Equal(expected, actual);
 		}
+
+		[Theory]
+		[InlineData(new double[] { -74.002917, 40.73992 }, 0, 5, 5)] // querying the test data for hazard type of 0 around the given coordinate should return a total 5 hazard coordinates
+		public void GetByTypeInRadius(double[] searchCoordinate, int hazardType, double searchRadiusInMiles, int expected)
+		{
+			HazardDAO hazardDAO = new HazardDAO();
+			Dictionary<double, double> results = hazardDAO.GetByTypeInRadius(hazardType, searchCoordinate[0], searchCoordinate[1], searchRadiusInMiles);
+			Assert.Equal(results.Count, expected); 
+		}
 	}
 }
-	
+
+
+
 
 

@@ -1,4 +1,5 @@
-﻿using SafeRide.src.Interfaces;
+﻿using CoordinateSharp;
+using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
 using System.Data;
 using System.Data.SqlClient;
@@ -8,15 +9,15 @@ namespace SafeRide.src.DataAccess
     public class HazardDAO : IHazardDAO
     {
         // TODO Uncomment when done unit testing
-        // private string _cs = System.Configuration.ConfigurationManager.ConnectionStrings["SafeRideDB"].ConnectionString;
-        private string _cs = "Server=tcp:colinsaferideserver.database.windows.net,1433;Initial Catalog=SafeRide_DB;Persist Security Info=False;User ID=saferide;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        //private string _cs = System.Configuration.ConfigurationManager.ConnectionStrings["SafeRideDB"].ConnectionString;
+        private string _cs = "Server=tcp:updatedbackend.database.windows.net,1433;Initial Catalog=UpdatedDatabase;Persist Security Info=False;User ID=colincreasman;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         private ApplicationUser _user;
 
         public HazardDAO() {
             this._user = new ApplicationUser();
         }
 
-        public Dictionary<double, double> GetByTypeInRadius(int hazardType, double targetX, double targetY, double radius) {
+        public Dictionary<double, double> GetByTypeInRadius(int hazardType, double targetY, double targetX, double radius) {
             // initialize empty dictionary of doubles to store the set of queried coordinates
             Dictionary<double, double> results = new Dictionary<double, double>();
             // convert meters from meters to miles
@@ -29,7 +30,7 @@ namespace SafeRide.src.DataAccess
                 {
                     conn.Open();    
                     // build query using trigonometry function to search for the coordinates of all hazards of the provided type within the set radius around a coordinate defined by the provided targetX and targetY values
-                    string queryString = $"SELECT latitude, longitude FROM Hazards WHERE hazardType = {hazardType} AND (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - ({targetY} * 0.0175)) * 3959 <= {RADIUS_MILES})";
+                    string queryString = $"SELECT longitude, latitude FROM Hazards WHERE hazardType = {hazardType} AND (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - ({targetY} * 0.0175)) * 3959 <= {RADIUS_MILES})";
 
                     using (SqlCommand cmd = new SqlCommand(queryString, conn)) 
                     {
@@ -86,4 +87,14 @@ namespace SafeRide.src.DataAccess
             return numRowsAffected;
         }
     }
+
+    //public double DistanceBetween(double y1, double x1, double y2, double x2)
+    //{
+    //    Coordinate first = new Coordinate(y1, x1);
+    //    Coordinate last = new Coordinate(y2, x2);
+    //    Distance distance = new Distance(first, last);
+    //    double distanceInMeters = (double)distance.Meters;
+    //    return distanceInMeters;
+
+    //}
 }

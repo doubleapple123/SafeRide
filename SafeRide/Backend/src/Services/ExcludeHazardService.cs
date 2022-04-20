@@ -55,12 +55,13 @@ namespace SafeRide.src.Services
                     // check for the current hazard type around
                     for (int j = 0; j < _searchCoordinates.Count; j++)
                     {
+                        double targetY = _searchCoordinates.ElementAt(i).Value;
                         double targetX = _searchCoordinates.ElementAt(i).Key;
-                        double targetY = _searchCoordinates.ElementAt(i).Key;
+
                         Dictionary<double, double> foundCoordinates = _hazardDAO.
-            GetByTypeInRadius(hazards[j], targetX, targetY, RADIUS_METERS);
+            GetByTypeInRadius(hazards[j], targetY, targetX, RADIUS_METERS);
                         // append the results dict with the dict of queried coordinates
-                        results.ToList().ForEach(pair => foundCoordinates[pair.Key] = pair.Value);
+                        results.ToList().ForEach(pair => foundCoordinates[pair.Value] = pair.Key);
                     }
                 }
             }
@@ -76,35 +77,36 @@ namespace SafeRide.src.Services
 
            // find all the coordinates between the current step and and the next step that must be searched to cover the distance between them 
             for (int i = 0; i < routeSteps.Count - 1;  i++) {
-                // get the distance and coordinates of the current step
-                double stepDistance = routeSteps[i].Distance;     
-                double startX = routeSteps[i].Maneuver.Location[0];
-                double startY = routeSteps[i].Maneuver.Location[1];
-                // get the coordinates of the next step
-                double endX = routeSteps[i+1].Maneuver.Location[0];
-                double endY = routeSteps[i+1].Maneuver.Location[1];
+                double startY = routeSteps[i].Maneuver.Location[0]; // get the  coordinates of the current step               
+                double startX = routeSteps[i].Maneuver.Location[1]; 
+                double endY = routeSteps[i+1].Maneuver.Location[0];
+                double endX = routeSteps[i+1].Maneuver.Location[1];// get the coordinates of the next step
+
+                // calulate the distance between the last search coordinate and the next step coordinate
+                 double stepDistance = DistanceBetween(startY, startX, endY, endX);
 
                 // automatically add the first and last steps of the route as search coordinates
                 if (i == 0) 
                 {
-                    results.Add(startX, startY);
+                    results.Add(startY, startX);
                     _searchCount += 1;
                 }
                 else if (i == routeSteps.Count - 2) {
-                    results.Add(endX, endY);
+                    results.Add(endY, endX);
                     _searchCount += 1;
                 }
 
                 // for each step in between them, check if still covered under the radius of the last searchCoordinate 
                 else
                 {
-                    if (IsInside(startX, startY, results.ElementAt(_searchCount - 1).Key, results.ElementAt(_searchCount - 1).Value, RADIUS_METERS) == false)
+                    if (IsInside(startY, startX, results.ElementAt(_searchCount - 1).Value, results.ElementAt(_searchCount - 1).Key, RADIUS_METERS) == false)
                     {
                         // if not covered by previous radius, add a new searchCoordinate at the current step
-                        results.Add(startX, startY);
+                        results.Add(startY, startX);
                         _searchCount += 1;
-         
-                        // if the step distance is greater than the search radius, then we need to continue adding searh coordinates until reaching the next step
+
+                        // if the distance to the next step  is greater than the radius, we need to continue adding searh coordinates until reaching the next step
+
                         if (stepDistance > RADIUS_METERS)
                         {
                              // calculate the number of additional radii needed to span the rest of the leg
@@ -116,14 +118,15 @@ namespace SafeRide.src.Services
                                 // formula taken from "https://stackoverflow.com/questions/53404008/how-to-calculate-coordinate-x-meters-away-from-a-point-but-towards-another-in-c" 
 
                                 double ratio = RADIUS_METERS / stepDistance;
-                                double prevX = results.ElementAt(_searchCount - j + 1).Key;
-                                double prevY = results.ElementAt(_searchCount - j + 1).Value;
-                                double diffX = endX - prevX;
+                                
+                                double prevX = results.ElementAt(_searchCount - j + 1).Value;
+                                double prevY =  results.ElementAt(_searchCount - j + 1).Key;
                                 double diffY = endY - prevY;
-                                double nextX = prevX + (ratio * diffX);
+                                double diffX = endX - prevX;
+                        
                                 double nextY = prevY + (ratio * diffY);
-                                // add the calculated values as the next search in searchCoordinates
-                                results.Add(nextX, nextY);
+                                double nextX = prevX + (ratio * diffX);   // add the calculated values as the next search in searchCoordinates
+                                results.Add(nextY, nextX);
                                 _searchCount += 1;
                             }
                         }
@@ -133,7 +136,14 @@ namespace SafeRide.src.Services
             return results;
         }
 
+        public double DistanceBetween(double y1, double x1, double y2, double x2) {
+            Coordinate first = new Coordinate(y1, x1);
+            Coordinate last = new Coordinate(y2, x2);
+            Distance distance = new Distance(first, last);
+            double distanceInMeters = (double) distance.Meters;
+            return distanceInMeters;
 
+        }
         /// <summary>
         /// given two coordinaets and a search radius, checks if the target coordinate is inside the radius around the center coordinate
         /// </summary>
