@@ -41,7 +41,7 @@ export default {
     left: 30%;
     width: 100px;
     height: 40px;
-    background-color: greenyellow;
+    background-color: red;
   }
   #mapHeader{
     height: 50px;
