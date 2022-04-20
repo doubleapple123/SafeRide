@@ -16,6 +16,8 @@ namespace SRUnitTests
         public void ValidReport()
         {
             //arrange
+
+            
             Hazard hazard = new Hazard(HazardType.Accident, -70, -71, "testHash", "CA", 92686, "Mission Viejo", DateTime.Now, 0);
             IHazardDAO hazardDAO = new HazardDAO();
 

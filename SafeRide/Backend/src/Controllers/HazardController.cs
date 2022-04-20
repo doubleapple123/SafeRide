@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Web.Http;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
@@ -14,18 +15,17 @@ namespace SafeRide.src.Controllers
     [Produces("application/json")]
     public class HazardController : ControllerBase
     {
-        private readonly ApplicationUser _user;
-        private readonly Route _route;
-        private readonly IHazardExclusionService _hazardExclusionService;
+      //  private readonly IHazardExclusionService _hazardExclusionService;
         private readonly IReportHazardService _reportHazardService;
 
-        public HazardController(IHazardExclusionService hazardExclusionService, IReportHazardService reportHazardService)
+        public HazardController(/*IHazardExclusionService hazardExclusionService, */IReportHazardService reportHazardService)
         {
-            _hazardExclusionService = hazardExclusionService;
+           // _hazardExclusionService = hazardExclusionService;
             _reportHazardService = reportHazardService;
         }
 
         [HttpPost]
+        [DisableCors]
         [Route("report")]
         public IActionResult Report()
         {
@@ -37,7 +37,8 @@ namespace SafeRide.src.Controllers
         [Route("getHazards")]
         public IActionResult GetHazards()
         {
-            return Ok(this._reportHazardService.GetHazards());
+            var hazards = _reportHazardService.GetHazards();
+            return Ok(new { hazards });
         }
         //private readonly IHazardReportingService _hazardReportingService;
 
