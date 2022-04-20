@@ -13,6 +13,11 @@ namespace SafeRide.src.Services
             _hazardDAO = hazardDAO;
         }
 
+        public List<Hazard> GetHazards()
+        {
+            return _hazardDAO.GetAllValidHazards();
+        }
+
         public int Report(Hazard hazard)
         {
             return _hazardDAO.Report(hazard);

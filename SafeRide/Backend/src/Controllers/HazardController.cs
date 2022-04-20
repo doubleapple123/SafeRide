@@ -3,6 +3,7 @@ using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
@@ -32,6 +33,12 @@ namespace SafeRide.src.Controllers
             return Ok(this._reportHazardService.Report(hazard));
         }
 
+        [HttpGet]
+        [Route("getHazards")]
+        public IActionResult GetHazards()
+        {
+            return Ok(this._reportHazardService.GetHazards());
+        }
         //private readonly IHazardReportingService _hazardReportingService;
 
         // [Microsoft.AspNetCore.Mvc.Route("excludeHazard")]
