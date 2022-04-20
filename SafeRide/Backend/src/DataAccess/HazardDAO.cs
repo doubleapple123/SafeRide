@@ -7,7 +7,9 @@ namespace SafeRide.src.DataAccess
 {
     public class HazardDAO : IHazardDAO
     {
-        private string _cs = System.Configuration.ConfigurationManager.ConnectionStrings["SafeRideDB"].ConnectionString;
+        // TODO Uncomment when done unit testing
+        // private string _cs = System.Configuration.ConfigurationManager.ConnectionStrings["SafeRideDB"].ConnectionString;
+        private string _cs = "Server=tcp:colinsaferideserver.database.windows.net,1433;Initial Catalog=SafeRide_DB;Persist Security Info=False;User ID=saferide;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         private ApplicationUser _user;
 
         public HazardDAO() {

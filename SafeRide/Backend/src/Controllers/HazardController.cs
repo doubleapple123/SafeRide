@@ -12,7 +12,6 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 namespace SafeRide.Controllers
 {
     [Microsoft.AspNetCore.Mvc.Route("api")]
-    [Controller]
     [ApiController]
     public class HazardController : ControllerBase
     {
