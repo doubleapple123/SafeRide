@@ -6,6 +6,7 @@
       <input type="submit" hidden />
     </form>
   </div>
+  <div id="map"></div>
 </template>
 
 <script>
@@ -22,7 +23,6 @@ export default {
       map: {}
     }
   },
-  name: 'MapSearchRectangle',
   methods: {
     async getLocation () {
       this.loading = true
@@ -37,7 +37,7 @@ export default {
   },
   props: ['api_key'],
   mounted () {
-    mapboxgl.accessToken = this.api_key
+    mapboxgl.accessToken = 'pk.eyJ1IjoiY2FudGRyaW5rbWlsayIsImEiOiJjbDAwZnFiOHkwM3kyM3FwaG1qcmFhazh6In0.ytVFjAsRLDJra61yH0ZT-w'
     this.map = new mapboxgl.Map({
       container: 'map', // container ID
       style: 'mapbox://styles/mapbox/satellite-v9', // style URL
