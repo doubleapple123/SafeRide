@@ -67,7 +67,7 @@ namespace SafeRide.src.Services
             List<Step> routeSteps = _route.Legs[0].Steps; // extract the list of steps taken by the route
 
            // find all the coordinates between the current step and and the next step that must be searched to cover the distance between them 
-            for (int i = 0; i < routeSteps.Count + 1;  i++) {
+            for (int i = 0; i < routeSteps.Count - 1;  i++) {
                 // get the distance and coordinates of the current step
                 double stepDistance = routeSteps[i].Distance;     
                 double startX = routeSteps[i].Maneuver.Location[0];
@@ -77,7 +77,7 @@ namespace SafeRide.src.Services
                 double endY = routeSteps[i+1].Maneuver.Location[1];
 
                 // automatically add the first and last steps of the route as search coordinates
-                if (i == 0 || i == routeSteps.Count)
+                if (i == 0 || i == routeSteps.Count - 1)
                 {
                     results.Add(startX, startY);
                     _searchCount += 1;
