@@ -18,7 +18,7 @@ namespace SafeRide.Controllers
     {
         //private readonly ApplicationUser _user;
         private readonly Route _route;
-        private readonly IHazardExclusionService _hazardExclusionService;
+        private readonly IExcludeHazardService _hExcludeHazardService;
         private readonly IParseResponseService _parseResponseService;
                 
 
@@ -26,7 +26,7 @@ namespace SafeRide.Controllers
             //this._user = user;
 
             this._parseResponseService = new ParseResponseService(jsonResponse);
-            this._hazardExclusionService = new HazardExclusionService(_route);
+            this._hExcludeHazardService = new ExcludeHazardService(_route);
         }
 
         /* 
@@ -39,14 +39,14 @@ namespace SafeRide.Controllers
         public IActionResult Exclude([FromBody] List<int> hazards)
         {
             Route firstRoute = _parseResponseService.GetRoute(0);
-            var results = _hazardExclusionService.FindHazardsNearRoute(hazards);
+            var results = _hExcludeHazardService.FindHazardsNearRoute(hazards);
             return Ok(new { results });
 
         }
         ////[HttpPost]
         ////[Route("exclude")]
         //public bool Report(List<int> hazards) {
-        //    _hazardExclusionService.FindHazardsNearRoute(hazards);
+        //    _hExcludeHazardService.FindHazardsNearRoute(hazards);
         //}
     }
 }

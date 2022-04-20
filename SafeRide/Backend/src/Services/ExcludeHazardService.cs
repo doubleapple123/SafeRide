@@ -5,7 +5,7 @@ using Route = SafeRide.src.Models.Route;
 
 namespace SafeRide.src.Services
 {
-    public class HazardExclusionService : IHazardExclusionService
+    public class ExcludeHazardService : IExcludeHazardService
     {
 //        private IViewEventDAO _viewEventDAO;
         private IHazardDAO _hazardDAO;
@@ -21,7 +21,7 @@ namespace SafeRide.src.Services
         /// Route object from the directions response
         /// </summary>
         /// <param name="route"></param>
-        public HazardExclusionService(Route route)
+        public ExcludeHazardService(Route route)
         {
             this._hazardDAO = new HazardDAO();
             this._route = route;

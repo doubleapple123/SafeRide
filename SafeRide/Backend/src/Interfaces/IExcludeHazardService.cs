@@ -2,7 +2,7 @@
 
 namespace SafeRide.src.Interfaces
 {
-    public interface IHazardExclusionService
+    public interface IExcludeHazardService
     {
         public Dictionary<double, double> FindHazardsNearRoute(List<int> hazards);
 
