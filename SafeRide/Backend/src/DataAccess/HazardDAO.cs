@@ -15,6 +15,11 @@ namespace SafeRide.src.DataAccess
             throw  new NotImplementedException();
         }
 
+        /// <summary>
+        /// Inserts given hazard into Hazards table
+        /// </summary>
+        /// <param name="hazard">Hazard to be inserted</param>
+        /// <returns>Number of rows affected by insert</returns>
         public int Report(Hazard hazard)
         {
             int numRowsAffected = -1;
@@ -49,6 +54,10 @@ namespace SafeRide.src.DataAccess
             return numRowsAffected;
         }
 
+        /// <summary>
+        /// Gets all hazards that are not expired
+        /// </summary>
+        /// <returns>List of non-expired hazards</returns>
         public List<Hazard> GetAllValidHazards()
         {
             List<Hazard> hazardList = new List<Hazard>();

@@ -10,20 +10,31 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace SafeRide.src.Controllers
 {
+    /// <summary>
+    /// This class represents the controller for hazard functionality. Is responsible for transferring data between frontend and backend.
+    /// </summary>
     [Route("api/hazards")]
     [ApiController]
     [Produces("application/json")]
+    
     public class HazardController : ControllerBase
     {
-      //  private readonly IHazardExclusionService _hazardExclusionService;
         private readonly IReportHazardService _reportHazardService;
 
-        public HazardController(/*IHazardExclusionService hazardExclusionService, */IReportHazardService reportHazardService)
+        /// <summary>
+        /// Ctor for HazardController. Depends on the ReportHazard service.
+        /// </summary>
+        /// <param name="reportHazardService">The instance of the ReportHazard service to inject</param>
+        public HazardController(IReportHazardService reportHazardService)
         {
-           // _hazardExclusionService = hazardExclusionService;
             _reportHazardService = reportHazardService;
         }
 
+        /// <summary>
+        /// Reports a hazard to the backend.
+        /// </summary>
+        /// <param name="h">Hazard instance to report</param>
+        /// <returns>OkResult upon successful report with JSON reprsenting number of rows affected in underlying database</returns>
         [HttpPost]
         [DisableCors]
         [Route("report")]
@@ -33,6 +44,10 @@ namespace SafeRide.src.Controllers
             return Ok(this._reportHazardService.Report(hazard));
         }
 
+        /// <summary>
+        /// Gets available hazards from backend.
+        /// </summary>
+        /// <returns>OkResult with JSON representing all returned hazards</returns>
         [HttpGet]
         [Route("getHazards")]
         public IActionResult GetHazards()
@@ -44,23 +59,5 @@ namespace SafeRide.src.Controllers
             }
             return Ok(hazards);
         }
-        //private readonly IHazardReportingService _hazardReportingService;
-
-        // [Microsoft.AspNetCore.Mvc.Route("excludeHazard")]
-        // [Microsoft.AspNetCore.Mvc.HttpPost]
-        //public HazardController(ApplicationUser user, Route route) {
-        //    this._user = _user;
-        //    this._route = route; 
-        //    this._hazardExclusionService = new HazardExclusionService(route);
-        //}
-        // [HttpGet]
-        // [Route("exclude")]
-        //public bool Exclude(List<HazardType> hazards) {
-        //    _hazardExclusionService.FindHazardsNearRoute(hazards);
-        //}
-
-
-
-
     }
 }
