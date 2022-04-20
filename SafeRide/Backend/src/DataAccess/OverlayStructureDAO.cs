@@ -8,17 +8,12 @@ namespace SafeRide.src.DataAccess;
 
 public class OverlayStructureDAO : IOverlayStructureDAO
 {
-    private SqlConnectionStringBuilder builder;
     private const string TABLE_NAME = "OverlayDimensions";
     private const string SECOND_TABLE_NAME = "OverlaysColors";
+    private string _cs = "Data Source = tcp:saferidedbserver.database.windows.net,1433;Initial Catalog = SafeRide_db; User Id = SafeRideAdmin@saferidedbserver;Password=applepw123!";
 
-    public OverlayStructureDAO(IConfiguration config)
+    public OverlayStructureDAO()
     {
-        builder = new SqlConnectionStringBuilder();
-        builder.DataSource = "saferidesql.database.windows.net";
-        builder.UserID = "saferideapple";
-        builder.Password = config["AppKey:DBKey"];
-        builder.InitialCatalog = "SafeRide_DB";
     }
 
     public List<string> GetAvailableOverlays(string userName)
@@ -28,7 +23,7 @@ public class OverlayStructureDAO : IOverlayStructureDAO
 
         try
         {
-            using (var sqlConn = new SqlConnection(builder.ConnectionString))
+            using (var sqlConn = new SqlConnection(_cs))
             {
                 using (SqlCommand cmd = new SqlCommand(query, sqlConn))
                 {
@@ -62,7 +57,7 @@ public class OverlayStructureDAO : IOverlayStructureDAO
 
         try
         {
-            using (var sqlConn = new SqlConnection(builder.ConnectionString))
+            using (var sqlConn = new SqlConnection(_cs))
             {
                 using (SqlCommand cmd = new SqlCommand(query, sqlConn))
                 {
@@ -81,7 +76,7 @@ public class OverlayStructureDAO : IOverlayStructureDAO
                 }
             }
 
-            using (var sqlConn = new SqlConnection(builder.ConnectionString))
+            using (var sqlConn = new SqlConnection(_cs))
             {
                 using (SqlCommand cmd = new SqlCommand(query_two, sqlConn))
                 {
@@ -112,12 +107,12 @@ public class OverlayStructureDAO : IOverlayStructureDAO
         string query =
             $"INSERT INTO {TABLE_NAME} values ('{overlayName}', '{user}', {newPoint.LatPoint}, {newPoint.LongPoint})";
 
-        return ExecuteQuery.ExecuteCommand(builder.ConnectionString, query);
+        return ExecuteQuery.ExecuteCommand(_cs, query);
     }
 
     public bool RemoveOverlayPoint(string user, string overlayName, OverlayPoint newPoint)
     {
         string query = $"DELETE FROM {TABLE_NAME} where overlayName='{overlayName}' and UserName='{user}' and LatPoint='{newPoint.LatPoint}' and LongPoint='{newPoint.LongPoint}'";
-        return ExecuteQuery.ExecuteCommand(builder.ConnectionString, query);
+        return ExecuteQuery.ExecuteCommand(_cs, query);
     }
 }

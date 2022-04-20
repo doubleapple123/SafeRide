@@ -17,7 +17,7 @@ export default {
   methods: {
     doLogin () {
       if (this.userLogin !== undefined && this.emailLogin !== undefined) {
-        axios.post('https://backendsaferideapi.azure-api.net/overlayAPI/api/login', {
+        axios.post('https://backend20220418173746.azurewebsites.net/overlayAPI/api/login', {
           UserName: this.userLogin,
           Email: this.emailLogin,
           Role: 'Admin',

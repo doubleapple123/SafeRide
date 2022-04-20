@@ -13,7 +13,7 @@ namespace SafeRide.src.DataAccess
 
             try
             {
-                SqlConnection tmpConn = new SqlConnection(@"server=(local)\SQLExpress;integrated Security=SSPI;");
+                SqlConnection tmpConn = new SqlConnection("Data Source = tcp:saferidedbserver.database.windows.net,1433;Initial Catalog = SafeRide_db; User Id = SafeRideAdmin@saferidedbserver;Password=applepw123!");
 
                 sqlCreateDBQuery = string.Format("SELECT database_id FROM sys.databases WHERE Name = '{0}'", databaseName);
 

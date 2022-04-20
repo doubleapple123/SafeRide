@@ -7,7 +7,7 @@ namespace SafeRide.src.DataAccess
 {
     public class UserSQLServerDAO : IUserDAO
     {
-        private const string CONNECTION_STRING = @"server=(local)\SQLExpress;database=SafeRide_DB;integrated Security=SSPI;";
+        private const string CONNECTION_STRING = "Data Source = tcp:saferidedbserver.database.windows.net,1433;Initial Catalog = SafeRide_db; User Id = SafeRideAdmin@saferidedbserver;Password=applepw123!";
         private UserModel User;
         private string UserId;
 

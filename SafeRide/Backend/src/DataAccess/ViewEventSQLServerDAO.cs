@@ -7,7 +7,7 @@ namespace SafeRide.src.DataAccess
 {
     public class ViewEventSQLServerDAO : IViewEventDAO
     {
-        private string _cs = System.Configuration.ConfigurationManager.ConnectionStrings["SafeRideDB"].ConnectionString;
+        private string _cs = "Data Source = tcp:saferidedbserver.database.windows.net,1433;Initial Catalog = SafeRide_db; User Id = SafeRideAdmin@saferidedbserver;Password=applepw123!";
 
         public int CreateViewEvent(ViewEvent viewEvent)
         {
