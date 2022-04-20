@@ -6,14 +6,23 @@ namespace SafeRide.src.DataAccess;
 
 public class UserSQLSecurityDAO : IUserSecurityDAO
 {
-    private const string CONNECTION_STRING = @"server=(local)\SQLExpress;database=SafeRide_DB;integrated Security=SSPI;";
+    private SqlConnectionStringBuilder builder;
     private const string TABLE_NAME = "UserSecurity";
 
+    public UserSQLSecurityDAO(IConfiguration config)
+    {
+        builder = new SqlConnectionStringBuilder();
+        builder.DataSource = "saferidesql.database.windows.net";
+        builder.UserID = "saferideapple";
+        builder.Password = config["AppKey:DBKey"];
+        builder.InitialCatalog = "SafeRide_DB";
+    }
+    
     private bool ExecuteCommand(string queryStr)
     {
         try
         {
-            using (var sqlConn = new SqlConnection(CONNECTION_STRING))
+            using (var sqlConn = new SqlConnection(builder.ConnectionString))
             {
                 SqlCommand cmd = new SqlCommand(queryStr, sqlConn);
                 cmd.Connection.Open();
@@ -46,7 +55,7 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
 
         try
         {
-            using (var sqlConn = new SqlConnection(CONNECTION_STRING))
+            using (var sqlConn = new SqlConnection(builder.ConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(query, sqlConn))
                 {

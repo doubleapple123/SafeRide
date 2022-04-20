@@ -14,7 +14,6 @@ using SafeRide.src.Security.UserSecurity;
 
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 
 //https://www.codemag.com/Article/2105051/Implementing-JWT-Authentication-in-ASP.NET-Core-5
 
@@ -66,6 +65,7 @@ builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IUserDAO, UserSQLServerDAO>();
 builder.Services.AddTransient<IViewEventDAO, ViewEventSQLServerDAO>();
 builder.Services.AddTransient<IAnalyticsService, AnalyticsService>();
+builder.Services.AddTransient<IOverlayStructureDAO, OverlayStructureDAO>();
 
 var env = builder.Environment;
 var app = builder.Build();
@@ -116,7 +116,6 @@ app.UseAuthorization(); // auth
 app.MapControllers();
 
 
-
 // for testing OTP auth
 //OTPService auth = new OTPService();
 // auth.SendEmail();
@@ -143,6 +142,9 @@ app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 
 app.Run();
+public partial class Program { }
+
+
 
 /*
 IUserDAO testDao = new UserSQLServerDAO();
@@ -259,5 +261,4 @@ public enum HazardType
     Vehicle,
     Closure
     }
-
 

@@ -68,13 +68,20 @@ namespace SafeRide.src.Services
                 //    }
                 //}
                 /*otpService.SetUser(validUser);*/
-
-                generatedToken = tokenService.BuildToken(SECRET_KEY, ISSUER, validUser);
-
-                if (generatedToken != null)
+                try
                 {
-                    response = Ok(new { token = generatedToken });
+                    generatedToken = tokenService.BuildToken(SECRET_KEY, ISSUER, validUser);
+
+                    if (generatedToken != null)
+                    {
+                        response = Ok(new { token = generatedToken });
+                    }
                 }
+                catch (Exception ex)
+                {
+                    response = Unauthorized();
+                }
+
             }
             return response;
         }
