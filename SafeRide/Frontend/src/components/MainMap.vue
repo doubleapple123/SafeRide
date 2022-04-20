@@ -90,6 +90,9 @@ export default {
     mapboxgl.accessToken = this.api_key
 =======
     mapboxgl.accessToken = 'pk.eyJ1IjoiY2FudGRyaW5rbWlsayIsImEiOiJjbDAwZnFiOHkwM3kyM3FwaG1qcmFhazh6In0.ytVFjAsRLDJra61yH0ZT-w'
+<<<<<<< HEAD
+>>>>>>> parent of f2a7bf3 (remove)
+=======
 >>>>>>> parent of f2a7bf3 (remove)
     this.map = new mapboxgl.Map({
       container: 'map', // container ID
@@ -97,6 +100,7 @@ export default {
       center: [-118.1109043, 33.7827241], // starting position [lng, lat]
       zoom: 14 // starting zoom
     })
+<<<<<<< HEAD
 <<<<<<< HEAD
     const start = [-118.1109043, 33.7827241]
     async function getRoute (end) {
@@ -165,6 +169,8 @@ export default {
       }
     })
 =======
+=======
+>>>>>>> parent of f2a7bf3 (remove)
     //    const start = [-118.1109043, 33.7827241]
     //    async function getRoute (end) {
     //    const query = await fetch(`https://api.mapbox.com/directions/v5/mapbox/cycling/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
@@ -257,6 +263,9 @@ export default {
   //    }
   //    getRoute(coords)
   //  })
+<<<<<<< HEAD
+>>>>>>> parent of f2a7bf3 (remove)
+=======
 >>>>>>> parent of f2a7bf3 (remove)
   }
 }
