@@ -63,8 +63,8 @@ namespace SafeRide.src.Models
             get { return _city; }
         }
 
-        private bool _expired;
-        public bool Expired
+        private int _expired;
+        public int Expired
         {
             get { return _expired; }
         }
@@ -75,17 +75,17 @@ namespace SafeRide.src.Models
             get { return _reportedBy; }
         }
 
-        public Hazard(HazardType type, double hazardX, double hazardY, string reportedBy, string state, int zip, string city)
+        public Hazard(HazardType type, double hazardX, double hazardY, string reportedBy, string state, int zip, string city, DateTime dateReported, int expired)
         {
             _type = type;
             _latitude = hazardX;
             _longitude = hazardY;
             _reportedBy = reportedBy;
-            _timeReported = DateTime.Now;
+            _timeReported = dateReported;
             _state = state;
             _zip = zip;
             _city = city;
-            _expired = false;
+            _expired = expired;
         }
     }
 }

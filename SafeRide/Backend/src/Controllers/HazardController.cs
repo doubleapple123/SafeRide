@@ -28,7 +28,7 @@ namespace SafeRide.src.Controllers
         [Route("report")]
         public IActionResult Report()
         {
-            Hazard hazard = new Hazard(HazardType.BikeLane, 32, 76, "3424315", "CA", 92602, "Irvine");
+            Hazard hazard = new Hazard(HazardType.BikeLane, 32, 76, "3424315", "CA", 92602, "Irvine", DateTime.Now, 0);
             return Ok(this._reportHazardService.Report(hazard));
         }
 
