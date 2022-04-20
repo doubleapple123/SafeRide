@@ -55,13 +55,13 @@ namespace SafeRide.src.Services
                     // check for the current hazard type around
                     for (int j = 0; j < _searchCoordinates.Count; j++)
                     {
-                        double targetY = _searchCoordinates.ElementAt(i).Value;
-                        double targetX = _searchCoordinates.ElementAt(i).Key;
+                        double targetY = _searchCoordinates.ElementAt(i).Key;
+                        double targetX = _searchCoordinates.ElementAt(i).Value;
 
                         Dictionary<double, double> foundCoordinates = _hazardDAO.
             GetByTypeInRadius(hazards[j], targetY, targetX, RADIUS_METERS);
                         // append the results dict with the dict of queried coordinates
-                        results.ToList().ForEach(pair => foundCoordinates[pair.Value] = pair.Key);
+                        results.ToList().ForEach(pair => foundCoordinates[pair.Key] = pair.Value);
                     }
                 }
             }
@@ -90,17 +90,19 @@ namespace SafeRide.src.Services
                 {
                     results.Add(startY, startX);
                     _searchCount += 1;
+
                 }
-                else if (i == routeSteps.Count - 2) {
+                else if (i == routeSteps.Count - 1) {
                     results.Add(endY, endX);
                     _searchCount += 1;
                 }
 
                 // for each step in between them, check if still covered under the radius of the last searchCoordinate 
-                else
-                {
-                    if (IsInside(startY, startX, results.ElementAt(_searchCount - 1).Value, results.ElementAt(_searchCount - 1).Key, RADIUS_METERS) == false)
-                    {
+                //else
+                //{
+              
+                else {
+                    if (IsInside(startY, startX, results.ElementAt(_searchCount - 1).Key, results.ElementAt(_searchCount - 1).Value, RADIUS_METERS) == false) { 
                         // if not covered by previous radius, add a new searchCoordinate at the current step
                         results.Add(startY, startX);
                         _searchCount += 1;
@@ -118,9 +120,9 @@ namespace SafeRide.src.Services
                                 // formula taken from "https://stackoverflow.com/questions/53404008/how-to-calculate-coordinate-x-meters-away-from-a-point-but-towards-another-in-c" 
 
                                 double ratio = RADIUS_METERS / stepDistance;
-                                
+                                double prevY =  results.ElementAt(_searchCount - j + 1).Key;      
                                 double prevX = results.ElementAt(_searchCount - j + 1).Value;
-                                double prevY =  results.ElementAt(_searchCount - j + 1).Key;
+
                                 double diffY = endY - prevY;
                                 double diffX = endX - prevX;
                         
@@ -137,8 +139,8 @@ namespace SafeRide.src.Services
         }
 
         public double DistanceBetween(double y1, double x1, double y2, double x2) {
-            Coordinate first = new Coordinate(y1, x1);
-            Coordinate last = new Coordinate(y2, x2);
+            Coordinate first = new Coordinate(x1, y1);
+            Coordinate last = new Coordinate(x2, y2);
             Distance distance = new Distance(first, last);
             double distanceInMeters = (double) distance.Meters;
             return distanceInMeters;
@@ -153,11 +155,12 @@ namespace SafeRide.src.Services
         /// <param name="targetY"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        public bool IsInside(double centerX, double centerY, double targetX, double targetY, double radius)
+        /// coordinates from mapbox come in the form (<long> (y),<lat> (x)), so they must be invertted in the Coordinate object
+        public bool IsInside(double centerY, double centerX, double targetY, double targetX, double radius)
         {
-
-            Coordinate center = new Coordinate(centerY, centerX);
-            Coordinate target = new Coordinate(targetY, targetX);
+          
+            Coordinate center = new Coordinate(centerX, centerY);
+            Coordinate target = new Coordinate(targetX, targetY);
             //center.FormatOptions.Format = CoordinateFormatType.Decimal_Degree;
             //target.FormatOptions.Format = CoordinateFormatType.Decimal_Degree;
             Distance distance = new Distance(center, target);
