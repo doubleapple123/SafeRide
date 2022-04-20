@@ -11,8 +11,9 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace SafeRide.Controllers
 {
-    [Microsoft.AspNetCore.Mvc.Route("api")]
+    [Route("api/hazards")]
     [ApiController]
+    [Produces("application/json")]
     public class HazardController : ControllerBase
     {
         //private readonly ApplicationUser _user;
