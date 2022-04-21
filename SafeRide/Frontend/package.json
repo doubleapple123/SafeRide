@@ -1,11 +1,9 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
     "axios": "^0.25.0",
@@ -13,6 +11,7 @@
     "dns": "^0.2.2",
     "fetch": "^1.1.0",
     "husky": "^7.0.4",
+    "mapbox-gl": "^2.8.1",
     "net": "^1.0.2",
     "request": "^2.88.2",
     "vue": "^3.0.0",
