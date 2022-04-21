@@ -1,7 +1,10 @@
 <template>
   <MapHeader></MapHeader>
   <MapSearchRectangle id="MapSearchRec"></MapSearchRectangle>
-  <div id='map'></div>
+  <div>
+   <div id='map'></div>
+   <div id="startGeocoder" class="startGeocoder"></div>
+  </div>
   <MapFooter @selectedOverlayColor="onOverlayColorChange" @selectedDimFooter="onReceiveOverlay"></MapFooter>
 </template>
 
@@ -11,11 +14,19 @@ import MapHeader from '@/components/MapHeader.vue'
 import MapFooter from '@/components/MapFooter'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import mapboxgl from 'mapbox-gl'
+import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import axios from 'axios'
 export default {
   components: {
     MapSearchRectangle,
     MapFooter,
     MapHeader
+  },
+  data () {
+    return {
+      start: [0, 0]
+    }
   },
   methods: {
     removeOverlays () {
@@ -90,14 +101,24 @@ export default {
     const map = new mapboxgl.Map({
       container: 'map', // container ID
       style: 'mapbox://styles/mapbox/streets-v11', // style URL
-      center: [-118.1109043, 33.7827241], // starting position [lng, lat]
+      center: [-118.1141, 33.7838], // starting position [lng, lat]
       zoom: 14 // starting zoom
     })
-    const start = [-118.1109043, 33.7827241]
+    const startGeocoder = new MapboxGeocoder({
+      accessToken: this.api_key,
+      mapboxgl: mapboxgl
+    })
+    console.log(this.start)
+    map.addControl(startGeocoder)
+    document.getElementById('startGeocoder').appendChild(startGeocoder.onAdd(map))
+    startGeocoder.on('result', (event) => {
+      const coords = Object.keys(event.lngLat).map((key) => event.lngLat[key])
+      this.start = coords
+      console.log(this.start)
+    })
     async function getRoute (end) {
-      const query = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/cycling/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
-        { method: 'GET' }
+      const query = await axios.get(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${this.start[0]},${this.start[1]}.json?access_token=${this.api_key}`
       )
       const json = await query.json()
       const data = json.routes[0]
@@ -134,29 +155,74 @@ export default {
       // turn instructions here
     }
     map.on('load', () => {
-      getRoute(start)
-    })
-    map.addLayer({
-      id: 'point',
-      type: 'circle',
-      source: {
-        type: 'geojson',
-        data: {
-          type: 'FeatureCollection',
-          features: [{
-            type: 'Feature',
-            properties: {},
-            geometry: {
-              type: 'Point',
-              coordinate: start
-            }
-          }]
+      getRoute(this.start)
+      map.addLayer({
+        id: 'point',
+        type: 'circle',
+        source: {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: [{
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'Point',
+                coordinates: this.start
+              }
+            }]
+          }
+        },
+        paint: {
+          'circle-radius': 10,
+          'circle-color': '#3887be'
         }
-      },
-      paint: {
-        'circle-radius': 10,
-        'cricle-color': '#3887be'
-      }
+      })
+      map.on('click', (event) => {
+        const coords = Object.keys(event.lngLat).map((key) => event.lngLat[key])
+        const end = {
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              properties: {},
+              geometry: {
+                type: 'Point',
+                coordinates: coords
+              }
+            }
+          ]
+        }
+        if (map.getLayer('end')) {
+          map.getSource('end').setData(end)
+        } else {
+          map.addLayer({
+            id: 'end',
+            type: 'circle',
+            source: {
+              type: 'geojson',
+              data: {
+                type: 'FeatureCollection',
+                features: [
+                  {
+                    type: 'Feature',
+                    properties: {},
+                    geometry: {
+                      type: 'Point',
+                      coordinates: coords
+                    }
+                  }
+                ]
+              }
+            },
+            paint: {
+              'circle-radius': 10,
+              'circle-color': '#f30'
+            }
+          })
+        }
+        getRoute(coords)
+      })
     })
   }
 }
@@ -165,7 +231,7 @@ export default {
 <style scoped>
   #map {
     margin: auto;
-    width: 70%;
+    width: 60%;
     height: 600px;
   }
 
@@ -173,4 +239,16 @@ export default {
     position: fixed;
     left: 50px;
   }
+  .startGeocoder {
+    position: absolute;
+    z-index: 1;
+    width: 50%;
+    right: 50%;
+    margin-left: -25%;
+    top: 35%;
+  }
+  .mapboxgl-ctrl-geocoder {
+    min-width:100%
+  }
+
 </style>
