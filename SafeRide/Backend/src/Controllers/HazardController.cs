@@ -11,9 +11,9 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace SafeRide.Controllers
 {
-    [Route("api/hazards")]
-    [ApiController]
-    [Produces("application/json")]
+    //[Route("api/hazards")]
+    //[ApiController]
+    //[Produces("application/json")]
     public class HazardController : ControllerBase
     {
         //private readonly ApplicationUser _user;
@@ -34,8 +34,8 @@ namespace SafeRide.Controllers
         Ajax.BeginForm("Exclude", 
                             new AjaxOptions { UpdateTargetId = "divHazards" }))*/
 
-        [HttpGet]
-        [Route("exclude")]
+        //[HttpGet]
+        //[Route("exclude")]
         public IActionResult Exclude([FromBody] List<int> hazards)
         {
             Route firstRoute = _parseResponseService.GetRoute(0);
