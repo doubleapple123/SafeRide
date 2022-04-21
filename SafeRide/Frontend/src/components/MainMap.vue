@@ -1,31 +1,25 @@
-<template>
+﻿<template>
   <MapHeader></MapHeader>
   <MapSearchRectangle id="MapSearchRec"></MapSearchRectangle>
   <div>
-   <div id='map'></div>
-   <div id="startGeocoder" class="startGeocoder"></div>
+   <div id='map' class="map"></div>
+   <div id="instructions" class="instructions"></div>
   </div>
-  <MapFooter @selectedOverlayColor="onOverlayColorChange" @selectedDimFooter="onReceiveOverlay"></MapFooter>
 </template>
 
 <script>
 import MapSearchRectangle from '@/components/MapSearchRectangle'
 import MapHeader from '@/components/MapHeader.vue'
-import MapFooter from '@/components/MapFooter'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import mapboxgl from 'mapbox-gl'
-import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
-import axios from 'axios'
 export default {
   components: {
     MapSearchRectangle,
-    MapFooter,
     MapHeader
   },
   data () {
     return {
-      start: [0, 0]
     }
   },
   methods: {
@@ -104,21 +98,11 @@ export default {
       center: [-118.1141, 33.7838], // starting position [lng, lat]
       zoom: 14 // starting zoom
     })
-    const startGeocoder = new MapboxGeocoder({
-      accessToken: this.api_key,
-      mapboxgl: mapboxgl
-    })
-    console.log(this.start)
-    map.addControl(startGeocoder)
-    document.getElementById('startGeocoder').appendChild(startGeocoder.onAdd(map))
-    startGeocoder.on('result', (event) => {
-      const coords = Object.keys(event.lngLat).map((key) => event.lngLat[key])
-      this.start = coords
-      console.log(this.start)
-    })
+    const start = [-118.1141, 33.7838]
     async function getRoute (end) {
-      const query = await axios.get(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${this.start[0]},${this.start[1]}.json?access_token=${this.api_key}`
+      const query = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/cycling/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
+        { method: 'GET' }
       )
       const json = await query.json()
       const data = json.routes[0]
@@ -152,10 +136,19 @@ export default {
           }
         })
       }
-      // turn instructions here
+      const instructions = document.getElementById('instructions')
+      const steps = data.legs[0].steps
+
+      let tripInstructions = ''
+      for (const step of steps) {
+        tripInstructions += `<li>${step.maneuver.instruction}</li>`
+      }
+      instructions.innerHTML = `<p><strong>Trip duration: ${Math.floor(
+        data.duration / 60
+      )} min 🚴 </strong></p><ol>${tripInstructions}</ol>`
     }
     map.on('load', () => {
-      getRoute(this.start)
+      getRoute(start)
       map.addLayer({
         id: 'point',
         type: 'circle',
@@ -168,7 +161,7 @@ export default {
               properties: {},
               geometry: {
                 type: 'Point',
-                coordinates: this.start
+                coordinates: start
               }
             }]
           }
@@ -248,7 +241,18 @@ export default {
     top: 35%;
   }
   .mapboxgl-ctrl-geocoder {
-    min-width:100%
+    min-width: 100%
+  }
+
+  #instructions {
+    position: absolute;
+    margin: 20px;
+    width: 20%;
+    bottom: 20%;
+    left: 78%;
+    background-color: #fff;
+    overflow-y: scroll;
+    font-family: sans-serif;
   }
 
 </style>
