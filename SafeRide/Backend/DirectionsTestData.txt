@@ -86,16 +86,24 @@
 	- hazards pre-populated into the system database:
 		- 5 "Accident" hazards within the target radius
 		- 2 "Accident" hazards outside the target radius
-		- 1 "BikeLane" hazard within the target radius
-		- 2 "Closure" hazards within the target radius
 		- 1 "Obstruction" hazard within the target radius
+		- 3 "BikeLane" hazard within the target radius
+		- 4 "Vehicle" hazards within the target radius
+		- 0 "Closure" hazards within the target radius
 
-	- *** Test Scenario 1 *** Searching for all coordinates of "Accident" hazards within the target radius of the test coordinate
-		- expected result:
-			false
+	- *** Test Scenario 1 *** Searching for the coordinates of all "Accident" hazards around the test coordinate
+		- number of expected coordinates:
+			5
+	- *** Test Scenario 2 *** Searching for the coordinates of all "BikeLane" hazards around the test coordinate
+		- number of expected coordinates:
+			1
+			
 
 
-
+SELECT longitude, latitude FROM Hazards WHERE hazardType = 0 
+AND (acos(sin(latitude * 0.0175) * sin(40.73992 * 0.0175) + 
+cos(latitude * 0.0175) * cos(40.73992 * 0.0175) * cos((74.002917 * 0.0175) 
+- (longitude * 0.0175)) - 0.0000000000000000000000001) * 3959) <= 8046.72;
 
 
 

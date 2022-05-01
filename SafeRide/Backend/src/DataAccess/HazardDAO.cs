@@ -21,7 +21,7 @@ namespace SafeRide.src.DataAccess
             // initialize empty dictionary of doubles to store the set of queried coordinates
             Dictionary<double, double> results = new Dictionary<double, double>();
             // convert meters from meters to miles
-            //double RADIUS_MILES = radius * 0.000621371;
+            double RADIUS_MILES = radius * 0.000621371;
 
             // attempt connecting to the database to query for mathing hazards
             try
@@ -32,7 +32,7 @@ namespace SafeRide.src.DataAccess
                     // build query using trigonometry function to search for the coordinates of all hazards of the provided type within the set radius around a coordinate defined by the provided targetX and targetY values
                     Console.WriteLine("successfully connected");
 
-                    string queryString = $"SELECT longitude, latitude FROM Hazards WHERE {hazardType} = 0 AND (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - (longitude * 0.0175)) - 0.0000000000000000000000001) * 3959) <= {radius}";
+                    string queryString = $"SELECT longitude, latitude FROM Hazards WHERE hazardType = {hazardType} AND (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - (longitude * 0.0175)) - 0.0000000000000000000000001) * 3959) <= {RADIUS_MILES}";
                     //Console.WriteLine(queryString);
 
                     using (SqlCommand cmd = new SqlCommand(queryString, conn)) 
