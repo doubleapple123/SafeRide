@@ -15,7 +15,7 @@ namespace SafeRide.src.Services
         private double _distance;
         private Dictionary<double, double>  _searchCoordinates; 
         private int _searchCount;
-        private const double RADIUS_METERS = 80467.12;
+        private const double RADIUS_METERS = 8046.72;
         private const int EXCLUSION_LIMIT = 50; // the maximum amount of exclusion arguments for a single directions request set by MapBox API
 
         public ExcludeHazardService()

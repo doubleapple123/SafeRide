@@ -61,31 +61,31 @@ namespace SRUnitTests
 
             Assert.Equal(expected, actual);
         }
-    
-// querying the test data for hazard type of 0 around the given coordinate should return a total 5 hazard coordinates
-    [Theory]
-    [InlineData(0, -74.002917, 40.73992, 5)] 
 
-    public void GetByTypeInRadius(int hazardType, double searchY, double searchX, double radiusInMiles) { 
-
-        Dictionary<double, double> expectedHazards = new Dictionary<double, double>()
+        // querying the test data for hazard type of 0 around the given coordinate should return a total 5 hazard coordinates
+        [Theory]
+        [InlineData(0, -74.002917, 40.73992, 5)]
+        public void GetByTypeInRadius(int hazardType, double searchY, double searchX, double radiusInMiles)
         {
-            [-73.99015] = 40.732204,
-            [-73.990042] = 40.733456,
-            [-73.990014] = 40.732818,
-            [-73.989869] = 40.732689,
-            [-73.990042] = 40.732689,
 
-        };
+            Dictionary<double, double> expectedHazards = new Dictionary<double, double>()
+            {
+                [-73.99015] = 40.732204,
+                [-73.990042] = 40.733456,
+                [-73.990014] = 40.732818,
+                [-73.989869] = 40.732689,
+                [-73.990042] = 40.732689,
 
-        HazardDAO hazardDAO = new HazardDAO();
-        Dictionary<double, double> actual = hazardDAO.GetByTypeInRadius(hazardType, searchY, searchX, radiusInMiles);
-        //bool results = (expectedHazards == actual);
+            };
 
-        Assert.NotStrictEqual(expectedHazards, actual);
+            HazardDAO hazardDAO = new HazardDAO();
+            Dictionary<double, double> actual = hazardDAO.GetByTypeInRadius(hazardType, searchY, searchX, radiusInMiles);
+            //bool results = (expectedHazards == actual);
 
+            Assert.NotStrictEqual(expectedHazards, actual);
+
+        }
     }
-}
 }
 
 
