@@ -34,6 +34,8 @@ SELECT longitude, latitude FROM Hazards
 			- 0.0000000000001) 
 			* 3959) <= 5;
 
+
+// potential fix for acos(0) issue, might provide increased accuracy
 SELECT longitude, latitude FROM Hazards WHERE (
 	(SELECT acos(
 			(SELECT MIN(x) FROM (VALUES (

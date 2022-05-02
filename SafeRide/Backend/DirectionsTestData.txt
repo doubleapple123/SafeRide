@@ -85,18 +85,38 @@
 		5 miles (8046.72 meters)
 	- hazards pre-populated into the system database:
 		- 5 "Accident" hazards within the target radius
-		- 2 "Accident" hazards outside the target radius
+		- 4 "Accident" hazards outside the target radius
 		- 1 "Obstruction" hazard within the target radius
 		- 3 "BikeLane" hazard within the target radius
 		- 4 "Vehicle" hazards within the target radius
 		- 0 "Closure" hazards within the target radius
+	- SQL query to find expected results:
+		"SELECT longitude, latitude FROM Hazards 
+			WHERE hazardType = 0 AND (
+				acos(
+					sin(latitude * 0.0175) * sin(40.73992 * 0.0175) 
+					+ cos(latitude * 0.0175) * cos(40.73992 * 0.0175) 
+					* cos((-74.002917 * 0.0175) - (longitude* 0.0175)) 
+					- 0.0000000000001) 
+					* 3959) <= 5;"
 
 	- *** Test Scenario 1 *** Searching for the coordinates of all "Accident" hazards around the test coordinate
-		- number of expected coordinates:
+		- total hazard coordinates expected:
 			5
-	- *** Test Scenario 2 *** Searching for the coordinates of all "BikeLane" hazards around the test coordinate
-		- number of expected coordinates:
+	- *** Test Scenario 2 *** Searching for the coordinates of all "Obstruction" hazards around the test coordinate
+		- total hazard coordinates expected:
 			1
+	- *** Test Scenario 3 *** Searching for the coordinates of all "BikeLane" hazards around the test coordinate
+		- total hazard coordinates expected:
+			3
+	- *** Test Scenario 4 *** Searching for the coordinates of all "Vehicle" hazards around the test coordinate
+		- total hazard coordinates expected:
+			4
+	- *** Test Scenario 5 *** Searching for the coordinates of all "Closure" hazards around the test coordinate
+		- total hazard coordinates expected:
+			0
+			
+			
 			
 
 

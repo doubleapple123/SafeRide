@@ -10,14 +10,16 @@ namespace SafeRide.src.DataAccess
     {
         // TODO Uncomment when done unit testing
         //private string _cs = System.Configuration.ConfigurationManager.ConnectionStrings["SafeRideDB"].ConnectionString;
-        private string _cs = "Server=tcp:updatedbackend.database.windows.net,1433;Initial Catalog=UpdatedDatabase;Persist Security Info=False;User ID=colincreasman;Password=saferide.714;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private string _cs = "Server=tcp:updatedbackend.database.windows.net,1433;Initial Catalog=UpdatedDatabase;Persist Security Info=False;User ID=colincreasman;Password=saferide.714;MultipleActiveResultSets=True;Encrypt=True;TrustServerCertificate=False;Connection Timeout=100;";
         private ApplicationUser _user;
 
-        public HazardDAO() {
+        public HazardDAO()
+        {
             this._user = new ApplicationUser();
         }
 
-        public Dictionary<double, double> GetByTypeInRadius(int hazardType, double targetY, double targetX, double radius) {
+        public Dictionary<double, double> GetByTypeInRadius(int hazardType, double targetY, double targetX, double radius)
+        {
             // initialize empty dictionary of doubles to store the set of queried coordinates
             Dictionary<double, double> results = new Dictionary<double, double>();
             // convert meters from meters to miles
@@ -35,20 +37,21 @@ namespace SafeRide.src.DataAccess
                     string queryString = $"SELECT longitude, latitude FROM Hazards WHERE hazardType = {hazardType} AND (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - (longitude * 0.0175)) - 0.0000000000000000000000001) * 3959) <= {RADIUS_MILES}";
                     //Console.WriteLine(queryString);
 
-                    using (SqlCommand cmd = new SqlCommand(queryString, conn)) 
+                    using (SqlCommand cmd = new SqlCommand(queryString, conn))
                     {
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
                                 // add each set of queried coordinates to the return dictionary
-                                double hazardY = (double) (reader["longitude"] ?? 0);
-                                double hazardX= (double) (reader["latitude"] ?? 0);
-                                
+                                double hazardY = (double)(reader["longitude"] ?? 0);
+                                double hazardX = (double)(reader["latitude"] ?? 0);
+
                                 results.Add(hazardY, hazardX);
                             }
                         }
                     }
+                   // conn.Close();
                 }
             }
 
@@ -60,7 +63,9 @@ namespace SafeRide.src.DataAccess
             return results;
         }
 
-        public int Report(Hazard hazard) {
+
+        public int Report(Hazard hazard)
+        {
             int numRowsAffected = 0;
             try
             {
@@ -81,7 +86,8 @@ namespace SafeRide.src.DataAccess
                         numRowsAffected = cmd.ExecuteNonQuery();
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return numRowsAffected;
@@ -90,15 +96,56 @@ namespace SafeRide.src.DataAccess
             //we use this to check if the message was succesfully inserted into database
             return numRowsAffected;
         }
+
+
+        // *** FOR DEBUGGING ONLY ***
+        // queries database for all hazard types and their coordinates within a given search radius
+        public Dictionary<int, double> GetAllHazardsInRadius(double targetY, double targetX, double radius)
+        {
+            // initialize empty dictionary of doubles to store the set of queried coordinates
+            Dictionary<int, double> results = new Dictionary<int, double>();
+            // convert meters from meters to miles
+            double RADIUS_MILES = radius * 0.000621371;
+
+            // attempt connecting to the database to query for mathing hazards
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_cs))
+                {
+                    conn.Open();
+                    // build query using trigonometry function to search for the coordinates of all hazards of the provided type within the set radius around a coordinate defined by the provided targetX and targetY values
+                    Console.WriteLine("successfully connected");
+
+                    //string queryString = $"SELECT hazardType, longitude, latitude FROM Hazards WHERE (acos(sin(latitude * 0.0175) * sin({targetX} * 0.0175) + cos(latitude * 0.0175) * cos({targetX} * 0.0175) * cos(({targetY} * 0.0175) - (longitude * 0.0175)) - 0.0000000000000000000000001) * 3959) <= {RADIUS_MILES}";
+                    //Console.WriteLine(queryString);
+                    string queryString = "SELECT hazardType, longitude FROM Hazards";
+
+                    using (SqlCommand cmd = new SqlCommand(queryString, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int hazardType = (int)(reader["hazardType"] ?? 0);
+                                //double[] location = new double[2];
+                               double location = (double)(reader["longitude"] ?? 0);
+                               // location[1] = (double)(reader["latitude"] ?? 0);
+                                results.Add(hazardType, location);
+                            }
+                          //  reader.NextResult();
+                        }
+                    }
+                    //conn.Close();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return results;
+            }
+            return results;
+        }
     }
-
-    //public double DistanceBetween(double y1, double x1, double y2, double x2)
-    //{
-    //    Coordinate first = new Coordinate(y1, x1);
-    //    Coordinate last = new Coordinate(y2, x2);
-    //    Distance distance = new Distance(first, last);
-    //    double distanceInMeters = (double)distance.Meters;
-    //    return distanceInMeters;
-
-    //}
 }
+
