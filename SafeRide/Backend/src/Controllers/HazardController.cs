@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using System.Web.Http;
+﻿using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
@@ -11,7 +10,6 @@ using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace SafeRide.Controllers
 {
-    //[Route("api/hazards")]
     //[ApiController]
     public class HazardController : ControllerBase
     {
@@ -34,7 +32,7 @@ namespace SafeRide.Controllers
                             new AjaxOptions { UpdateTargetId = "divHazards" }))*/
 
         //[HttpGet]
-        //[Route("exclude")]
+        //[Route("/api/hazards/exclude")]
         public IActionResult Exclude([FromBody] List<int> hazards)
         {
             Route firstRoute = _parseResponseService.GetRoute(0);

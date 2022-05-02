@@ -14,11 +14,12 @@ public class OverlayStructureDAO : IOverlayStructureDAO
 
     public OverlayStructureDAO(IConfiguration config)
     {
-        builder = new SqlConnectionStringBuilder();
-        builder.DataSource = "saferidesql.database.windows.net";
-        builder.UserID = "saferideapple";
-        builder.Password = config["AppKey:DBKey"];
-        builder.InitialCatalog = "SafeRide_DB";
+
+    builder = new SqlConnectionStringBuilder();
+        builder.DataSource = "updatedbackend.database.windows.net";
+        builder.UserID = "colincreasman";
+        builder.Password = "saferide.714";
+        builder.InitialCatalog = "UpdatedDatabase";
     }
 
     public List<string> GetAvailableOverlays(string userName)

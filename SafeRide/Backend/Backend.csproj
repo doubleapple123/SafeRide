@@ -16,6 +16,9 @@
     <Content Remove="package-lock.json" />
     <None Remove="System.Device.Location.Portable" />
     <None Remove="CoordinateSharp" />
+    <None Remove="System.Net.Http" />
+    <None Remove="System.Web.Http.Common" />
+    <None Remove="Microsoft.AspNet.WebApi.Core" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,11 +71,7 @@
 
   <ItemGroup>
 
-    <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.3" />
-
-    <PackageReference Include="Microsoft.AspNet.Identity.Owin" Version="2.2.3" />
-
-    <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.8" />
+    <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="3.0.0-rc1-final" />
 
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.4" />
 
@@ -86,17 +85,16 @@
 
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.4" />
 
-    <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.2.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.0-preview.3.22212.3" />
 
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
-
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.4" />
 
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
     <PackageReference Include="System.Device.Location.Portable" Version="1.0.0" />
     <PackageReference Include="CoordinateSharp" Version="2.13.1.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.8" />
   </ItemGroup>
 
 </Project>

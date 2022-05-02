@@ -87,21 +87,22 @@ namespace SRUnitTests
             HazardDAO hazardDAO = new HazardDAO();
 
              // use to check coordinates manually
-            Dictionary<int, double> allHazards = hazardDAO.GetAllHazardsInRadius(testCoordinate[0], testCoordinate[1], radiusInMeters);
-            output.WriteLine("\nActual coordinates queried for all hazard types within radius");
-              output.WriteLine(allHazards.Count.ToString());
-            foreach (KeyValuePair<int, double> kvp in allHazards)
-            {
-                output.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-            }
+            //Dictionary<int, double> allHazards = hazardDAO.GetAllHazardsInRadius(testCoordinate[0], testCoordinate[1], radiusInMeters);
+            //output.WriteLine("\nActual coordinates queried for all hazard types within radius");
+            //  output.WriteLine(allHazards.Count.ToString());
+            //foreach (KeyValuePair<int, double> kvp in allHazards)
+            //{
+            //    output.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+            //}
 
+
+            // use for troubleshooting incorrect coordinate queries
             Dictionary<double, double> actualHazards = hazardDAO.GetByTypeInRadius(hazardType, testCoordinate[0], testCoordinate[1], radiusInMeters);
             output.WriteLine("\nActual coordinates queried for hazards with type {0} in radius:", hazardType);
             foreach (KeyValuePair<double, double> kvp in actualHazards)
             {
                 output.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
             }
-
 
             int actual = actualHazards.Count;
             Assert.Equal(expected, actual);
