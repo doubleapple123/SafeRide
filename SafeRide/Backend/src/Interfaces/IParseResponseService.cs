@@ -5,6 +5,8 @@ namespace SafeRide.src.Interfaces
 {
     public interface IParseResponseService
     {
+        public void ParseResponse(string jsonResponse);
+
         public DirectionsResponse GetDirectionsResponse();
 
         public Route GetRoute(int routeNum);

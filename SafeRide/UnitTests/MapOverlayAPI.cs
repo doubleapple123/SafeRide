@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.WebUtilities;
-
+using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 using Xunit;
 
 namespace SRUnitTests;

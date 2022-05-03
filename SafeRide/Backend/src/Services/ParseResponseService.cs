@@ -15,16 +15,17 @@ namespace SafeRide.src.Services
         {
         }
 
-        public ParseResponseService(string jsonResponse)
+
+        public void ParseResponse(string jsonResponse)
         {
             this._jsonResponse = jsonResponse;
-            this._directionsResponse = JsonConvert.DeserializeObject<DirectionsResponse>(jsonResponse); 
+            this._directionsResponse = JsonConvert.DeserializeObject<DirectionsResponse>(_jsonResponse);
         }
-
 
         public DirectionsResponse GetDirectionsResponse()
         {
-            return this._directionsResponse;
+            
+            return _directionsResponse;
         }
 
 

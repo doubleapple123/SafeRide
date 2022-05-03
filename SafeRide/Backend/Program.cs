@@ -145,7 +145,7 @@ app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 
 app.Run();
-public partial class Program { }
+//public partial class Program { }
 
 
 

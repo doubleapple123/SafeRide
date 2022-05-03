@@ -32,9 +32,10 @@ namespace SRUnitTests
 			response.EnsureSuccessStatusCode();
 			string jsonResponse = await response.Content.ReadAsStringAsync();
 			
-			ParseResponseService? ParseResponseService = new ParseResponseService(jsonResponse);
+			ParseResponseService? ParseResponseService = new ParseResponseService();
+			ParseResponseService.ParseResponse(jsonResponse);
 
-            var directionsResponse = ParseResponseService.GetDirectionsResponse();
+			var directionsResponse = ParseResponseService.GetDirectionsResponse();
 
 			Assert.IsType<DirectionsResponse>(directionsResponse);
 		}
@@ -49,7 +50,8 @@ namespace SRUnitTests
 			response.EnsureSuccessStatusCode();
 			string jsonResponse = await response.Content.ReadAsStringAsync();
 
-			ParseResponseService? ParseResponseService = new ParseResponseService(jsonResponse);
+			ParseResponseService? ParseResponseService = new ParseResponseService();
+			ParseResponseService.ParseResponse(jsonResponse);
 
 			var directionsResponse = ParseResponseService.GetDirectionsResponse();
 			// coords of each step.maneuver in the response from the request URL hard coded above
