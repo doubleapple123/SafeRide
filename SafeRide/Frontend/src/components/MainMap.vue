@@ -3,7 +3,7 @@
   <MapSearchRectangle id="MapSearchRec"></MapSearchRectangle>
   <div id='map'></div>
   <MapFooter @selectedOverlayColor="onOverlayColorChange" @selectedDimFooter="onReceiveOverlay"></MapFooter>
-  <SavedRoutes></SavedRoutes>
+  <SavedRoutes @selectedSavedRoute="onSavedRouteChange"></SavedRoutes>
 </template>
 
 <script>
@@ -109,6 +109,9 @@ export default {
       if (value !== 'Default') {
         this.changeOverlayColor(value)
       }
+    },
+    onSavedRouteChange(value){
+      this.addSavedRoute(value)
     }
   },
   props: ['api_key'],

@@ -1,4 +1,6 @@
-﻿using Backend.Services;
+﻿using System.Web.Helpers;
+using System.Web.Http;
+using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using SafeRide.src.Interfaces;
 
@@ -16,14 +18,15 @@ public class SavedRoute : ControllerBase
         RouteService = new SavedRouteService(_savedRouteDao);
     }
 
-    [HttpPost]
+    [Microsoft.AspNetCore.Mvc.HttpPost]
     [Microsoft.AspNetCore.Mvc.Route("/api/route/add")]
-    public IActionResult AddSavedRoute([FromHeader] string authorization, [FromHeader] string routeName, [FromBody] string routeJson)
+    public IActionResult AddSavedRoute([FromHeader] string authorization, [FromUri] string routeName, [Microsoft.AspNetCore.Mvc.FromBody] Object routeJson)
     {
         var user = JwtDecoder.GetUser(authorization);
         if (user == null) return Unauthorized();
+        var encodedJson = Json.Encode(routeJson);
 
-        if (RouteService.AddSavedRoute(user, routeName, routeJson))
+        if (RouteService.AddSavedRoute(user, routeName, encodedJson))
         {
             return Ok();
         }
@@ -31,10 +34,10 @@ public class SavedRoute : ControllerBase
         return BadRequest();
     }
     
-    [HttpGet]
+    [Microsoft.AspNetCore.Mvc.HttpGet]
     [Microsoft.AspNetCore.Mvc.Route("/api/route/get")]
 
-    public IActionResult GetSavedRoute([FromHeader] string authorization, [FromHeader] string routeName)
+    public IActionResult GetSavedRoute([FromHeader] string authorization, [FromUri] string routeName)
     {
         var user = JwtDecoder.GetUser(authorization);
         if (user == null) return Unauthorized();
@@ -44,7 +47,7 @@ public class SavedRoute : ControllerBase
         return Ok(new {json});
     }
 
-    [HttpGet]
+    [Microsoft.AspNetCore.Mvc.HttpGet]
     [Microsoft.AspNetCore.Mvc.Route("/api/route/all")]
     public IActionResult GetAllSavedRoutes([FromHeader] string authorization)
     {

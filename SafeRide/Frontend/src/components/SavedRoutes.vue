@@ -19,6 +19,7 @@ export default {
   data(){
     return {
       selectedRoute: '',
+      selectedRouteData: {},
       savedRoutes: []
     }
   },
@@ -34,12 +35,26 @@ export default {
 
         })
       return routes.data
+    },
+    async getSavedRoute(routeName) {
+      axios.defaults.headers.common.Authorization = localStorage.getItem('token')
+      let routeData = {}
+      await axios.get('https://backendsaferideapi.azure-api.net/overlayAPI/api/route/get', {params: {routeName: routeName}})
+        .then(async function (res) {
+          routeData = await res
+        })
+        .catch(function () {
+        })
+      return routeData
     }
   },
   created(){
     this.getSavedRoutes().then((res) => {
       this.savedRoutes = res
     })
+  },
+  updated(){
+    this.$emit("selectedSavedRoute", this.selectedRouteData)
   }
 }
 </script>

@@ -18,9 +18,9 @@ public class SavedRouteService
         return DecodeRoute(_IsavedRouteDao.GetSavedRoute(UserName, RouteName));
     }
 
-    public bool AddSavedRoute(string UserName, string RouteName, string rawJson)
+    public bool AddSavedRoute(string UserName, string RouteName, string encodedJson)
     {
-        return _IsavedRouteDao.AddSavedRoute(UserName, RouteName, EncodeRoute(rawJson));
+        return _IsavedRouteDao.AddSavedRoute(UserName, RouteName, encodedJson);
     }
 
     public List<SavedRoute> GetAllRoutes(string UserName)
