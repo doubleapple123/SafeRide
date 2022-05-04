@@ -1,4 +1,5 @@
-﻿using System.Web.Helpers;
+﻿using System.Text.Json;
+using System.Web.Helpers;
 using SafeRide.src.DataAccess;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
@@ -15,7 +16,7 @@ public class SavedRouteService
 
     public string GetSavedRoute(string UserName, string RouteName)
     {
-        return DecodeRoute(_IsavedRouteDao.GetSavedRoute(UserName, RouteName));
+        return _IsavedRouteDao.GetSavedRoute(UserName, RouteName);
     }
 
     public bool AddSavedRoute(string UserName, string RouteName, string encodedJson)
@@ -26,17 +27,11 @@ public class SavedRouteService
     public List<SavedRoute> GetAllRoutes(string UserName)
     {
         var routeList = _IsavedRouteDao.GetAllSavedRoutes(UserName);
-        routeList.ForEach((item) => item.EncodedRoute = DecodeRoute(item.EncodedRoute));
+        // routeList.ForEach((item) => item.EncodedRoute = DecodeRoute(item.EncodedRoute));
         return routeList;
     }
-
-    public string DecodeRoute(string encodedRoute)
-    {
-        return Json.Decode<string>(encodedRoute);
-    }
-
     public string EncodeRoute(string rawJson)
     {
-        return Json.Encode(rawJson);
+        return JsonSerializer.Serialize(rawJson);
     }
 }

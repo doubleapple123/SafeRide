@@ -1,4 +1,4 @@
-﻿using System.Web.Helpers;
+﻿using System.Text.Json;
 using System.Web.Http;
 using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +20,12 @@ public class SavedRoute : ControllerBase
 
     [Microsoft.AspNetCore.Mvc.HttpPost]
     [Microsoft.AspNetCore.Mvc.Route("/api/route/add")]
-    public IActionResult AddSavedRoute([FromHeader] string authorization, [FromUri] string routeName, [Microsoft.AspNetCore.Mvc.FromBody] Object routeJson)
+    public IActionResult AddSavedRoute([FromHeader] string authorization, [FromUri] string routeName, [Microsoft.AspNetCore.Mvc.FromBody] Object routes)
     {
         var user = JwtDecoder.GetUser(authorization);
         if (user == null) return Unauthorized();
-        var encodedJson = Json.Encode(routeJson);
-
+        var encodedJson = JsonSerializer.Serialize(routes);
+        
         if (RouteService.AddSavedRoute(user, routeName, encodedJson))
         {
             return Ok();
