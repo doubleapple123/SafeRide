@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using SafeRide.src.Interfaces;
+using SafeRide.src.Models;
 
 namespace SafeRide.src.DataAccess;
 
@@ -45,6 +46,42 @@ public class SavedRouteDAO : ISavedRouteDAO
 
     public bool AddSavedRoute(string UserName, string RouteName, string EncodedRoute)
     {
-        throw new NotImplementedException();
+        string query = $"INSERT INTO {TABLE_NAME} values ('{UserName}', '{RouteName}', '{EncodedRoute}')";
+        return ExecuteQuery.ExecuteCommand(builder.ConnectionString, query);
+    }
+
+    public List<SavedRoute> GetAllSavedRoutes(string UserName)
+    {
+        string query = $"SELECT RouteName, RouteEncoded from {TABLE_NAME} where UserName='{UserName}'";
+        var returnList = new List<SavedRoute>();
+
+        try
+        {
+            using (var sqlConn = new SqlConnection(builder.ConnectionString))
+            {
+                using (var cmd = new SqlCommand(query, sqlConn))
+                {
+                    cmd.Connection.OpenAsync();
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var routeName = reader["RouteName"].ToString();
+                            var encodedRoute = reader["RouteEncoded"].ToString();
+
+                            var routeObj = new SavedRoute(routeName, encodedRoute);
+                            returnList.Add(routeObj);
+                        }
+                    }
+                }
+            }
+        }
+        catch
+        {
+            
+        }
+
+        return returnList;
     }
 }

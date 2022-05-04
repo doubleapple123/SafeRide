@@ -3,21 +3,48 @@
   <MapSearchRectangle id="MapSearchRec"></MapSearchRectangle>
   <div id='map'></div>
   <MapFooter @selectedOverlayColor="onOverlayColorChange" @selectedDimFooter="onReceiveOverlay"></MapFooter>
+  <SavedRoutes></SavedRoutes>
 </template>
 
 <script>
 import MapSearchRectangle from '@/components/MapSearchRectangle'
 import MapHeader from '@/components/MapHeader.vue'
 import MapFooter from '@/components/MapFooter'
+import SavedRoutes from '@/components/SavedRoutes'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import mapboxgl from 'mapbox-gl'
 export default {
   components: {
     MapSearchRectangle,
     MapFooter,
-    MapHeader
+    MapHeader,
+    SavedRoutes
   },
   methods: {
+    addSavedRoute (geoJson) {
+      if(this.map.getSource("route")){
+        this.map.getSource("route").setData(geoJson)
+      }
+      else{
+        this.map.addLayer({
+          id: "route",
+          type: "line",
+          source: {
+            type: 'geojson',
+            data: geoJson
+          },
+          layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+          },
+          paint: {
+            'line-color': '#3887be',
+            'line-width': 5,
+            'line-opacity': 0.75
+          }
+        })
+      }
+    },
     removeOverlays () {
       if (this.map.getLayer('userLayer')) {
         this.map.removeLayer('userLayer')
