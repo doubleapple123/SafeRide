@@ -7,6 +7,7 @@
     <UserSecretsId>616108c1-6a9c-4313-8053-6d649d753994</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'SafeRide' " />
   <ItemGroup>
     <Compile Remove="NewFolder\**" />
     <Content Remove="NewFolder\**" />
