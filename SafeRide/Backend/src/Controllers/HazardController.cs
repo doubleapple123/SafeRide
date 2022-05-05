@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Services;
 using FromBodyAttribute = System.Web.Http.FromBodyAttribute;
@@ -36,17 +37,22 @@ namespace SafeRide.Controllers
         Ajax.BeginForm("Exclude", 
                             new AjaxOptions { UpdateTargetId = "divHazards" }))*/
 
-        //[HttpPost]
-        //[Route("/api/hazard/exclude")]
-        //public IActionResult Exclude([FromBody] List<int> hazards, string jsonResponse)
-        //{
-        //    _parseResponseService.ParseResponse(jsonResponse);
-        //    Route firstRoute = _parseResponseService.GetRoute(0);
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("/api/hazard/exclude")]
+        // public IActionResult Exclude([FromBody] List<int> hazards, [FromUri] string jsonResponse)
+        public IActionResult Exclude([FromUri] string jsonResponse)
+        {
+            List<int> hazards = new List<int> {0, 1, 2, 3};
+            IParseResponseService parser = new ParseResponseService();
+            parser.ParseResponse(jsonResponse);
+            var firstRoute = parser.GetRoute(0);
 
-        //    var results =_excludeHazardService.FindHazardsNearRoute(hazards);
-        //    return Ok(new { results });
+            IExcludeHazardService excluder = new ExcludeHazardService();
+            var results = excluder.FindHazardsNearRoute(hazards);
 
-        //}
+            return Ok(new { results });
+
+        }
 
 
 
