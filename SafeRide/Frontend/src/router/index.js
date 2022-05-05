@@ -5,6 +5,7 @@ import UserProtected from '../views/UserProtected.vue'
 import UserRegistration from '../views/UserRegistration.vue'
 import LoggedInInitialView from '../views/LoggedInInitialView.vue'
 import AnalysisDashboard from '../views/AnalysisDashboard.vue'
+import SearchRoute from '@/components/SearchRoute.vue'
 
 const routes = [
   {
@@ -36,8 +37,12 @@ const routes = [
     path: '/analytics',
     name: 'Analytics',
     component: AnalysisDashboard
+  },
+  {
+    path: '/SearchRoute',
+    name: 'Searching',
+    component: SearchRoute
   }
-
 ]
 
 const router = createRouter({

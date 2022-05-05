@@ -1,9 +1,9 @@
 <template>
   <div id="mapHeader">
-    <button id="homeButton" @click="doHomeButtonClick">Home Button</button>
-    <button id="savedRoutesButton" @click="doSavedRoutesButtonClick">Saved Routes</button>
+    <button id="homeButton" @click="doHomeButtonClick()">Home Button</button>
+    <button id="searchRouteButton" @click="doSearchRoute()">Search</button>
+    <button id="savedRoutesButton" @click="doSavedRoutesButtonClick()">Recent</button>
     <button id="accountButton" @click="doAccountButtonClick">Account</button>
-
   </div>
 </template>
 
@@ -12,6 +12,10 @@ export default {
   name: 'MapHeader',
   methods: { // put your logic here :)
     doHomeButtonClick () {
+      this.$router.push('/')
+    },
+    doSearchRoute () {
+      this.$router.push('/SearchRoute')
     },
     doSavedRoutesButtonClick () {
     },
@@ -29,6 +33,13 @@ export default {
     height: 40px;
     background-color: greenyellow;
   }
+  #searchRouteButton {
+    position: relative;
+    right: 25%;
+    width: 100px;
+    height: 40px;
+    background-color: greenyellow;
+  }
   #savedRoutesButton{
     position: relative;
     left: 25%;
@@ -38,7 +49,7 @@ export default {
   }
   #accountButton{
     position: relative;
-    left: 30%;
+    left: 25%;
     width: 100px;
     height: 40px;
     background-color: greenyellow;
