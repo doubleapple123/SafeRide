@@ -7,5 +7,6 @@ namespace SafeRide.src.Interfaces
         public Dictionary<double, double> GetByTypeInRadius(int hazardType, double targetX, double targetY, double radius);
 
         public int Report(Hazard hazard);
+        public Dictionary<double, double> GetAllHazardCoordinates();
     }
 }

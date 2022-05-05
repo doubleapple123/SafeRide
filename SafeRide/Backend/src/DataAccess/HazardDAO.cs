@@ -64,6 +64,52 @@ namespace SafeRide.src.DataAccess
         }
 
 
+        public Dictionary<double, double> GetAllHazardCoordinates()
+        {
+            // initialize empty dictionary of doubles to store the set of queried coordinates
+            Dictionary<double, double> results = new Dictionary<double, double>();
+            
+            // attempt connecting to the database to query for mathing hazards
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_cs))
+                {
+                    conn.Open();
+                    // build query using trigonometry function to search for the coordinates of all hazards of the provided type within the set radius around a coordinate defined by the provided targetX and targetY values
+                    //Console.WriteLine("successfully connected");
+
+                    string queryString = $"SELECT longitude, latitude FROM Hazards;";
+                    //Console.WriteLine(queryString);
+
+                    using (SqlCommand cmd = new SqlCommand(queryString, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // add each set of queried coordinates to the return dictionary
+                                double hazardY = (double)(reader["longitude"] ?? 0);
+                                double hazardX = (double)(reader["latitude"] ?? 0);
+                                results.Add(hazardY, hazardX);
+                            }
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return results;
+            }
+
+            return results;
+        }
+
+
+
+
         public int Report(Hazard hazard)
         {
             int numRowsAffected = 0;
