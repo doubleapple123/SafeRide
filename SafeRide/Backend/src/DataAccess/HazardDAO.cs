@@ -46,7 +46,25 @@ namespace SafeRide.src.DataAccess
                                 // add each set of queried coordinates to the return dictionary
                                 double hazardY = (double)(reader["longitude"] ?? 0);
                                 double hazardX = (double)(reader["latitude"] ?? 0);
-                                results.Add(hazardY, hazardX);
+
+                                try
+                                {
+                                    results.Add(hazardY, hazardX); 
+                                }
+
+                                // Catch ArguementException that is thrown when adding an item with a key that is already in result 
+                                catch (System.ArgumentException ex)
+                                {
+                                    // It's possible that multiple queried hazards might have the same longitude but still be in different locations
+                                    // In this case the coordinates should still be added to the results set as they represent a distinct location from the other coordinates with the matching longitude
+                                    // before ignoring the exception, first check if the current location also has a matching latitude
+                                    if (results.TryGetValue(hazardY, out hazardX))
+                                    {
+                                        // if true, skip adding the current coordinates to the results set because it already has a matching latitiude for this longitude
+                                        continue;
+                                    }
+                                    // otherwise, ignore the exception
+                                }
                             }
                         }
                     }

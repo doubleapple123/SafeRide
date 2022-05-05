@@ -49,19 +49,51 @@ namespace SafeRide.src.Services
             // search hazards one at a time
             for (int i = 0; i < hazards.Count; i++)
             {
+                if (results.Count > 50)
+                {
+                    break;
+                }
                 // check for the current hazard type around
                 for (int j = 0; j < _searchCoordinates.Count; j++)
                 {
-                        double targetY = _searchCoordinates.ElementAt(j).Key;
-                        double targetX = _searchCoordinates.ElementAt(j).Value;
+                    double targetY = _searchCoordinates.ElementAt(j).Key;
+                    double targetX = _searchCoordinates.ElementAt(j).Value;
 
-                        Dictionary<double, double> foundCoordinates = _hazardDAO.
-            GetByTypeInRadius(hazards[j], targetY, targetX, RADIUS_METERS);
-                        // append the results dict with the dict of queried coordinates
-                        results.ToList().ForEach(pair => foundCoordinates[pair.Key] = pair.Value);
+                    Dictionary<double, double> foundCoordinates = new Dictionary<double, double>();
+
+                    // use a temp dict to store all coordinates for the current hazard type queried within the search radius of the current search coordinate
+                    foundCoordinates = _hazardDAO.
+            GetByTypeInRadius(hazards[i], targetY, targetX, RADIUS_METERS);
+
+                    // convert to list to check each pair for matching coordinates before adding to the result set
+                    List<KeyValuePair<double, double>> currentCoordinates = foundCoordinates.ToList();
+                    foreach (KeyValuePair<double, double> pair in currentCoordinates)
+                    {
+                        // attempt to add the current pair to the result set
+                        try
+                        {
+                            results.Add(pair.Key, pair.Value);
+                            // for testing only
+                        }
+
+                        // Catch ArguementException that is thrown when adding an item with a key that is already in result 
+                        catch (System.ArgumentException ex)
+                        {
+                            // It's possible that multiple queried hazards might have the same longitude but still be in different locations
+                            // In this case the coordinates should still be added to the results set as they represent a distinct location from the other coordinates with the matching longitude
+
+                            // before ignoring the exception, first check if the current location also has a matching latitude
+                            double valueMatch = pair.Value;
+                            if (results.TryGetValue(pair.Key, out valueMatch))
+                            {
+                                // if true, skip adding the current coordinates to the results set because it already has a matching latitiude for this longitude
+                                continue;
+                            }
+                            // otherwise, ignore the exception
+                        }
+                    }
                 }
             }
-       // }
             return results;
         }
         

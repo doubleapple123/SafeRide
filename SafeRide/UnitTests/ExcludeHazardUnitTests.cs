@@ -78,18 +78,17 @@ namespace SRUnitTests
             Assert.Equal(expected, actual);
         }
 
-   
+
         [Theory]
         [InlineData(0, 5)] // expecting 5 "Accident" hazards within radius
         [InlineData(1, 1)] // expecting 1 "Obstruction" hazard within radius
         [InlineData(2, 3)] // expecting 3 "BikeLane" hazards within radius
         [InlineData(3, 4)] // expecting 4 "Vehicle" hazards within radius
         [InlineData(4, 0)] // expecting 0 "Closure" hazards within radius
-        public void GetByTypeInRadius(int hazardType, int expected)
+        public void GetByTypeInRadius(List<int> hazardTypes, int expected)
         {
-
             double[] testCoordinate = { -74.002917, 40.73992 };
-            double radiusInMeters = 8046.72;
+            ExcludeHazardService hazardService = new ExcludeHazardService();
             HazardDAO hazardDAO = new HazardDAO();
 
              // use to check coordinates manually
@@ -103,7 +102,7 @@ namespace SRUnitTests
 
 
             // use for troubleshooting incorrect coordinate queries
-            Dictionary<double, double> actualHazards = hazardDAO.GetByTypeInRadius(hazardType, testCoordinate[0], testCoordinate[1], radiusInMeters);
+            Dictionary<double, double> actualHazards = hazardService.FindHazardsNearRoute(hazardType, testCoordinate[0], testCoordinate[1], radiusInMeters);
             output.WriteLine("\nActual coordinates queried for hazards with type {0} in radius:", hazardType);
             foreach (KeyValuePair<double, double> kvp in actualHazards)
             {
