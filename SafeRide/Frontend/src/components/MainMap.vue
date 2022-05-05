@@ -111,6 +111,7 @@ export default {
       }
     },
     onSavedRouteChange(value){
+
       this.addSavedRoute(value)
     }
   },

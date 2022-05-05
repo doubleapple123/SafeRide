@@ -54,7 +54,12 @@ export default {
     })
   },
   updated(){
-    this.$emit("selectedSavedRoute", this.selectedRouteData)
+    if(this.selectedRoute !== "None") {
+      this.getSavedRoute(this.selectedRoute).then((res) => {
+        let resObj = JSON.parse(res)
+        this.$emit("selectedSavedRoute", resObj)
+      })
+    }
   }
 }
 </script>

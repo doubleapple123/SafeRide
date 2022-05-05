@@ -27,11 +27,14 @@ public class SavedRouteDAO : ISavedRouteDAO
             {
                 using (var cmd = new SqlCommand(query, sqlConn))
                 {
-                    cmd.Connection.OpenAsync();
+                    cmd.Connection.Open();
 
                     using (var reader = cmd.ExecuteReader())
                     {
-                        encodedRoute = reader["RouteEncoded"].ToString();
+                        while (reader.Read())
+                        {
+                            encodedRoute = reader["RouteEncoded"].ToString();
+                        }
                     }
                 }
             }
