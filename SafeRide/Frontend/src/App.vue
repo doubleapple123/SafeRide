@@ -11,6 +11,8 @@
     <router-link to="/Map">DefaultMap</router-link>
     <br />
     <router-link to="/Analytics">AnalyticsDashboard</router-link>
+    <br />
+    <!-- <router-link to="/Hazards">Home</router-link> -->
   </div>
   <router-view/>
 </template>

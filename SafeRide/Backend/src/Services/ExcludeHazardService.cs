@@ -11,27 +11,23 @@ namespace SafeRide.src.Services
     {
 //        private IViewEventDAO _viewEventDAO;
         private IHazardDAO _hazardDAO;
-        private Route _route;
-        private double _distance;
+       // private Route _route;
+        //private double _distance;
         private Dictionary<double, double>  _searchCoordinates; 
         private int _searchCount;
         private const double RADIUS_METERS = 8046.72;
         private const int EXCLUSION_LIMIT = 50; // the maximum amount of exclusion arguments for a single directions request set by MapBox API
 
-        public ExcludeHazardService()
-        {
-
-        }
         /// <summary>
         /// initialize a HazardExclusionService by passing in a
         /// Route object from the directions response
         /// </summary>
         /// <param name="route"></param>
-        public ExcludeHazardService(Route route)
+        public ExcludeHazardService()
         {
             this._hazardDAO = new HazardDAO();
-            this._route = route;
-            this._distance = route.Distance;
+           // this._route = route;
+            //this._distance = route.Distance;
             this._searchCount = 0;
         }
 
@@ -40,40 +36,41 @@ namespace SafeRide.src.Services
         /// <summary>
         /// finds nearby hazard types by searching radially around each searchCoordinate on the route 
         /// </summary>
-        public Dictionary<double, double> FindHazardsNearRoute(List<int> hazards)
+        public Dictionary<double, double> FindHazardsNearRoute(List<int> hazards, Route route)
         {
             // solution dict to store results
             Dictionary<double, double> results = new Dictionary<double, double>();
             // find the coordinates to target the search radii
-            this._searchCoordinates = FindSearchCoordinates();
+            this._searchCoordinates = FindSearchCoordinates(route);
+            Console.WriteLine(_searchCoordinates);
 
-            while (results.Count < 50)
+            //while (results.Count < 50)
+            //{
+            // search hazards one at a time
+            for (int i = 0; i < hazards.Count; i++)
             {
-                // search hazards one at a time
-                for (int i = 0; i < hazards.Count; i++)
+                // check for the current hazard type around
+                for (int j = 0; j < _searchCoordinates.Count; j++)
                 {
-                    // check for the current hazard type around
-                    for (int j = 0; j < _searchCoordinates.Count; j++)
-                    {
-                        double targetY = _searchCoordinates.ElementAt(i).Key;
-                        double targetX = _searchCoordinates.ElementAt(i).Value;
+                        double targetY = _searchCoordinates.ElementAt(j).Key;
+                        double targetX = _searchCoordinates.ElementAt(j).Value;
 
                         Dictionary<double, double> foundCoordinates = _hazardDAO.
             GetByTypeInRadius(hazards[j], targetY, targetX, RADIUS_METERS);
                         // append the results dict with the dict of queried coordinates
                         results.ToList().ForEach(pair => foundCoordinates[pair.Key] = pair.Value);
-                    }
                 }
             }
+       // }
             return results;
         }
         
         /// <summary>
         /// uses the pre-defined radius size to find all necessary coordinates that must be searched around to fully span  the route
         /// </summary>
-        public Dictionary<double, double> FindSearchCoordinates() {
+        public Dictionary<double, double> FindSearchCoordinates(Route route) {
             Dictionary<double, double> results = new Dictionary<double, double>(); // return variable
-            List<Step> routeSteps = _route.Legs[0].Steps; // extract the list of steps taken by the route
+            var routeSteps = route.Legs[0].Steps; // extract the list of steps taken by the route
 
            // find all the coordinates between the current step and and the next step that must be searched to cover the distance between them 
             for (int i = 0; i < routeSteps.Count - 1;  i++) {

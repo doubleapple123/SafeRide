@@ -48,7 +48,7 @@ namespace SafeRide.Controllers
             var firstRoute = parser.GetRoute(0);
 
             IExcludeHazardService excluder = new ExcludeHazardService();
-            var results = excluder.FindHazardsNearRoute(hazards);
+            var results = excluder.FindHazardsNearRoute(hazards, firstRoute);
 
             return Ok(new { results });
 
