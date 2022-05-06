@@ -16,3 +16,4 @@ if (!certificateName) {
 
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`)
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`)
+
