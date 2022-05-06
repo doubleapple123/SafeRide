@@ -17,7 +17,7 @@ public class OverlayStructureDAO : IOverlayStructureDAO
         builder = new SqlConnectionStringBuilder();
         builder.DataSource = "saferidesql.database.windows.net";
         builder.UserID = "saferideapple";
-        builder.Password = config["AppKey:DBKey"];
+        builder.Password = "t^E~eT1+$~O5qjY6mS`PTVY=N$pOiNNR";
         builder.InitialCatalog = "SafeRide_DB";
     }
 

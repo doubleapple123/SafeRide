@@ -26,7 +26,7 @@ public class SavedRouteService
         return _IsavedRouteDao.AddSavedRoute(UserName, RouteName, encodedJson);
     }
 
-    public List<SavedRoute> GetAllRoutes(string UserName)
+    public List<string> GetAllRoutes(string UserName)
     {
         var routeList = _IsavedRouteDao.GetAllSavedRoutes(UserName);
         // routeList.ForEach((item) => item.EncodedRoute = DecodeRoute(item.EncodedRoute));
@@ -46,8 +46,8 @@ public class SavedRouteService
     public string DecryptRoute(string encryptedText)
     {
         string plaintext = null;
-        var Key = new byte[] {0x20};
-        var IV = new byte[] {0x20};
+        var Key = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
+        var IV = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
         var cipherText = Encoding.ASCII.GetBytes(encryptedText);
 
         // Create an Aes object
@@ -86,8 +86,8 @@ public class SavedRouteService
     public string EncryptRoute(string plainText)
     {
         var encrypted = new byte[] { };
-        var Key = new byte[] {0x20};
-        var IV = new byte[] {0x20};
+        var Key = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
+        var IV = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F };
         using (Aes aesAlg = Aes.Create())
         {
             aesAlg.Key = Key;

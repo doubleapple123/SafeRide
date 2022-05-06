@@ -21,9 +21,17 @@ export default {
     SavedRoutes
   },
   methods: {
-    addSavedRoute (geoJson) {
+    addSavedRoute (data) {
+      let geoFeature = {
+        type: 'Feature',
+        properties: {},
+        geometry:{
+          type: 'LineString',
+          coordinates: data.routes[0].geometry.coordinates
+        }
+      }
       if(this.map.getSource("route")){
-        this.map.getSource("route").setData(geoJson)
+        this.map.getSource("route").setData(geoFeature)
       }
       else{
         this.map.addLayer({
@@ -31,18 +39,26 @@ export default {
           type: "line",
           source: {
             type: 'geojson',
-            data: geoJson
+            data: geoFeature
           },
           layout: {
             'line-join': 'round',
             'line-cap': 'round'
           },
           paint: {
-            'line-color': '#3887be',
+            'line-color': 'blue',
             'line-width': 5,
             'line-opacity': 0.75
           }
         })
+      }
+    },
+    removeRoutes(){
+      if (this.map.getLayer('route')){
+        this.map.removeLayer('route')
+      }
+      if(this.map.getSource('route')){
+        this.map.removeSource('route')
       }
     },
     removeOverlays () {
@@ -111,7 +127,11 @@ export default {
       }
     },
     onSavedRouteChange(value){
-      this.addSavedRoute(value)
+      if(value === "None"){
+        this.removeRoutes()
+      }else {
+        this.addSavedRoute(value)
+      }
     }
   },
   props: ['api_key'],
