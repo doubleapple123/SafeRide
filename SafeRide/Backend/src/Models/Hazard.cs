@@ -26,53 +26,62 @@ namespace SafeRide.src.Models
         public HazardType Type
         {
             get { return _type; }
+            set { _type = value; }
         }
 
         private double _latitude;
         public double Latitude
         {
             get { return _latitude; }
+            set { _latitude = value; }
         }
         private double _longitude;
         public double Longitude
         {
             get { return _longitude; }
+            set { _longitude = value; }
         }
 
         private DateTime _timeReported;
         public DateTime TimeReported
         {
             get { return _timeReported; }
+            set { _timeReported = value; }
         }
 
         private string _state;
         public string State
         {
             get { return _state; }
+            set { _state = value; }
         }
 
         private int _zip;
         public int Zip
         {
             get { return _zip; }
+            set { _zip = value; }
         }
 
         private string _city;
         public string City
         {
             get { return _city; }
+            set { _city = value; }
         }
 
         private int _expired;
         public int Expired
         {
             get { return _expired; }
+            set { _expired = value; }
         }
 
         private string _reportedBy;
         public string ReportedBy
         {
             get { return _reportedBy; }
+            set { _reportedBy = value; }
         }
 
         /// <summary>

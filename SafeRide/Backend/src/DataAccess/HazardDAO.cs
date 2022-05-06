@@ -58,6 +58,10 @@ namespace SafeRide.src.DataAccess
         /// Gets all hazards that are not expired
         /// </summary>
         /// <returns>List of non-expired hazards</returns>
+        /// 
+        //execute stored procedure rather than raw query string
+
+        //reflection/code introspection
         public List<Hazard> GetAllValidHazards()
         {
             List<Hazard> hazardList = new List<Hazard>();
@@ -80,6 +84,7 @@ namespace SafeRide.src.DataAccess
                             int zip = reader.GetInt32(8);
                             int expired = reader.GetInt32(9);
                             DateTime time = reader.GetDateTime(2);
+
                             Hazard hazard = new Hazard(type, lat, lon, user, state, zip, city, time, expired);
                             hazardList.Add(hazard);
                         }

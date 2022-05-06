@@ -28,6 +28,7 @@ namespace SafeRide.src.Services
         public List<Hazard> GetHazards()
         {
             return _hazardDAO.GetAllValidHazards();
+            //add error checking for all failure cases
         }
 
         /// <summary>

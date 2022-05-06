@@ -22,6 +22,7 @@ namespace SRUnitTests
                 new Hazard(HazardType.Obstruction, -73.21414, -74.45392, "dshfguj82", "AZ", 92602, "Flagstaff", new DateTime(2015, 12, 31, 5, 10, 20), 0)
             };
         }
+
         public Dictionary<double, double> FindHazardInRadius(HazardType type, double searchX, double searchY, double radius)
         {
             throw new NotImplementedException();

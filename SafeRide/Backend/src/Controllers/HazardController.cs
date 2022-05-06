@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
+using FromBodyAttribute = Microsoft.AspNetCore.Mvc.FromBodyAttribute;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
@@ -36,12 +37,27 @@ namespace SafeRide.src.Controllers
         /// <param name="h">Hazard instance to report</param>
         /// <returns>OkResult upon successful report with JSON reprsenting number of rows affected in underlying database</returns>
         [HttpPost]
-        [DisableCors]
         [Route("report")]
-        public IActionResult Report(Hazard h)
+        public IActionResult Report([FromBody]Hazard h)
         {
-            Hazard hazard = new Hazard(HazardType.BikeLane, 32, 76, "3424315", "CA", 92602, "Irvine", DateTime.Now, 0);
-            return Ok(this._reportHazardService.Report(hazard));
+            try
+            {
+                if (h == null)
+                {
+                    return BadRequest("hazard object is null.");
+                }
+
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Invalid model object");
+                }
+
+
+                return Ok(this._reportHazardService.Report(h));
+            }catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         /// <summary>
@@ -53,7 +69,7 @@ namespace SafeRide.src.Controllers
         public IActionResult GetHazards()
         {
             var hazards = _reportHazardService.GetHazards();
-            if (hazards == null)
+            if (hazards == null || hazards.Count == 0)
             {
                 return NotFound();
             }
