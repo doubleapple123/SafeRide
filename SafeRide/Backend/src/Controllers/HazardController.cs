@@ -37,21 +37,21 @@ namespace SafeRide.Controllers
         Ajax.BeginForm("Exclude", 
                             new AjaxOptions { UpdateTargetId = "divHazards" }))*/
 
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         [Microsoft.AspNetCore.Mvc.Route("/api/hazard/exclude")]
         // public IActionResult Exclude([FromBody] List<int> hazards, [FromUri] string jsonResponse)
-        public IActionResult Exclude([FromUri] string jsonResponse)
+        public IActionResult Exclude([FromQuery] string jsonResponse, [FromQuery] string hazards) 
         {
-            List<int> hazards = new List<int> {0, 1, 2, 3};
+          
             IParseResponseService parser = new ParseResponseService();
             parser.ParseResponse(jsonResponse);
             var firstRoute = parser.GetRoute(0);
+            var hazardNums = hazards.Split(',').Select(Int32.Parse).ToList();
 
             IExcludeHazardService excluder = new ExcludeHazardService();
-            var results = excluder.FindHazardsNearRoute(hazards, firstRoute);
+            var results = excluder.FindHazardsNearRoute(hazardNums, firstRoute);
 
             return Ok(new { results });
-
         }
 
 

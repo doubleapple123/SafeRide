@@ -15,12 +15,20 @@ using Newtonsoft.Json;
 using System;
 using SafeRide.src.DataAccess;
 using Xunit.Abstractions;
-
+using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 
 namespace SRUnitTests
 {
 
+    public class CustomWebAppFactory : WebApplicationFactory<Program>
+    {
+        private readonly string _environment;
 
+        public CustomWebAppFactory(string environment = "Development")
+        {
+            _environment = environment;
+        }
+    }
 
     public class ExcludeHazardUnitTests
     {
@@ -79,41 +87,46 @@ namespace SRUnitTests
 
 
         [Theory]
-        [InlineData(0, 5)] // expecting 5 "Accident" hazards within radius
-        [InlineData(1, 1)] // expecting 1 "Obstruction" hazard within radius
-        [InlineData(2, 3)] // expecting 3 "BikeLane" hazards within radius
-        [InlineData(3, 4)] // expecting 4 "Vehicle" hazards within radius
-        [InlineData(4, 0)] // expecting 0 "Closure" hazards within radius
-        public async Task GetByTypeInRadius(int hazardType, int expected)
+        [InlineData("0", 4)] // expecting 5 "Accident" hazards within radi'us
+        [InlineData("1", 1)] // expecting 1 "Obstruction" hazard within radius
+        [InlineData("1", 3)] // expecting 3 "BikeLane" hazards within radius
+        [InlineData("3", 4)] // expecting 4 "Vehicle" hazards within radius
+        [InlineData("4", 0)] // expecting 0 "Closure" hazards within radius
+        public async Task GetByTypeInRadius(string hazardTypes, int expected)
         {
-            List<int> types = new List<int> { hazardType };
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync("https://api.mapbox.com/directions/v5/mapbox/driving/-74.002917%2C40.73992%3B-74.012917%2C40.73992?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ");
-
+            await using var application = new CustomWebAppFactory();
+            using var client = application.CreateClient();
+             HttpResponseMessage response = await client.GetAsync("https://api.mapbox.com/directions/v5/mapbox/driving/-74.002917%2C40.73992%3B-74.012917%2C40.73992?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ");
             // extract route from the response
             response.EnsureSuccessStatusCode();
             string jsonResponse = await response.Content.ReadAsStringAsync();
-
             ParseResponseService? ParseResponseService = new ParseResponseService();
-
             ParseResponseService.ParseResponse(jsonResponse);
             var firstRoute = ParseResponseService.GetRoute(0);
-            double[] testCoordinate = { -74.002917, 40.73992 };
 
-            ExcludeHazardService hazardService = new ExcludeHazardService();
+            var request = new HttpRequestMessage(HttpMethod.Post, "api/hazard/exclude");
 
-   
+            request.Headers.Add(jsonResponse, hazardTypes);
             // use for troubleshooting incorrect coordinate queries
-            Dictionary<double, double> actualHazards = hazardService.FindHazardsNearRoute(types, firstRoute);
-            output.WriteLine("\nActual coordinates queried for hazards with type {0} in radius:", hazardType);
-            foreach (KeyValuePair<double, double> kvp in actualHazards)
-            {
-                output.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-            }
+            using var actualHazards = await client.SendAsync(request);
 
-            int actual = actualHazards.Count;
+            // check the total number of hazards found along the route
+            int actual = actualHazards.ToString().Length;
             Assert.Equal(expected, actual);
 
+        }
+    }
+}
+
+
+
+
+
+         //output.WriteLine("\nActual coordinates queried for hazards with type {0} in radius:", hazardType);
+            //foreach (KeyValuePair<double, double> kvp in actualHazards)
+            //{
+            //    output.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+            //}
 
             // use to show exact query results when troubleshooting DAO method
             //  Dictionary<double, double> expectedAccidentHazards = new Dictionary<double, double>()
@@ -127,7 +140,3 @@ namespace SRUnitTests
             //  };
             ////  Assert.NotStrictEqual(expectedHazards, actual);
             //  Assert.Equal(expectedAccidentHazards, actualHazards);
-        }
-    }
-}
-

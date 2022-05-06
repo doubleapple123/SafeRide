@@ -12,15 +12,15 @@ using Xunit;
 
 namespace SRUnitTests;
 
-public class CustomWebAppFactory : WebApplicationFactory<Program>
-{
-    private readonly string _environment;
+//public class CustomWebAppFactory : WebApplicationFactory<Program>
+//{
+//    private readonly string _environment;
 
-    public CustomWebAppFactory(string environment = "Development")
-    {
-        _environment = environment;
-    }
-}
+//    public CustomWebAppFactory(string environment = "Development")
+//    {
+//        _environment = environment;
+//    }
+//}
 
 public class MapOverlayAPI
 {
