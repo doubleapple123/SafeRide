@@ -1,4 +1,6 @@
-﻿CREATE TABLE Hazards 
+﻿****Hazards****
+
+CREATE TABLE Hazards 
 (
     hazardID INT PRIMARY KEY IDENTITY(1, 1),
     userHash VARCHAR(64),
@@ -44,3 +46,15 @@ SELECT longitude, latitude FROM Hazards WHERE (
 		* cos((-74.002917 * 0.0175) - (longitude * 0.0175))
 		), (1)) AS value(x)) * 3959 <= 0.003106855)
 		AND hazardType = 0;
+
+
+****UserSecurity****
+CREATE TABLE UserSecurity (
+	userID INT IDENTITY PRIMARY KEY,
+	username VARCHAR(50) NOT NULL,
+	email VARCHAR(50) NOT NULL,
+	role VARCHAR(50) NOT NULL,
+	valid INT NOT NULL,
+	); 
+
+INSERT INTO UserSecurity (username, email, role, valid) VALUES ('apple', 'apple@gmail.com', 'admin', 1);
