@@ -14,7 +14,6 @@
     <br />
     <!-- <router-link to="/Hazards">Home</router-link> -->
   </div>
-  <router-view/>
 </template>
 
 <style>

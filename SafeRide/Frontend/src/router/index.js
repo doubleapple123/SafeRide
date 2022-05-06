@@ -5,6 +5,7 @@ import UserProtected from '../views/UserProtected.vue'
 import UserRegistration from '../views/UserRegistration.vue'
 import LoggedInInitialView from '../views/LoggedInInitialView.vue'
 import AnalysisDashboard from '../views/AnalysisDashboard.vue'
+// import MainMap from '../components/MainMap.vue'
 
 const routes = [
   {
@@ -37,7 +38,6 @@ const routes = [
     name: 'Analytics',
     component: AnalysisDashboard
   }
-
 ]
 
 const router = createRouter({
