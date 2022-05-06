@@ -1,9 +1,19 @@
 ﻿<template>
   <MapHeader></MapHeader>
-  <MapSearchRectangle id="MapSearchRec"></MapSearchRectangle>
+  
   <div>
-   <div id='map' class="map"></div>
-   <div id="instructions" class="instructions"></div>
+    <div id='mapControllers'>
+      <form @submit.prevent="handleUserRoute">
+        <MapSearchRectangle v-model="userStartLocation"  placeholder="Start Location" />
+        <MapSearchRectangle v-model="userEndLocation"  placeholder="End Location"/>
+        <button>Search</button>
+
+      </form>
+
+    </div>
+    <div id='map' class="map">
+    </div>
+    <div id="instructions" class="instructions"></div>
   </div>
 </template>
 
@@ -15,17 +25,29 @@ import mapboxgl from 'mapbox-gl'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 export default {
   components: {
-    MapSearchRectangle,
-    MapHeader
+    MapHeader,
+    MapSearchRectangle
   },
   data () {
     return {
+      userStartLocation: '',
+      userEndLocation: ''
     }
   },
   methods: {
-   
+    handleUserRoute() {
+      const startLocation = this.userStartLocation.split(', ')
+      const endLocation = this.userEndLocation.split(', ')
+      const startMarker = new mapboxgl.Marker()
+        .setLngLat([startLocation[0], startLocation[1]])
+        .addTo(this.map)
+      const endMarker = new mapboxgl.Marker()
+        .setLngLat([endLocation[0], endLocation[1]])
+        .addTo(this.map)
+    }
+    
   },
-  props: ['api_key', 'startLocation', 'endLocation'],
+    props: ['api_key'],
     mounted() {
       mapboxgl.accessToken = this.api_key
        this.map = new mapboxgl.Map({
@@ -33,10 +55,12 @@ export default {
         style: 'mapbox://styles/mapbox/streets-v11', // style URL
         center: [-118.1141, 33.7838], // starting position [lng, lat]
         zoom: 14 // starting zoom
-      })
-    },
+       })
+
+      
+  },
     updated() {
-      console.log('updated from map')
+      console.log('updated')
     }
 }
 </script>
@@ -44,7 +68,7 @@ export default {
 <style scoped>
   #map {
     margin: auto;
-    width: 60%;
+    width: 100%;
     height: 600px;
   }
 
