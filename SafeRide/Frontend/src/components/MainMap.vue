@@ -6,10 +6,9 @@
       <form @submit.prevent="handleUserRoute">
         <MapSearchRectangle v-model="userStartLocation"  placeholder="Start Location" />
         <MapSearchRectangle v-model="userEndLocation"  placeholder="End Location"/>
-        <button>Search</button>
-
+        <button>Search</button> 
       </form>
-
+        <button @click="saveUserRoute">Save This Route</button>
     </div>
 
     <div id='map' class="map">
@@ -19,6 +18,7 @@
   </div>
 
 </template>
+
 
 <script>
 import MapSearchRectangle from '@/components/MapSearchRectangle'
@@ -36,7 +36,12 @@ export default {
       userStartLocation: '',
       userEndLocation: ''
     }
-  },
+    },
+  // summary
+  /*
+    Method grabs user coordinate, coordinates are used to map the route.
+    This route is then saved into backend.
+  */
   methods: {
     handleUserRoute() {
 
@@ -52,6 +57,10 @@ export default {
       const endMarker = new mapboxgl.Marker()
         .setLngLat([endLocation[0], endLocation[1]])
         .addTo(this.map)
+    },
+
+    saveUserRoute() {
+      console.log(this.userStartLocation + ' ' + this.userEndLocation)
     }
     
   },
