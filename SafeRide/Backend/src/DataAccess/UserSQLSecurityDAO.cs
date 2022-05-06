@@ -14,7 +14,7 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
         builder = new SqlConnectionStringBuilder();
         builder.DataSource = "saferidesql.database.windows.net";
         builder.UserID = "saferideapple";
-        builder.Password = "t^E~eT1+$~O5qjY6mS`PTVY=N$pOiNNR";
+        builder.Password = config["AppKey:DBKey"];
         builder.InitialCatalog = "SafeRide_DB";
     }
     
