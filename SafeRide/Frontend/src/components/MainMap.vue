@@ -11,10 +11,13 @@
       </form>
 
     </div>
+
     <div id='map' class="map">
     </div>
+
     <div id="instructions" class="instructions"></div>
   </div>
+
 </template>
 
 <script>
@@ -36,11 +39,16 @@ export default {
   },
   methods: {
     handleUserRoute() {
+
       const startLocation = this.userStartLocation.split(', ')
       const endLocation = this.userEndLocation.split(', ')
+
+
       const startMarker = new mapboxgl.Marker()
         .setLngLat([startLocation[0], startLocation[1]])
         .addTo(this.map)
+
+
       const endMarker = new mapboxgl.Marker()
         .setLngLat([endLocation[0], endLocation[1]])
         .addTo(this.map)
