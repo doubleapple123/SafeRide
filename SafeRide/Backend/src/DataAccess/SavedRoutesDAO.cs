@@ -4,25 +4,18 @@ using SafeRide.src.Models;
 
 namespace SafeRide.src.DataAccess
 {
-    public class SavedRoutesDAO : ISavedRoutesDAO
+    public class SavedRoutesDAO : ISavedRouteDAO
     {
         private string _cs = "Server=tcp:saferidewithus.database.windows.net,1433;Initial Catalog=SafeRideDB;User ID=andyadmin;Password=Whoaman!123";
+        private const string TABLE_NAME = "UserRoutes";
 
-        public List<SavedRoutes> GetRouteHistory(string userName)
+        public bool AddSavedRoute(string UserId, int routeId, string route)
         {
-            string query = "";
-            var returnList = new List<SavedRoutes>();
-
-            try
-            {
-
-            }
-            catch 
-            {
-            
-            }
-            return returnList;
+            string query = $"INSERT INTO {TABLE_NAME} values ( {UserId}, {routeId}, {route})";
+            return ExecuteQuery.ExecuteCommand(_cs, query);
         }
+
+       
     }
 
    

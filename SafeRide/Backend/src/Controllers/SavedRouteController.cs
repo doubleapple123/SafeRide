@@ -11,18 +11,18 @@ namespace Backend.Controllers;
 
 public class SavedRouteController : ControllerBase
 {
-    private ISavedRoutesDAO _savedRoutesDAO;
+    private ISavedRouteDAO _savedRoutesDAO;
 
-    public SavedRouteController(ISavedRoutesDAO savedRouteDAO)
+    public SavedRouteController(ISavedRouteDAO savedRouteDAO)
     {
         _savedRoutesDAO = savedRouteDAO;
     }
 
     [HttpPost]
     [Route("/api/add")]
-    public IActionResult GetSavedRoute([FromUri] string routeName)
+    public IActionResult AddSavedRoute([FromUri] string routeName)
     {
-        var routeList = RouteService.GetAllRoutes(user)
+        
         return Ok(new { routeList });
     }
 }
