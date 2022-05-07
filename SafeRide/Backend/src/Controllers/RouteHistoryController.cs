@@ -17,7 +17,7 @@ namespace Backend.src.Controllers
         }
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
-        [Microsoft.AspNetCore.Mvc.Route("api/routeinfo")]
+        [Microsoft.AspNetCore.Mvc.Route("api/routeinfo/getinfo")]
         public IActionResult GetRouteInformation([FromHeader] string authorization)
         {
             var user = JwtDecoder.GetUser(authorization);

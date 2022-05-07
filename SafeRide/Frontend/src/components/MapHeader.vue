@@ -2,7 +2,7 @@
   <div id="mapHeader">
     <button id="homeButton" @click="doHomeButtonClick()">Home Button</button>
     <button id="searchRouteButton" @click="doSearchRoute()">Search</button>
-    <button id="savedRoutesButton" @click="doSavedRoutesButtonClick()">Recent</button>
+    <button id="savedRoutesButton" @click="doSavedRoutesButtonClick()">History</button>
     <button id="accountButton" @click="doAccountButtonClick">Account</button>
   </div>
 </template>
@@ -18,6 +18,7 @@ export default {
       this.$router.push('/SearchRoute')
     },
     doSavedRoutesButtonClick () {
+      this.$router.push('/RouteHistory')
     },
     doAccountButtonClick () {
     }
