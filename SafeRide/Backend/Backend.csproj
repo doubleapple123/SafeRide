@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>616108c1-6a9c-4313-8053-6d649d753994</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -35,6 +36,7 @@
   <ItemGroup>
     <Folder Include="obj\Debug\net6.0\staticwebassets\" />
     <Folder Include="src\Attributes" />
+    <Folder Include="src\Services\OverlayFeature" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
    
@@ -90,11 +92,15 @@
 
     <PackageReference Include="Microsoft.AspNet.WebApi.Owin" Version="5.2.7" />
 
+    <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.8" />
+
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.1" />
 
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
 
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
+
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.4" />
 
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.22" />
 
@@ -109,6 +115,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
+    <PackageReference Include="System.Web.Mvc.Extensions" Version="1.1.1.2" />
   </ItemGroup>
 
 </Project>

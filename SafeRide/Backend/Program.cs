@@ -14,7 +14,6 @@ using SafeRide.src.Security.UserSecurity;
 
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 
 //https://www.codemag.com/Article/2105051/Implementing-JWT-Authentication-in-ASP.NET-Core-5
 
@@ -60,12 +59,14 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
     options.AddPolicy("TokenAuth", policy => policy.Requirements.Add(new )
 });*/
 
+builder.Services.AddTransient<ISavedRouteDAO, SavedRouteDAO>();
 builder.Services.AddTransient<IUserSecurityDAO, UserSQLSecurityDAO>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IUserDAO, UserSQLServerDAO>();
 builder.Services.AddTransient<IViewEventDAO, ViewEventSQLServerDAO>();
 builder.Services.AddTransient<IAnalyticsService, AnalyticsService>();
+builder.Services.AddTransient<IOverlayStructureDAO, OverlayStructureDAO>();
 
 var env = builder.Environment;
 var app = builder.Build();
@@ -116,7 +117,6 @@ app.UseAuthorization(); // auth
 app.MapControllers();
 
 
-
 // for testing OTP auth
 OTPService auth = new OTPService();
 // auth.SendEmail();
@@ -143,6 +143,9 @@ app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 
 app.Run();
+public partial class Program { }
+
+
 
 /*
 IUserDAO testDao = new UserSQLServerDAO();
@@ -250,6 +253,5 @@ if (userAuthorized)
     Console.WriteLine(testDao.Read("myUserId123")); // test read
 }
 */
-
 
 

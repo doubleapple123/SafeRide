@@ -17,11 +17,13 @@ export default {
   methods: {
     doLogin () {
       if (this.userLogin !== undefined && this.emailLogin !== undefined) {
-        axios.post('https://localhost:5001/api/login', {
+        axios.post('https://backendsaferideapi.azure-api.net/overlayAPI/api/login', {
           UserName: this.userLogin,
           Email: this.emailLogin,
           Role: 'Admin',
           Valid: true
+        }, {
+          withCredentials: true
         })
           .then(function (response) {
             var token = response.data.token
