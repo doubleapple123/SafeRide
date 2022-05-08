@@ -15,7 +15,7 @@ public class RouteSaveTest
     private string Test_Acc_Token =
         "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6ImFkbWluIiwiQWN0aXZlIjoibm9uLWFjdGl2ZSIsImlzcyI6Ind3dy5zYWZlcmlkZS5uZXQifQ.2xYiGq5peXtvgbdAdSxweTZJxo5sqxBBEMCrDSkQnTQ";
     [Fact]
-    public async Task GET_Route_Get()
+    public async Task GET_Route_Get_OK()
     {
         //arrange
         await using var application = new CustomWebAppFactory();
@@ -37,7 +37,7 @@ public class RouteSaveTest
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
     [Fact]
-    public async Task GET_Route_All()
+    public async Task GET_Route_All_OK()
     {
         //arrange
         await using var application = new CustomWebAppFactory();

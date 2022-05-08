@@ -9,13 +9,13 @@ namespace Backend.Controllers;
 [ApiController]
 public class SavedRouteController : ControllerBase
 {
-    private SavedRouteService RouteService;
+    private SavedRouteService _routeService;
     private ISavedRouteDAO _savedRouteDao;
 
     public SavedRouteController(ISavedRouteDAO savedRouteDao)
     {
         _savedRouteDao = savedRouteDao;
-        RouteService = new SavedRouteService(_savedRouteDao);
+        _routeService = new SavedRouteService(_savedRouteDao);
     }
 
     [Microsoft.AspNetCore.Mvc.HttpGet]
@@ -25,8 +25,8 @@ public class SavedRouteController : ControllerBase
         var user = JwtDecoder.GetUser(authorization);
         if (user == null) return Unauthorized();
 
-        var jsonStr = RouteService.GetSavedRoute(user, routeName);
-        var encryptedString = RouteService.EncryptRoute(jsonStr);
+        var jsonStr = _routeService.GetSavedRoute(user, routeName);
+        var encryptedString = _routeService.EncryptRoute(jsonStr);
 
         return Ok(new {encryptedString});
     }
@@ -37,7 +37,7 @@ public class SavedRouteController : ControllerBase
     {
         try
         {
-            var decrypted = RouteService.DecryptRoute(cipher);
+            var decrypted = _routeService.DecryptRoute(cipher);
             return Ok(new {decrypted});
         }
         catch
@@ -54,7 +54,7 @@ public class SavedRouteController : ControllerBase
         if (user == null) return Unauthorized();
         var encodedJson = JsonSerializer.Serialize(routes);
         
-        if (RouteService.AddSavedRoute(user, routeName, encodedJson))
+        if (_routeService.AddSavedRoute(user, routeName, encodedJson))
         {
             return Ok();
         }
@@ -64,13 +64,12 @@ public class SavedRouteController : ControllerBase
     
     [Microsoft.AspNetCore.Mvc.HttpGet]
     [Microsoft.AspNetCore.Mvc.Route("/api/route/get")]
-
     public IActionResult GetSavedRoute([FromHeader] string authorization, [FromUri] string routeName)
     {
         var user = JwtDecoder.GetUser(authorization);
         if (user == null) return Unauthorized();
 
-        var json = RouteService.GetSavedRoute(user, routeName);
+        var json = _routeService.GetSavedRoute(user, routeName);
         
         return Ok(new {json});
     }
@@ -82,7 +81,7 @@ public class SavedRouteController : ControllerBase
         var user = JwtDecoder.GetUser(authorization);
         if (user == null) return Unauthorized();
 
-        var routeList = RouteService.GetAllRoutes(user);
+        var routeList = _routeService.GetAllRoutes(user);
 
         return Ok(new {routeList});
     }
