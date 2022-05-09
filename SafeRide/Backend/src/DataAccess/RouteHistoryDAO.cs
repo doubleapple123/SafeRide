@@ -9,8 +9,7 @@ namespace Backend.src.DataAccess
     public class RouteHistoryDAO
     {
         private SqlConnectionStringBuilder builder;
-        private const string TABLE_NAME = "id";
-        private const string SECOND_TABLE_NAME = "startpoint";
+        private const string TABLE_NAME = "startpoint";
 
         public RouteHistoryDAO(IConfiguration config)
         {
@@ -24,7 +23,7 @@ namespace Backend.src.DataAccess
         public List<string> getRouteInfo(string startPoint)
         {
             var routeInfo = new List<string>();
-            string query = $"SELECT startpoint FROM {SECOND_TABLE_NAME} WHERE startpoint='{startPoint}'";
+            string query = $"SELECT startpoint FROM {TABLE_NAME} WHERE startpoint='{startPoint}'";
             try
             {
                 using (var sqlConn = new SqlConnection(builder.ConnectionString))
