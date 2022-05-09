@@ -1,4 +1,5 @@
 ﻿using Backend.src.DataAccess;
+using Backend.src.Models;
 
 namespace Backend.src.Services
 {
@@ -11,7 +12,7 @@ namespace Backend.src.Services
             _ISavedRouteDAO = iSavedRouteDAO;
         }
 
-        public List<string> GetAllRoutes(string UserName)
+        public List<RouteInformation> GetAllRoutes(string UserName)
         {
             var routeList = _ISavedRouteDAO.getRouteHistory(UserName);
             return routeList;
