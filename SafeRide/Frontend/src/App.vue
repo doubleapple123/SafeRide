@@ -13,6 +13,8 @@
     <router-link to="/Analytics">Analytics Dashboard</router-link>
     <br />
     <router-link to="/RouteHistory">Routes History</router-link>
+    <br />
+    <router-link to="/SearchRoute">Search Route</router-link>
   </div>
   <router-view/>
 </template>
