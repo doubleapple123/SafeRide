@@ -15,20 +15,12 @@ using Newtonsoft.Json;
 using System;
 using SafeRide.src.DataAccess;
 using Xunit.Abstractions;
+using System.Net.Http.Headers;
+
 using Microsoft.VisualStudio.Web.CodeGeneration.Design;
 
 namespace SRUnitTests
 {
-
-    public class CustomWebAppFactory : WebApplicationFactory<Program>
-    {
-        private readonly string _environment;
-
-        public CustomWebAppFactory(string environment = "Development")
-        {
-            _environment = environment;
-        }
-    }
 
     public class ExcludeHazardUnitTests
     {
@@ -94,28 +86,56 @@ namespace SRUnitTests
         [InlineData("4", 0)] // expecting 0 "Closure" hazards within radius
         public async Task GetByTypeInRadius(string hazardTypes, int expected)
         {
-            await using var application = new CustomWebAppFactory();
-            using var client = application.CreateClient();
-             HttpResponseMessage response = await client.GetAsync("https://api.mapbox.com/directions/v5/mapbox/driving/-74.002917%2C40.73992%3B-74.012917%2C40.73992?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ");
-            // extract route from the response
-            response.EnsureSuccessStatusCode();
-            string jsonResponse = await response.Content.ReadAsStringAsync();
-            ParseResponseService? ParseResponseService = new ParseResponseService();
-            ParseResponseService.ParseResponse(jsonResponse);
-            var firstRoute = ParseResponseService.GetRoute(0);
+            HttpClient client = new HttpClient();
+            // use the same request URL for all tests to establish base case
+            string mapboxRequest = "https://api.mapbox.com/directions/v5/mapbox/driving/-74.002917%2C40.73992%3B-74.012917%2C40.73992?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ";
 
-            var request = new HttpRequestMessage(HttpMethod.Post, "api/hazard/exclude");
 
-            request.Headers.Add(jsonResponse, hazardTypes);
-            // use for troubleshooting incorrect coordinate queries
-            using var actualHazards = await client.SendAsync(request);
+            // build the full API request
+            string hostURL = "https://updatedbackend-apim.azure-api.net";
+            string apiSuffix =  "api/hazard/exclude?";
+            string param1 = "request";
+            string param2 = "hazards";
+            string requestURL = $"{hostURL} + {apiSuffix} + {param1}={mapboxRequest}&{param2}={hazardTypes}";
 
+            var actualHazards = await client.GetAsync(requestURL);
             // check the total number of hazards found along the route
             int actual = actualHazards.ToString().Length;
             Assert.Equal(expected, actual);
 
         }
+
+    [Theory]
+    [InlineData("0", 4)] // expecting 5 "Accident" hazards within radi'us
+    [InlineData("1", 1)] // expecting 1 "Obstruction" hazard within radius
+    [InlineData("1", 3)] // expecting 3 "BikeLane" hazards within radius
+    [InlineData("2", 4)] // expecting 4 "Vehicle" hazards within radius
+    [InlineData("4", 0)] // expecting 0 "Closure" hazards within radius
+    public async Task SimpleGetByTypeInRadius(string hazard, int expected)
+    {
+
+
+        await using var application = new CustomWebAppFactory();
+        using var client = application.CreateClient();
+
+            var queryString = new Dictionary<string, string>()
+                    {
+                        { "hazard", hazard }
+                    };
+
+            var requestUri = QueryHelpers.AddQueryString("api/hazard/simpleHazard", queryString);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+            using var actualHazards = await client.SendAsync(request);
+
+        // check the total number of hazards found along the route
+        int actual = actualHazards.ToString().Length;
+        Assert.Equal(expected, actual);
+
     }
+}
+
 }
 
 

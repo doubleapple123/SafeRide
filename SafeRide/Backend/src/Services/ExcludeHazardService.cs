@@ -111,6 +111,8 @@ namespace SafeRide.src.Services
                 double endY = routeSteps[i+1].Maneuver.Location[0];
                 double endX = routeSteps[i+1].Maneuver.Location[1];// get the coordinates of the next step
 
+
+                // create bounding box around current leg
                 // calulate the distance between the last search coordinate and the next step coordinate
                  double stepDistance = DistanceBetween(startY, startX, endY, endX);
 
@@ -129,7 +131,7 @@ namespace SafeRide.src.Services
                 // for each step in between them, check if still covered under the radius of the last searchCoordinate 
                 //else
                 //{
-              
+                
                 else {
                     if (IsInside(startY, startX, results.ElementAt(_searchCount - 1).Key, results.ElementAt(_searchCount - 1).Value, RADIUS_METERS) == false) { 
                         // if not covered by previous radius, add a new searchCoordinate at the current step

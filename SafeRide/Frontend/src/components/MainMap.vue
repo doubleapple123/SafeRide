@@ -6,7 +6,9 @@
       <form @submit.prevent="handleUserRoute">
         <MapSearchRectangle v-model="userStartLocation"  placeholder="Start Location" />
         <MapSearchRectangle v-model="userEndLocation"  placeholder="End Location"/>
+        <MapSearchRectangle v-model="excludedHazard"  placeholder="End Location"/>
         <button>Search</button>
+        <button>Exclude</button>
 
       </form>
 
@@ -26,6 +28,7 @@ import MapHeader from '@/components/MapHeader.vue'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import mapboxgl from 'mapbox-gl'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import axios from 'axios'
 export default {
   components: {
     MapHeader,
@@ -34,7 +37,8 @@ export default {
   data () {
     return {
       userStartLocation: '',
-      userEndLocation: ''
+      userEndLocation: '',
+      excludedHazard: ''
     }
   },
   methods: {
@@ -52,8 +56,26 @@ export default {
       const endMarker = new mapboxgl.Marker()
         .setLngLat([endLocation[0], endLocation[1]])
         .addTo(this.map)
+    },
+    excludeHazard () {
+      if (this.excludeHazard != undefined) {
+      axios.post('https://backendsaferideapi.azure-api.net/overlayAPI/api/hazard/simpleHazard', {
+        Hazard: this.excludedHazard
+      }, {
+        withCredentials: false
+      })
+       .then(function (response) {
+            var coordinates = response.data.results
+            localStorage.setItem('results', JSON.stringify(results))
+            console.log(response)
+            window.alert('Excluding hazard was a success with the resuts: = ' + localStorage.getItem('results'))
+          })
+          .catch(function (error) {
+            console.log(error)
+            window.alert('Hazard error')
+          })
     }
-    
+    }
   },
     props: ['api_key'],
     mounted() {

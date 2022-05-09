@@ -18,6 +18,8 @@ namespace SafeRide.src.DataAccess
             this._user = new ApplicationUser();
         }
 
+
+        // make open async method
         public Dictionary<double, double> GetByTypeInRadius(int hazardType, double targetY, double targetX, double radius)
         {
             // initialize empty dictionary of doubles to store the set of queried coordinates
@@ -39,6 +41,7 @@ namespace SafeRide.src.DataAccess
 
                     using (SqlCommand cmd = new SqlCommand(queryString, conn))
                     {
+                        // make execute reader async
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
@@ -74,7 +77,7 @@ namespace SafeRide.src.DataAccess
 
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                //Console.WriteLine(ex.Message);
                 return results;
             }
 

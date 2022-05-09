@@ -29,6 +29,10 @@
     <Compile Include="obj\Debug\net6.0\Backend.GlobalUsings.g.cs" />
   </ItemGroup>
 
+    <ItemGroup>
+     <InternalsVisibleTo Include="SRUnitTests" />
+    </ItemGroup>
+
   <ItemGroup>
     <Content Include="bin\Debug\net6.0\SafeRide.deps.json" />
     <Content Include="bin\Debug\net6.0\SafeRide.runtimeconfig.json" />

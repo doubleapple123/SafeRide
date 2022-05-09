@@ -28,6 +28,9 @@ namespace SafeRide.src.Services
             return _directionsResponse;
         }
 
+        // utf-8: read 8 bytes at a time, keep checking using StreamReader.ReadBytes
+
+
 
         // helps simplify HazardExclusion by extracting a single route from the response
         public Route GetRoute(int routeNum) {
