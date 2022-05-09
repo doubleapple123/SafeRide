@@ -14,7 +14,7 @@ namespace Backend.src.Services
         {
             _isavedRouteDAO = savedRouteDAO;
         }
-        public bool AddSavedRoute(string UserID, int routeId, string route)
+        public int AddSavedRoute(string UserID, int routeId, string route)
         {
             return _isavedRouteDAO.AddSavedRoute(UserID,routeId,route);
         }

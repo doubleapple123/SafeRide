@@ -9,9 +9,9 @@ namespace SafeRide.src.DataAccess
         private string _cs = "Server=tcp:saferidewithus.database.windows.net,1433;Initial Catalog=SafeRideDB;User ID=andyadmin;Password=Whoaman!123";
         private const string TABLE_NAME = "UserRoutes";
 
-        public bool AddSavedRoute(string UserId, int routeId, string route)
+        public int AddSavedRoute(string UserId, int routeId, string route)
         {
-            int numRowsAffected;
+            int numRowsAffected = -1;
             using (SqlConnection sqlConn = new SqlConnection(_cs)) { 
                 sqlConn.Open();
                 string query = "INSERT INTO UserRoute (userID, routeID, route) VALUES (@param1, @param2, @param3)";
@@ -23,7 +23,7 @@ namespace SafeRide.src.DataAccess
                     numRowsAffected = cmd.ExecuteNonQuery();
                 }
             }
-            return Num
+            return numRowsAffected;
         }
 
        
