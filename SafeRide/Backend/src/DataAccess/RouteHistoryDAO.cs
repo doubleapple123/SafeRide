@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Data.SqlClient;
 using System.Globalization;
-using SafeRide.src.Interfaces;
-using SafeRide.src.Models;
+using Backend.src.Interfaces;
+using Backend.src.Models;
+using SafeRide.src.DataAccess;
 
 namespace Backend.src.DataAccess
 {
@@ -20,10 +21,15 @@ namespace Backend.src.DataAccess
             builder.InitialCatalog = "SafeRide_DB";
         }
 
-        public List<string> getRouteInfo(string startPoint)
+        public bool searchRoute(string UserName, string startpoint, string endpoint, string instructions)
         {
-            var routeInfo = new List<string>();
-            string query = $"SELECT startpoint FROM {TABLE_NAME} WHERE startpoint='{startPoint}'";
+            string query = $"INSERT INTO {TABLE_NAME} values ('{startpoint}','{endpoint}','{instructions}'";
+            return ExecuteQuery.ExecuteCommand(builder.ConnectionString, query);
+        }
+        public List<RouteInformation> getRouteHistory(string UserName)
+        {
+            var routeInfo = new List<RouteInformation>();
+            string query = $"SELECT startpoint FROM {TABLE_NAME} WHERE UserName='{UserName}'";
             try
             {
                 using (var sqlConn = new SqlConnection(builder.ConnectionString))
@@ -36,7 +42,10 @@ namespace Backend.src.DataAccess
                         {
                             while (reader.Read())
                             {
-                                var route = reader["startpoint"].ToString();
+                                var start = reader["startpoint"].ToString();
+                                var end = reader["endpoint"].ToString();
+                                var instructions = reader["instructions"].ToString();
+                                var route = new RouteInformation(start, end, instructions);
                                 routeInfo.Add(route);
                             }
                         }
@@ -48,7 +57,7 @@ namespace Backend.src.DataAccess
                 // log error
             }
 
-            return routeInfo.ToList();
+            return routeInfo;
         }
     }
 
