@@ -61,6 +61,9 @@ export default {
 
     saveUserRoute() {
       console.log(this.userStartLocation + ' ' + this.userEndLocation)
+    },
+
+    buildRoute() {
     }
     
   },

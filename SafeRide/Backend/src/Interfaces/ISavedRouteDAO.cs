@@ -5,7 +5,7 @@ namespace SafeRide.src.Interfaces
     public interface ISavedRouteDAO
     {
 
-        public bool AddSavedRoute(string userId, int routeId, string route);
+        public int AddSavedRoute(string userId, int routeId, string route);
         
 
     }
