@@ -15,9 +15,9 @@ namespace Backend.src.DataAccess
         public RouteHistoryDAO(IConfiguration config)
         {
             builder = new SqlConnectionStringBuilder();
-            builder.DataSource = "DESKTOP-BBDJ7PA\SQLEXPRESS";
-            builder.UserID = "saferideaaa";
-            builder.Password = config["AppKey:DBKey"];
+            builder.DataSource = "saferidedb.database.windows.net";
+            builder.UserID = "azureuser";
+            builder.Password = config["passkey123'"];
             builder.InitialCatalog = "SafeRide_DB";
         }
 

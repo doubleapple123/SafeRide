@@ -5,7 +5,7 @@ import UserProtected from '../views/UserProtected.vue'
 import UserRegistration from '../views/UserRegistration.vue'
 import LoggedInInitialView from '../views/LoggedInInitialView.vue'
 import AnalysisDashboard from '../views/AnalysisDashboard.vue'
-import SearchRoute from '@/components/SearchRoute.vue'
+import RouteHistory from '@/components/RouteHistory.vue'
 
 const routes = [
   {
@@ -39,9 +39,9 @@ const routes = [
     component: AnalysisDashboard
   },
   {
-    path: '/SearchRoute',
-    name: 'Searching',
-    component: SearchRoute
+    path: '/RouteHistory',
+    name: 'History',
+    component: RouteHistory
   }
 ]
 
