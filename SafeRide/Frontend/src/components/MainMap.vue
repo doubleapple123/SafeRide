@@ -57,15 +57,16 @@ export default {
         .setLngLat([endLocation[0], endLocation[1]])
         .addTo(this.map)
     },
+    
     excludeHazard () {
-      if (this.excludeHazard != undefined) {
-      axios.post('https://backendsaferideapi.azure-api.net/overlayAPI/api/hazard/simpleHazard', {
+      if (this.excludedHazard) {
+      axios.get('https://backendsaferideapi.azure-api.net/api/hazard/simpleHazard', {
         Hazard: this.excludedHazard
       }, {
         withCredentials: false
       })
        .then(function (response) {
-            var coordinates = response.data.results
+            var results = response.data.results
             localStorage.setItem('results', JSON.stringify(results))
             console.log(response)
             window.alert('Excluding hazard was a success with the resuts: = ' + localStorage.getItem('results'))
