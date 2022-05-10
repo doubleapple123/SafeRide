@@ -90,7 +90,7 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
     {
         string query = $"update {TABLE_NAME} set " +
                        $"username='{user.UserName}', email='{user.Email}',role='{user.Role}', valid='{user.Valid}' " +
-                       $"where username='{user.UserName}';";
+                       $"where username='{username}';";
 
         SqlCommand command = new SqlCommand();
         command.CommandText = query;
@@ -108,14 +108,14 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
     public bool Disable(string username)
     {
         SqlCommand command = new SqlCommand();
-        command.CommandText = $"UPDATE {TABLE_NAME} SET valid=0 where username='{username}'";
+        command.CommandText = $"UPDATE {TABLE_NAME} SET valid='False' where username='{username}'";
         return ExecuteCommand(command);
     }
 
     public bool Enable(string username)
     {
         SqlCommand command = new SqlCommand();
-        command.CommandText = $"UPDATE {TABLE_NAME} SET valid=1 where username='{username}'";
+        command.CommandText = $"UPDATE {TABLE_NAME} SET valid='True' where username='{username}'";
         return ExecuteCommand(command);
     }
 }

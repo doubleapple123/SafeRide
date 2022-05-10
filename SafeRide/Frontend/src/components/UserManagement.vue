@@ -80,7 +80,7 @@ export default {
 
       }
       else if(this.selectedOption === "Create"){
-        await axios.post('https://localhost:5001/' + postType, {
+        await axios.post('https://localhost:5001/' + postType, "",{
           UserName: this.newUsername,
           Email: this.newEmail,
           Role: "user",
@@ -91,7 +91,7 @@ export default {
           })
       }
       else{
-        await axios.post('https://localhost:5001/' + postType, {
+        await axios.post('https://localhost:5001/' + postType, "",{
           params: {username: this.enteredUsername}})
           .catch(function () {
             window.alert("Not logged in or not admin")
