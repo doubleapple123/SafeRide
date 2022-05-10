@@ -1,15 +1,26 @@
 ﻿using SafeRide.src.DataAccess;
 using SafeRide.src.Interfaces;
+using SafeRide.src.Models;
 
 namespace Backend.Services;
 
 public class UserManagementService
 {
-    private IUserDAO _userDao;
+    private IUserSecurityDAO _userDao;
 
-    public UserManagementService(IUserDAO userDao)
+    public UserManagementService(IUserSecurityDAO userDao)
     {
         _userDao = userDao;
+    }
+
+    public bool CreateUser(UserSecurityModel model)
+    {
+        return _userDao.Create(model);
+    }
+
+    public bool UpdateUser(string username, UserSecurityModel model)
+    {
+        return _userDao.Update(username, model);
     }
 
     public bool DeleteUser(string username)

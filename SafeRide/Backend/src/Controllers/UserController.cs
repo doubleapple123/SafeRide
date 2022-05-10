@@ -13,37 +13,40 @@ namespace SafeRide.Controllers
     public class UserController : ControllerBase
     {
         private readonly ITokenService tokenService;
-        private readonly UserManagementService _service;
+        private readonly UserManagementService _UMservice;
         private string generatedToken = null;
+        /*
         private IUserSecurityDAO _userSecurityDao;
+        */
 
         private readonly string SECRET_KEY = "this is my custom Secret key for authnetication"; //needs many characters
         private readonly string ISSUER = "www.saferide.net";
         private readonly string MAPBOX_API_KEY = "pk.eyJ1IjoiYXBwbGVmdSIsImEiOiJja3p5dWV1eTkwM3gyM2lteGZqZGszNTBjIn0.CLc4mochtSCflbpW9BPH4Q";
 
-        public UserController(IUserDAO userDao)
+        public UserController(IUserSecurityDAO _userSecurityDao)
         {
             this.tokenService = new TokenService();
-            _service = new UserManagementService(userDao);
+            _UMservice = new UserManagementService(_userSecurityDao);
         }
         [Microsoft.AspNetCore.Mvc.Route("createUser")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        public IActionResult CreateUser([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user,[FromUri]string passphrase)
+        public IActionResult CreateUser([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user
+            //,[FromUri]string passphrase
+            )
         {
             user.Role = "user";
             user.Valid = true;
-
-
+            
             IActionResult response = BadRequest();
-            if (_userSecurityDao.Create(user))
+            if (_UMservice.CreateUser(user))
             {
-                if (!Regex.IsMatch(user.Email, @"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
+                /*if (!Regex.IsMatch(user.Email, @"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*"
                 + "@" + @"((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$"))
                     return response;
                 if (Regex.IsMatch(passphrase, "^[a-zA-Z0-9.,@!]*$") && passphrase.Length > 8)
                     return response;
-                else
-                    response = Ok(response);
+                else*/
+                response = Ok(response);
             }
 
             return response;
@@ -63,7 +66,7 @@ namespace SafeRide.Controllers
             }
             else
             {
-                if (_userSecurityDao.Update(username, user))
+                if (_UMservice.UpdateUser(username, user))
                 {
                     response = Ok();
                 }
@@ -79,7 +82,7 @@ namespace SafeRide.Controllers
         {
             IActionResult response = BadRequest();
 
-            if (_service.DeleteUser(username))
+            if (_UMservice.DeleteUser(username))
             {
                 response = Ok();
             }
@@ -94,7 +97,7 @@ namespace SafeRide.Controllers
         {
             IActionResult response = BadRequest();
 
-            if (_service.DisableAccount(username))
+            if (_UMservice.DisableAccount(username))
             {
                 response = Ok();
             }
@@ -109,7 +112,7 @@ namespace SafeRide.Controllers
         {
             IActionResult response = BadRequest();
             
-            if (_service.EnableAccount(username))
+            if (_UMservice.EnableAccount(username))
             {
                 response = Ok();
             }
