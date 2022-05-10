@@ -5,12 +5,13 @@
         public string startpoint { get; set; }
         public string endpoint { get; set; }
         public string instructions { get; set; }
-
-        public RouteInformation(string startPoint, string endPoint, string Instructions)
+        public string username { get; set; }
+        public RouteInformation(string startPoint, string endPoint, string Instructions, string UserName)
         {
             startpoint = startPoint;
             endpoint = endPoint;
             instructions = Instructions;
+            username = UserName;
         }
     }
 }

@@ -17,79 +17,12 @@ export default {
     MapFooter,
     MapHeader
   },
-  methods: {
-    removeOverlays () {
-      if (this.map.getLayer('userLayer')) {
-        this.map.removeLayer('userLayer')
-      }
-      if (this.map.getLayer('outline')) {
-        this.map.removeLayer('outline')
-      }
-      if (this.map.getSource('userLayer')) {
-        this.map.removeSource('userLayer')
-      }
-    },
-    changeOverlayColor (value) {
-      this.map.getLayer('userLayer').paint = { 'fill-color': value }
-    },
-    addOverlays (value) {
-      const coords = []
-      value.overlayStructure.forEach(function (coord) {
-        coords.push([coord.longPoint, coord.latPoint])
-      })
-      this.map.addSource('userLayer', {
-        type: 'geojson',
-        data: {
-          type: 'Feature',
-          geometry: {
-            type: 'Polygon',
-            coordinates: [
-              coords
-            ]
-          }
-        }
-      })
-      this.map.addLayer({
-        id: 'userLayer',
-        type: 'fill',
-        source: 'userLayer', // reference the data source
-        layout: {},
-        paint: {
-          'fill-color': value.overlayColor, // blue color fill
-          'fill-opacity': 0.5
-        }
-      })
-      this.map.addLayer({
-        id: 'outline',
-        type: 'line',
-        source: 'userLayer',
-        layout: {},
-        paint: {
-          'line-color': '#000',
-          'line-width': 3
-        }
-      })
-    },
-    onReceiveOverlay (value) {
-      if (value !== 'None') {
-        this.removeOverlays()
-        this.addOverlays(value)
-      } else {
-        this.removeOverlays()
-      }
-    },
-    onOverlayColorChange (value) {
-      if (value !== 'Default') {
-        this.changeOverlayColor(value)
-      }
-    }
-  },
-  props: ['api_key'],
+  props: ['api_key', ' startLocation', 'endLocation'],
   mounted () {
     mapboxgl.accessToken = this.api_key
     this.map = new mapboxgl.Map({
       container: 'map', // container ID
-      style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+      style: 'mapbox://styles/mapbox/streets-v11', // style URL
       center: [-118.1109043, 33.7827241], // starting position [lng, lat]
       zoom: 14 // starting zoom
     })

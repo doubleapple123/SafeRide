@@ -4,7 +4,8 @@ namespace Backend.src.Interfaces
 {
     public interface IRouteInformationDAO
     {
-        public RouteInformation GetRouteInformation(string userName);
+        public bool searchRoute(string startpoint, string endpoint, string instructions, string username);
+        public List<RouteInformation> getRouteHistory(string UserName);
 
     }
 }

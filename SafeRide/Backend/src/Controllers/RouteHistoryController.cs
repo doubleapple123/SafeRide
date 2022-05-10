@@ -2,13 +2,15 @@
 using System.Web.Http;
 using Backend.src.Models;
 using Backend.src.Interfaces;
+using Backend.src.Services;
 using Backend.Services;
 
-namespace Backend.src.Controllers
-{
+namespace Backend.src.Controllers;
+
     [ApiController]
     public class RouteHistoryController : Controller
     {
+        private SavedRouteService RouteService;
         private IRouteInformationDAO _routeInfoDao;
 
         public RouteHistoryController(IRouteInformationDAO routeInfoDao)
@@ -23,8 +25,8 @@ namespace Backend.src.Controllers
             var user = JwtDecoder.GetUser(authorization);
             if (user == null) return Unauthorized();
 
-            var routeInfo = _routeInfoDao.GetRouteInformation(user);
-            return Ok(new {routeInfo});
+            var routeInfo = RouteService.GetAllRoutes(user);
+            return Ok(new { routeInfo });
+
         }
     }
-}

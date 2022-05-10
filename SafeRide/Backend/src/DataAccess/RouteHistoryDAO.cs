@@ -10,7 +10,7 @@ namespace Backend.src.DataAccess
     public class RouteHistoryDAO
     {
         private SqlConnectionStringBuilder builder;
-        private const string TABLE_NAME = "startpoint";
+        private const string TABLE_NAME = "RouteInfo";
 
         public RouteHistoryDAO(IConfiguration config)
         {
@@ -21,15 +21,15 @@ namespace Backend.src.DataAccess
             builder.InitialCatalog = "SafeRide_DB";
         }
 
-        public bool searchRoute(string UserName, string startpoint, string endpoint, string instructions)
+        public bool searchRoute(string startpoint, string endpoint, string instructions, string username)
         {
-            string query = $"INSERT INTO {TABLE_NAME} values ('{startpoint}','{endpoint}','{instructions}'";
+            string query = $"INSERT INTO {TABLE_NAME} values ('{startpoint}','{endpoint}','{instructions}', '{username}'";
             return ExecuteQuery.ExecuteCommand(builder.ConnectionString, query);
         }
         public List<RouteInformation> getRouteHistory(string UserName)
         {
             var routeInfo = new List<RouteInformation>();
-            string query = $"SELECT startpoint FROM {TABLE_NAME} WHERE UserName='{UserName}'";
+            string query = $"SELECT startpoint, endpoint, instructions, username FROM {TABLE_NAME} WHERE username='{UserName}'";
             try
             {
                 using (var sqlConn = new SqlConnection(builder.ConnectionString))
@@ -45,7 +45,8 @@ namespace Backend.src.DataAccess
                                 var start = reader["startpoint"].ToString();
                                 var end = reader["endpoint"].ToString();
                                 var instructions = reader["instructions"].ToString();
-                                var route = new RouteInformation(start, end, instructions);
+                                var username = reader["username"].ToString();
+                                var route = new RouteInformation(start, end, instructions, username);
                                 routeInfo.Add(route);
                             }
                         }

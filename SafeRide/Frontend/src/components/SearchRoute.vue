@@ -38,76 +38,29 @@ import axios from 'axios'
 import mapboxgl from 'mapbox-gl'
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder'
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+import 'mapbox-gl/dist/mapbox-gl.css'
 
 export default {
   data () {
     return {
       loading: false,
       location: '',
-      access_token: 'pk.eyJ1IjoiMjgxMDl4IiwiYSI6ImNsMnBkdTZsODA0YngzcHFybnhqc3o5c3YifQ.Uu6wJLbJaYG2Hc3csnSGng',
+      access_token: 'pk.eyJ1IjoiYXBwbGVmdSIsImEiOiJja3p5dWV1eTkwM3gyM2lteGZqZGszNTBjIn0.CLc4mochtSCflbpW9BPH4Q',
       center: [0, 0],
       map: {}
     }
   },
-
   mounted () {
-    this.createMap()
+    mapboxgl.accessToken = this.api_key
+    this.map = new mapboxgl.Map({
+      container: 'map', // container ID
+      style: 'mapbox://styles/mapbox/streets-v11', // style URL
+      center: [-118.1109043, 33.7827241], // starting position [lng, lat]
+      zoom: 14 // starting zoom
+    })
   },
-
   methods: {
-    async createMap () {
-      try {
-        mapboxgl.accessToken = this.accessToken
-        this.map = new mapboxgl.Map({
-          container: 'map',
-          style: 'mapbox://styles/mapbox/streets-v11',
-          center: this.center,
-          zoom: 11
-        })
-      } catch (err) {
-        console.log('map error', err)
-      }
-      const geocoder = new MapboxGeocoder({
-        accessToken: this.access_token,
-        mapboxgl: mapboxgl,
-        marker: false
-      })
 
-      this.map.addControl(geocoder)
-
-      geocoder.on('result', (e) => {
-        const marker = new mapboxgl.Marker({
-          draggable: true,
-          color: '#D80739'
-        })
-          .setLngLat(e.result.center)
-          .addTo(this.map)
-        this.center = e.result.center
-        marker.on('dragend', (e) => {
-          this.center = Object.values(e.target.getLngLat())
-        })
-      })
-    },
-    async getLocation () {
-      try {
-        this.loading = true
-        const response = await axios.get(
-          `https://api.mapbox.com/geocoding/v5/mapbox.places/${this.center[0]},${this.center[1]}.json?access_token=${this.access_token}`
-        )
-        this.loading = false
-        this.location = response.data.features[0].place_name
-      } catch (err) {
-        this.loading = false
-        console.log(err)
-      }
-    },
-    copyLocation () {
-      if (this.location) {
-        navigator.clipboard.writeText(this.location)
-        alert('Location Copied')
-      }
-      // return
-    }
   }
 }
 </script>

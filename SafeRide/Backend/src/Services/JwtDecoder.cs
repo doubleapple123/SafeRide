@@ -22,12 +22,13 @@ public static class JwtDecoder
         }
     }
 
-    public static string? GetUser(string token)
+    public static string GetUser(string UserName)
     {
-        var jwtToken = DecodeJwt(token);
-        if (jwtToken == null) return null;
-        
-        var userName = jwtToken.Claims.First(claim => claim.Type.Equals(ClaimTypes.Name)).Value;
+        // var jwtToken = DecodeJwt(token);
+        // if (jwtToken == null) return null;
+
+        // var userName = jwtToken.Claims.First(claim => claim.Type.Equals(ClaimTypes.Name)).Value;
+         var userName = UserName;
         return userName;
     }
 }
