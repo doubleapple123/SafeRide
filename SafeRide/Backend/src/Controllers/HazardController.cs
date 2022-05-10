@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Services;
-using FromBodyAttribute = System.Web.Http.FromBodyAttribute;
-using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
 using Route = SafeRide.src.Models.Route;
-using RouteAttribute = System.Web.Http.RouteAttribute;
-using Microsoft.AspNetCore.WebUtilities;
+using Backend.Attributes.AuthorizeAttribute;
+
 
 
 namespace SafeRide.Controllers
@@ -39,7 +37,7 @@ namespace SafeRide.Controllers
         Ajax.BeginForm("Exclude", 
                             new AjaxOptions { UpdateTargetId = "divHazards" }))*/
 
-        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]              [Backend.Attributes.AuthorizeAttribute.AuthorizeAttribute.ClaimRequirementAttribute("role", "user")]
         [Microsoft.AspNetCore.Mvc.Route("/api/hazard/exclude")]
         // public IActionResult Exclude([FromBody] List<int> hazards, [FromUri] string jsonResponse)
         public async Task<IActionResult> Exclude([FromUri] string request, [FromUri] string hazards)

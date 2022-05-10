@@ -42,7 +42,7 @@ namespace SafeRide.src.Services
             UserSecurityModel validUser = null;
             try
             {
-                validUser = this.userRepository.GetUser(user);
+                validUser = this.userRepository.GetUser(user); // add to otp service
             }
             catch (Exception ex)
             {
@@ -106,7 +106,6 @@ namespace SafeRide.src.Services
         //    return response;
         //}
         
-        [AuthorizeAttribute.ClaimRequirementAttribute("role", "admin")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
         [Microsoft.AspNetCore.Mvc.Route("verifyToken")]
         public IActionResult VerifyToken([FromHeader] string authorization)
