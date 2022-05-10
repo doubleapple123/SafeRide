@@ -6,7 +6,9 @@ namespace SafeRide.src.Interfaces
     {
 
         public int AddSavedRoute(string userId, int routeId, string route);
+        public List<string> GetRecentRoutes(string userId);
+        public List<string> GetSavedRoutes(string userId);
         
-
+       
     }
 }

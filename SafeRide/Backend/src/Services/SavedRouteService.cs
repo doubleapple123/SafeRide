@@ -13,9 +13,9 @@ namespace SafeRide.src.Services
         private string baseUrl = "";
 
 
-        public SavedRouteService(ISavedRouteDAO savedRouteDAO)
+        public SavedRouteService(ISavedRouteDAO isavedRouteDAO)
         {
-            _isavedRouteDAO = savedRouteDAO;
+            _isavedRouteDAO = isavedRouteDAO;
             _httpClient = new HttpClient();
         }
 
@@ -34,7 +34,15 @@ namespace SafeRide.src.Services
             return _isavedRouteDAO.AddSavedRoute(UserID, routeId, route);
         }
 
+        public List<string> GetRecentRoutes(string userId)
+        {
+            return _isavedRouteDAO.GetRecentRoutes(userId);
+        }
 
+        public List<string> GetSavedRoutes(string userId)
+        {
+            return _isavedRouteDAO.GetSavedRoutes(userId);
+        }
 
 
         // <Summary>
