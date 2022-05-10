@@ -59,6 +59,7 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
     options.AddPolicy("TokenAuth", policy => policy.Requirements.Add(new )
 });*/
 
+builder.Services.AddTransient<ISavedRouteDAO, SavedRouteDAO>();
 builder.Services.AddTransient<IUserSecurityDAO, UserSQLSecurityDAO>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ITokenService, TokenService>();
