@@ -50,13 +50,10 @@ namespace SafeRide.src.Services
         // @Param string End Location as coordinates
         // Method makes call to mapBox directions API to retrieve json response
         // </summary>
-        public async Task<string> GetRouteData(string startLocation, string endLocation)
+        public async Task<string> GetRouteData(string routeUrl)
         {
-            var startCoordinate = startLocation.Split(", ");
-            var endCoordinate = endLocation.Split(", ");
-
-            var request = new HttpRequestMessage(HttpMethod.Get,
-                "https://api.mapbox.com/directions/v5/mapbox/cycling/${startCoordinate[0]},${startCoordinate[1]};${endCoordinate[0]},${endCoordinate[1]}?steps=true&geometries=geojson&access_token=${api_key}");
+          
+            var request = new HttpRequestMessage(HttpMethod.Get,$"{routeUrl}");
             var response = await _httpClient.SendAsync(request);
 
             return await response.Content.ReadAsStringAsync();
