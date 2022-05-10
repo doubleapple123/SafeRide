@@ -2,7 +2,7 @@
 {
     public interface IRoute
     {
-        string JsonRequest { get; set; }
+        string UrlString { get; set; }
         int RouteId { get; set; }
     }
 }

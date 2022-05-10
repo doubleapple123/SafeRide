@@ -3,6 +3,7 @@ using Backend.src.Services;
 using Microsoft.AspNetCore.Mvc;
 using SafeRide.src.Interfaces;
 using AuthorizeAttribute = Backend.Attributes.AuthorizeAttribute.AuthorizeAttribute;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
@@ -30,8 +31,8 @@ public class SavedRouteController : ControllerBase
     [Route("/api/getAllRoutes")]
     public IActionResult GetAllSavedRoutes()
     {
-        var routeList = 
-        return Ok(new {})
+
+        return Ok(new { });
     
     }
 }
