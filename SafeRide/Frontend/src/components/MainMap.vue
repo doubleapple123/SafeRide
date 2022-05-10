@@ -36,29 +36,25 @@ import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
 import axios from 'axios'
 export default {
   components: {
-  data () {
-    return {
-      userStartLocation: '',
-      userEndLocation: '',
-      excludedHazard: ''
-    }
     MapSearchRectangle,
     MapFooter,
     MapHeader,
     SavedRoutes
   },
-  methods: {
+  data () {
+    return {
+      userStartLocation: '',
+      userEndLocation: '',
+      excludedHazard: ''
+      }
+    },
+    methods: {
     handleUserRoute() {
-
         const startLocation = this.userStartLocation.split(', ')
         const endLocation = this.userEndLocation.split(', ')
-
-
         const startMarker = new mapboxgl.Marker()
           .setLngLat([startLocation[0], startLocation[1]])
           .addTo(this.map)
-
-
         const endMarker = new mapboxgl.Marker()
           .setLngLat([endLocation[0], endLocation[1]])
           .addTo(this.map)
@@ -103,20 +99,6 @@ export default {
         this.map.removeSource('route')
       }
     },
-    removeOverlays () {
-      if (this.map.getLayer('userLayer')) {
-        this.map.removeLayer('userLayer')
-      }
-      if (this.map.getLayer('outline')) {
-        this.map.removeLayer('outline')
-      }
-      if (this.map.getSource('userLayer')) {
-        this.map.removeSource('userLayer')
-      }
-    },
-    changeOverlayColor (value) {
-      this.map.getLayer('userLayer').paint = { 'fill-color': value }
-    },
     excludeHazard () {
       if (this.excludeHazard != undefined) {
       axios.post('https://backendsaferideapi.azure-api.net/overlayAPI/api/hazard/simpleHazard', {
@@ -134,7 +116,21 @@ export default {
             console.log(error)
             window.alert('Hazard error')
           })
+      }
     },
+    removeOverlays () {
+      if (this.map.getLayer('userLayer')) {
+        this.map.removeLayer('userLayer')
+      }
+      if (this.map.getLayer('outline')) {
+        this.map.removeLayer('outline')
+      }
+      if (this.map.getSource('userLayer')) {
+        this.map.removeSource('userLayer')
+      }
+    },
+    changeOverlayColor (value) {
+      this.map.getLayer('userLayer').paint = { 'fill-color': value }
       this.map.addSource('userLayer', {
         type: 'geojson',
         data: {
@@ -168,6 +164,7 @@ export default {
         }
       })
     },
+
     onReceiveOverlay (value) {
       if (value !== 'None') {
         this.removeOverlays()
@@ -176,6 +173,7 @@ export default {
         this.removeOverlays()
       }
     },
+    
     onOverlayColorChange (value) {
       if (value !== 'Default') {
         this.changeOverlayColor(value)
