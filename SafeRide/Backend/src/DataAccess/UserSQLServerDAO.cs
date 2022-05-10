@@ -198,7 +198,7 @@ namespace SafeRide.src.DataAccess
                 Console.WriteLine(ex.Message);
                 return result;
             }
-
+            result.Add("Test", 123);
             return result;
         }
 

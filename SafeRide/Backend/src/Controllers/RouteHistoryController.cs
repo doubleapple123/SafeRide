@@ -20,12 +20,12 @@ namespace Backend.src.Controllers;
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Microsoft.AspNetCore.Mvc.Route("api/routeinfo/getinfo")]
-        public IActionResult GetRouteInformation([FromHeader] string authorization)
+        public IActionResult GetRouteInformation (string userName)
         {
-            var user = JwtDecoder.GetUser(authorization);
-            if (user == null) return Unauthorized();
+            // var user = JwtDecoder.GetUser(authorization);
+            // if (user == null) return Unauthorized();
 
-            var routeInfo = RouteService.GetAllRoutes(user);
+            var routeInfo = RouteService.GetAllRoutes(userName);
             return Ok(new { routeInfo });
 
         }

@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <h1>Search History</h1>
+    <textarea v-model="haha" id="haha" name="haha" rows="4" cols="50">
+    </textarea>
   </div>
 </template>
 
@@ -11,7 +13,7 @@ export default {
   name: 'Home',
   mounted () {
     axios.get('https://api.coindesk.com/v1/bpi/currentprice.json').then(function (response) {
-      window.alert(response.data)
+      console.log(response.data.bpi)
     })
   }
 }
