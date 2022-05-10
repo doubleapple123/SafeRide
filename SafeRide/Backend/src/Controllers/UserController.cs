@@ -1,5 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using System.Web.Http;
+using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
@@ -12,6 +13,7 @@ namespace SafeRide.Controllers
     public class UserController : ControllerBase
     {
         private readonly ITokenService tokenService;
+        private readonly UserManagementService _service;
         private string generatedToken = null;
         private IUserSecurityDAO _userSecurityDao;
 
@@ -19,10 +21,10 @@ namespace SafeRide.Controllers
         private readonly string ISSUER = "www.saferide.net";
         private readonly string MAPBOX_API_KEY = "pk.eyJ1IjoiYXBwbGVmdSIsImEiOiJja3p5dWV1eTkwM3gyM2lteGZqZGszNTBjIn0.CLc4mochtSCflbpW9BPH4Q";
 
-        public UserController(IUserSecurityDAO userSecurityDao)
+        public UserController(IUserDAO userDao)
         {
-            _userSecurityDao = userSecurityDao;
             this.tokenService = new TokenService();
+            _service = new UserManagementService(userDao);
         }
         [Microsoft.AspNetCore.Mvc.Route("createUser")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
@@ -69,6 +71,52 @@ namespace SafeRide.Controllers
 
             return response;
         }
+        
+        [AuthorizeAttribute.ClaimRequirementAttribute("role", "admin")]
+        [Microsoft.AspNetCore.Mvc.Route("deleteUser")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public IActionResult DeleteUser([FromUri] string username)
+        {
+            IActionResult response = BadRequest();
+
+            if (_service.DeleteUser(username))
+            {
+                response = Ok();
+            }
+
+            return response;
+        }
+        
+        [AuthorizeAttribute.ClaimRequirementAttribute("role", "admin")]
+        [Microsoft.AspNetCore.Mvc.Route("disableAccount")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public IActionResult DisableAccount([FromUri] string username)
+        {
+            IActionResult response = BadRequest();
+
+            if (_service.DisableAccount(username))
+            {
+                response = Ok();
+            }
+
+            return response;
+        }
+        
+        [AuthorizeAttribute.ClaimRequirementAttribute("role", "admin")]
+        [Microsoft.AspNetCore.Mvc.Route("enableAccount")]
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public IActionResult EnableAccount([FromUri] string username)
+        {
+            IActionResult response = BadRequest();
+            
+            if (_service.EnableAccount(username))
+            {
+                response = Ok();
+            }
+
+            return response;
+        }
+        
         /*[Route("getUser")]
         [HttpGet]
         public IActionResult GetUser([FromBody] string token, [FromBody] string userId)
