@@ -1,4 +1,4 @@
-using SafeRide.src.Interfaces;
+﻿using SafeRide.src.Interfaces;
 using SafeRide.src.DataAccess;
 using SafeRide.src.Models;
 using SafeRide.src.Managers;
@@ -67,6 +67,9 @@ builder.Services.AddTransient<IUserDAO, UserSQLServerDAO>();
 builder.Services.AddTransient<IViewEventDAO, ViewEventSQLServerDAO>();
 builder.Services.AddTransient<IAnalyticsService, AnalyticsService>();
 builder.Services.AddTransient<IOverlayStructureDAO, OverlayStructureDAO>();
+builder.Services.AddTransient<IHazardDAO, HazardDAO>();
+builder.Services.AddTransient<IParseResponseService, ParseResponseService>();
+builder.Services.AddTransient<IExcludeHazardService, ExcludeHazardService>();
 
 var env = builder.Environment;
 var app = builder.Build();
@@ -143,7 +146,7 @@ app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
 
 app.Run();
-public partial class Program { }
+//public partial class Program { }
 
 
 
@@ -254,4 +257,12 @@ if (userAuthorized)
 }
 */
 
+public enum HazardType
+{
+    Accident,
+    Obstruction,
+    BikeLane,
+    Vehicle,
+    Closure
+    }
 

@@ -7,28 +7,37 @@
     <UserSecretsId>616108c1-6a9c-4313-8053-6d649d753994</UserSecretsId>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'SafeRide' " />
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="NewFolder\**" />
     <Content Remove="NewFolder\**" />
     <EmbeddedResource Remove="NewFolder\**" />
     <None Remove="NewFolder\**" />
     <Content Remove="package-lock.json" />
+    <None Remove="System.Device.Location.Portable" />
+    <None Remove="CoordinateSharp" />
+    <None Remove="System.Net.Http" />
+    <None Remove="System.Web.Http.Common" />
+    <None Remove="Microsoft.AspNet.WebApi.Core" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" />
-    <Compile Include="obj\Debug\net6.0\Backend.AssemblyInfo.cs" />
     <Compile Include="obj\Debug\net6.0\Backend.GlobalUsings.g.cs" />
   </ItemGroup>
 
+    <ItemGroup>
+     <InternalsVisibleTo Include="SRUnitTests" />
+    </ItemGroup>
+
   <ItemGroup>
-    <Content Include="bin\Debug\net6.0\appsettings.Development.json" />
-    <Content Include="bin\Debug\net6.0\appsettings.json" />
     <Content Include="bin\Debug\net6.0\SafeRide.deps.json" />
     <Content Include="bin\Debug\net6.0\SafeRide.runtimeconfig.json" />
     <Content Include="obj\Debug\net6.0\project.razor.json" />
     <Content Include="obj\Debug\net6.0\SafeRide.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\net6.0\staticwebassets.build.json" />
     <Content Include="obj\project.assets.json" />
     <Content Include="obj\SafeRide.csproj.nuget.dgspec.json" />
   </ItemGroup>
@@ -41,29 +50,12 @@
   </ItemGroup>
    
   <ItemGroup>
-    <None Include="bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll" />
     <None Include="bin\Debug\net6.0\Properties\App.Config" />
     <None Include="bin\Debug\net6.0\ref\SafeRide.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\win-arm64\native\sni.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\win-x64\native\sni.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\win-x86\native\sni.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll" />
-    <None Include="bin\Debug\net6.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll" />
     <None Include="bin\Debug\net6.0\SafeRide.dll" />
     <None Include="bin\Debug\net6.0\SafeRide.dll.config" />
     <None Include="bin\Debug\net6.0\SafeRide.exe" />
     <None Include="bin\Debug\net6.0\SafeRide.pdb" />
-    <None Include="bin\Debug\net6.0\System.Configuration.ConfigurationManager.dll" />
-    <None Include="bin\Debug\net6.0\System.Data.SqlClient.dll" />
-    <None Include="bin\Debug\net6.0\System.Drawing.Common.dll" />
-    <None Include="bin\Debug\net6.0\System.Security.Cryptography.ProtectedData.dll" />
-    <None Include="bin\Debug\net6.0\System.Security.Permissions.dll" />
-    <None Include="bin\Debug\net6.0\System.Windows.Extensions.dll" />
     <None Include="obj\Debug\net6.0\apphost.exe" />
     <None Include="obj\Debug\net6.0\ref\SafeRide.dll" />
     <None Include="obj\Debug\net6.0\SafeRide.AssemblyInfoInputs.cache" />
@@ -84,7 +76,7 @@
     <None Include="SafeRide.sln" />
   </ItemGroup>
 
-  <ItemGroup>
+ <ItemGroup>
 
     <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.3" />
 
@@ -100,8 +92,6 @@
 
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
 
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.4" />
-
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.22" />
 
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.1" />
@@ -115,7 +105,12 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
+
+    <PackageReference Include="CoordinateSharp" Version="2.13.1.1" />
+    <PackageReference Include="System.Device.Location.Portable" Version="1.0.0" />
     <PackageReference Include="System.Web.Mvc.Extensions" Version="1.1.1.2" />
+
   </ItemGroup>
+
 
 </Project>
