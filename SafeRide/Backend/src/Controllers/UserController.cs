@@ -59,18 +59,12 @@ namespace SafeRide.Controllers
         public IActionResult UpdateUser([FromUri] string username, [Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user)
         {
             IActionResult response = BadRequest();
-
-            if (!username.Equals(user.UserName))
+            
+            if (_UMservice.UpdateUser(username, user))
             {
-                response = BadRequest("username must be equal");
+                response = Ok();
             }
-            else
-            {
-                if (_UMservice.UpdateUser(username, user))
-                {
-                    response = Ok();
-                }
-            }
+            
 
             return response;
         }

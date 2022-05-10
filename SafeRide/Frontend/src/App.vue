@@ -8,7 +8,7 @@
     <br />
     <router-link to="/User">User</router-link>
     <br />
-    <router-link to="/Map">DefaultMap</router-link>
+    <router-link v-if="isAuthorized" to="/Map">DefaultMap</router-link>
     <br />
     <router-link to="/Analytics">AnalyticsDashboard</router-link>
     <br />
@@ -16,6 +16,33 @@
   </div>
   <router-view/>
 </template>
+
+<script>
+import axios from 'axios'
+export default {
+  data(){
+    return {
+      isAuthorized: false
+    }
+  },
+  methods:{
+    async checkToken () {
+      let ret = false
+      axios.defaults.headers.common.Authorization = localStorage.getItem('token')
+      await axios.post('https://localhost:5001/api/verifyToken')
+        .then(async function (){
+          ret = true
+        })
+      return ret
+    }
+  },
+  created(){
+    this.checkToken().then((res) => {
+      this.isAuthorized = res
+    })
+  }
+}
+</script>
 
 <style>
 #app {

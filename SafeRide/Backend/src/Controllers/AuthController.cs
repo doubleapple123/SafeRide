@@ -106,7 +106,6 @@ namespace SafeRide.src.Services
         //    return response;
         //}
         
-        [AuthorizeAttribute.ClaimRequirementAttribute("role", "admin")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
         [Microsoft.AspNetCore.Mvc.Route("verifyToken")]
         public IActionResult VerifyToken([FromHeader] string authorization)
@@ -124,5 +123,7 @@ namespace SafeRide.src.Services
                 return BadRequest();
             }
         }
+        
+        
     }
 }

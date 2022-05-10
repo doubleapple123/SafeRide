@@ -6,6 +6,7 @@ import UserRegistration from '../views/UserRegistration.vue'
 import LoggedInInitialView from '../views/LoggedInInitialView.vue'
 import AnalysisDashboard from '../views/AnalysisDashboard.vue'
 import UserManagement from "../views/UserManagementPath";
+import axios from "axios";
 
 const routes = [
   {
@@ -29,9 +30,9 @@ const routes = [
     component: UserProtected
   },
   {
-    path: '/map',
-    name: 'Map',
-    component: LoggedInInitialView
+      path: '/map',
+      name: 'Map',
+      component: LoggedInInitialView
   },
   {
     path: '/analytics',
