@@ -2,21 +2,20 @@
   <MapHeader></MapHeader>
   
   <div>
+
     <div id='mapControllers'>
       <form @submit.prevent="handleUserRoute">
         <MapSearchRectangle v-model="userStartLocation"  placeholder="Start Location" />
         <MapSearchRectangle v-model="userEndLocation"  placeholder="End Location"/>
-        <MapSearchRectangle v-model="excludedHazard"  placeholder="End Location"/>
         <button>Search</button>
-        <button>Exclude</button>
-
       </form>
-
+      <form class="form-group">
+        <input v-model="hazards" type="text" placeholder="Hazards to Exclude"/>
+        <input type="submit" class="btn btn-primary" @click="excludeHazard">
+      </form>
     </div>
-
     <div id='map' class="map">
     </div>
-
     <div id="instructions" class="instructions"></div>
   </div>
 
@@ -75,7 +74,7 @@ export default {
             console.log(error)
             window.alert('Hazard error')
           })
-    }
+      }
     }
   },
     props: ['api_key'],
@@ -87,8 +86,6 @@ export default {
         center: [-118.1141, 33.7838], // starting position [lng, lat]
         zoom: 14 // starting zoom
        })
-
-      
   },
     updated() {
       console.log('updated')

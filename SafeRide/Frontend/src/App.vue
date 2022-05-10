@@ -8,6 +8,7 @@
     <br />
     <router-link to="/User">User</router-link>
     <br />
+    
     <router-link to="/Map">DefaultMap</router-link>
     <br />
     <router-link to="/Analytics">AnalyticsDashboard</router-link>
@@ -16,6 +17,24 @@
   </div>
   <router-view/>
 </template>
+
+<!-- <script>
+import axios from 'axios'
+export default {
+  data(){
+    return {
+      isAuthorized: false
+    }
+  },
+  methods:{
+    async checkToken () {
+      axios.defaults.headers.common.Authorization = localStorage.getItem()
+    }
+  }
+}
+
+axios.defaults.headers.common.Authorization = localStorage.getItem('token')
+</script> -->
 
 <style>
 #app {
