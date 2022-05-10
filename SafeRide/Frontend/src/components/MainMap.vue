@@ -1,10 +1,25 @@
 <template>
   <MapHeader></MapHeader>
-  <MapSearchRectangle id="MapSearchRec"></MapSearchRectangle>
-  <div id="map"></div>
-  <MapFooter @selectedOverlayColor="onOverlayColorChange"
-             @selectedDimFooter="onReceiveOverlay"></MapFooter>
+
+  <div>
+    <div id='mapControllers'>
+      <form @submit.prevent="handleUserRoute">
+        <MapSearchRectangle v-model="userStartLocation" placeholder="Start Location" />
+        <MapSearchRectangle v-model="userEndLocation" placeholder="End Location" />
+        <button>Search</button>
+      </form>
+      <button @click="saveUserRoute">Save This Route</button>
+    </div>
+
+    <div id='map' class="map">
+    </div>
+
+    <div id="instructions" class="instructions"></div>
+  </div>
+
+  <MapFooter></MapFooter>
 </template>
+
 
 <script>
 import MapSearchRectangle from '@/components/MapSearchRectangle'
@@ -19,139 +34,97 @@ export default {
     MapHeader
     },
   methods: {
+      MapHeader,
+      MapSearchRectangle,
+      MapFooter
     },
-  props: ['api_key'],
-  mounted () {
-    mapboxgl.accessToken = this.api_key
-    const map = new mapboxgl.Map({
-      container: 'map', // container ID
-      style: 'mapbox://styles/mapbox/streets-v11', // style URL
-      center: [-118.1109043, 33.7827241], // starting position [lng, lat]
-      zoom: 14 // starting zoom
-    })
-    const start = [-118.1109043, 33.7827241]
-    async function getRoute (end) {
-      const query = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/cycling/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
-        { method: 'GET' }
-      )
-      const json = await query.json()
-      const data = json.routes[0]
-      const route = data.geometry.coordinates
-      const geojson = {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: route
-        }
+    data() {
+      return {
+        userStartLocation: '',
+        userEndLocation: ''
       }
-      if (map.getSource('route')) {
-        map.getSource('route').setData(geojson)
-      } else {
-        map.addLayer({
-          id: 'route',
-          type: 'line',
-          source: {
-            type: 'geojson',
-            data: geojson
-          },
-          layout: {
-            'line-join': 'round',
-            'line-cap': 'round'
-          },
-          paint: {
-            'line-color': '#3887be',
-            'line-width': 5,
-            'line-opacity': 0.75
-          }
-        })
+    },
+    // summary
+    /*
+      Method grabs user coordinate, coordinates are used to map the route.
+      This route is then saved into backend.
+    */
+    methods: {
+      handleUserRoute() {
+
+        const startLocation = this.userStartLocation.split(', ')
+        const endLocation = this.userEndLocation.split(', ')
+
+
+        const startMarker = new mapboxgl.Marker()
+          .setLngLat([startLocation[0], startLocation[1]])
+          .addTo(this.map)
+
+
+        const endMarker = new mapboxgl.Marker()
+          .setLngLat([endLocation[0], endLocation[1]])
+          .addTo(this.map)
+      },
+
+      saveUserRoute() {
+        console.log(this.userStartLocation + ' ' + this.userEndLocation)
+      },
+
+      buildRoute() {
       }
-      // turn instructions here
+
+    },
+    props: ['api_key'],
+    mounted() {
+      mapboxgl.accessToken = this.api_key
+      this.map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+        center: [-118.1141, 33.7838], // starting position [lng, lat]
+        zoom: 14 // starting zoom
+      })
+
+
+    },
+    updated() {
+      console.log('updated')
     }
-    map.on('load', () => {
-      getRoute(start)
-      map.addLayer({
-        id: 'point',
-        type: 'circle',
-        source: {
-          type: 'geojson',
-          data: {
-            type: 'FeatureCollection',
-            features: [{
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'Point',
-                coordinates: start
-              }
-            }]
-          }
-        },
-        paint: {
-          'circle-radius': 10,
-          'circle-color': '#3887be'
-        }
-      })
-      map.on('click', (event) => {
-        const coords = Object.keys(event.lngLat).map((key) => event.lngLat[key])
-        const end = {
-          type: 'FeatureCollection',
-          features: [
-            {
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'Point',
-                coordinates: coords
-              }
-            }
-          ]
-        }
-        if (map.getLayer('end')) {
-          map.getSource('end').setData(end)
-        } else {
-          map.addLayer({
-            id: 'end',
-            type: 'circle',
-            source: {
-              type: 'geojson',
-              data: {
-                type: 'FeatureCollection',
-                features: [
-                  {
-                    type: 'Feature',
-                    properties: {},
-                    geometry: {
-                      type: 'Point',
-                      coordinates: coords
-                    }
-                  }
-                ]
-              }
-            },
-            paint: {
-              'circle-radius': 10,
-              'circle-color': '#f30'
-            }
-          })
-        }
-        getRoute(coords)
-      })
-    })
   }
-}
 </script>
 
 <style scoped>
   #map {
     margin: auto;
-    width: 70%;
+    width: 100%;
     height: 600px;
   }
 
   #MapSearchRec {
     position: fixed;
     left: 50px;
+  }
+
+  .startGeocoder {
+    position: absolute;
+    z-index: 1;
+    width: 50%;
+    right: 50%;
+    margin-left: -25%;
+    top: 35%;
+  }
+
+  .mapboxgl-ctrl-geocoder {
+    min-width: 100%
+  }
+
+  #instructions {
+    position: absolute;
+    margin: 20px;
+    width: 20%;
+    bottom: 20%;
+    left: 78%;
+    background-color: #fff;
+    overflow-y: scroll;
+    font-family: sans-serif;
   }
 </style>
