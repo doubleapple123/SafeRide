@@ -55,8 +55,9 @@ export default {
         userStartLocation: '',
         userEndLocation: '',
         allHazards: [],
-        possibleHazards: ['Accident', 'Obstruction', 'Bike Lane', 'Vehicle', 'Closure'],
-        selectedHazard: ''
+        possibleHazards: ['None', 'Accident', 'Obstruction', 'Bike Lane', 'Vehicle', 'Closure'],
+        selectedHazard: '',
+        markerToReport: new mapboxgl.Marker({draggable: "true"})
       }
     },
     // summary
@@ -92,22 +93,31 @@ export default {
         console.log("woof", this.allHazards)
         for (var obj of this.allHazards) {
           var typeString
+          var color
+          //switch case sets color and type string for user info
           switch (obj.type) {
             case 0: typeString = "Accident"
+              color = "#FFC300"
               break
             case 1: typeString = "Obstruction"
+              color = "#FF5733"
               break
             case 2: typeString = "Bike Lane"
+              color = "#C70039"
               break
             case 3: typeString = "Vehicle"
+              color = "#900C3F"
               break
             case 4: typeString = "Closure"
+              color = "#581845"
+              break
             default: typeString = "Default Hazard"
               break
           }
 
+          //add marker to map and allow user to view popup on click
           const myLatlng = new mapboxgl.LngLat(obj.longitude, obj.latitude)
-          const marker = new mapboxgl.Marker()
+          const marker = new mapboxgl.Marker({color: color})
             .setLngLat(myLatlng)
             .setPopup(new mapboxgl.Popup({ offset: 25 })
               .setHTML('<h3>Type: ' + typeString + '</h3><p>Time reported: ' + obj.timeReported + '</p>'))
@@ -115,8 +125,49 @@ export default {
         }
       },
 
+      onDragEnd() {
+        const lngLat = this.markerToReport.getLngLat()
+        if (confirm("Report hazard here?") == true) {
+          //posts hazard to backend, resets markerToReport and alerts user of successful report. 
+          var type = this.selectedHazard.replaceAll("\\s", "")
+
+          axios({
+            url: `https://backend20220418173746.azurewebsites.net/api/hazards/report`,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data: {
+              Type: 0,
+              Latitude: 90,
+              Longitude: 90,
+              ReportedBy: "user",
+              State: "CA",
+              Zip: 92602,
+              City: "Long Beach",
+              Expired: 0
+            },
+            method: 'POST'
+          }).then(res => { })
+            .catch(error => console.log(error))
+
+          this.selectedHazard = "None"
+          this.markerToReport.remove()
+          alert("Hazard reported.")
+          //HTTP POST TO BACKEND AND UPDATE MAP WITH NEW HAZARDS 
+        } else {
+          //reset selected hazard to none, removes hazard because it was not reported, and alert the user that report was cancelled.
+          this.selectedHazard = "None"
+          alert("Report cancelled.")
+          this.markerToReport.remove()
+        }
+      },
+
       reportHazard() {
-        
+        var color = "#FFFFFF"
+        this.markerToReport
+          .setLngLat(this.map.getCenter())
+          .addTo(this.map)
+        this.markerToReport.on('dragend', this.onDragEnd)
       }
 
     },
@@ -139,6 +190,7 @@ export default {
       this.showHazards()
       if (this.selectedHazard !== 'None' && this.selectedHazard !== '') {
         console.log(this.selectedHazard)
+        this.reportHazard()
       }
     }
   }

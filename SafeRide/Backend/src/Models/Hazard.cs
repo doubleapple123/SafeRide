@@ -42,8 +42,8 @@ namespace SafeRide.src.Models
             set { _longitude = value; }
         }
 
-        private DateTime _timeReported;
-        public DateTime TimeReported
+        private DateTime? _timeReported = null;
+        public DateTime? TimeReported
         {
             get { return _timeReported; }
             set { _timeReported = value; }

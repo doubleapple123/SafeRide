@@ -38,7 +38,7 @@ namespace SafeRide.src.Controllers
         /// <returns>OkResult upon successful report with JSON reprsenting number of rows affected in underlying database</returns>
         [HttpPost]
         [Route("report")]
-        public IActionResult Report([FromBody]Hazard h)
+        public IActionResult Report([FromBody] Hazard h)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace SafeRide.src.Controllers
                 return Ok(this._reportHazardService.Report(h));
             }catch (Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, "Meow");
             }
         }
 
