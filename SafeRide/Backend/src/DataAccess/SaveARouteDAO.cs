@@ -19,7 +19,7 @@ namespace SafeRide.src.DataAccess
                 using (SqlConnection conn = new SqlConnection(_cs))
                 {
                     conn.Open();
-                    string query = $"SELECT route FROM {tableName} WHERE userEmail= @param1";
+                    string query = $"SELECT routeName FROM {tableName} WHERE userEmail= @param1";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@param1", System.Data.SqlDbType.VarChar, 50).Value = userEmail;
@@ -45,7 +45,7 @@ namespace SafeRide.src.DataAccess
 
             return listOfRoute;
         }
-        public int AddSavedRoute(string userEmail, int routeId, string route, string tableName)
+        public int AddSavedRoute(string userEmail, int routeId, string routeName, string tableName)
         {
             int numRowsAffected = -1;
             using (SqlConnection conn = new SqlConnection(_cs)) { 
@@ -55,7 +55,7 @@ namespace SafeRide.src.DataAccess
                 {
                     cmd.Parameters.Add("@param1", System.Data.SqlDbType.VarChar, 50).Value = userEmail;
                     cmd.Parameters.Add("@param2", System.Data.SqlDbType.Int).Value = routeId;
-                    cmd.Parameters.Add("@Param3", System.Data.SqlDbType.VarChar, 200).Value = route;
+                    cmd.Parameters.Add("@Param3", System.Data.SqlDbType.VarChar, 200).Value = routeName;
                     numRowsAffected = cmd.ExecuteNonQuery();
                 }
             }

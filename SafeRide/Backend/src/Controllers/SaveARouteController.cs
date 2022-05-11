@@ -78,11 +78,11 @@ public class SaveARouteController : ControllerBase
         var userRoutes = _iSaveARouteDAO.GetSavedRoutes("apple@gmail.com", "userRoutes");
 
 
-        HttpClient client = new HttpClient();
-        
+        HttpClient client = new();
+
         foreach (var userCoords in  userRoutes)
         {
-
+            
             HttpResponseMessage response = await client.GetAsync(userCoords);
             response.EnsureSuccessStatusCode();
 
