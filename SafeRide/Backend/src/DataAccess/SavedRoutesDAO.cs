@@ -12,6 +12,7 @@ namespace SafeRide.src.DataAccess
 
         public string GetRecentRoutes(string userId)
         {
+            var returnList = new List<string>();
             try
             {
 
@@ -25,8 +26,10 @@ namespace SafeRide.src.DataAccess
                         {
                             while (reader.Read())
                             {
-                               var route = reader[""];
-                    }
+                               var route = reader["route"].ToString();
+
+                                returnList.Add(route);
+                            }
                         }
                     }
                 }
