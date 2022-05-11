@@ -28,6 +28,8 @@ namespace SafeRide.Controllers
             this.tokenService = new TokenService();
             _UMservice = new UserManagementService(_userSecurityDao);
         }
+
+
         [Microsoft.AspNetCore.Mvc.Route("createUser")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public IActionResult CreateUser([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user
