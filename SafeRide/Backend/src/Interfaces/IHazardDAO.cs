@@ -8,5 +8,6 @@ namespace SafeRide.src.Interfaces
 
         public int Report(Hazard hazard);
         public Dictionary<double, double> GetAllHazardCoordinates();
+        public List<Hazard> GetAllValidHazards();
     }
 }
