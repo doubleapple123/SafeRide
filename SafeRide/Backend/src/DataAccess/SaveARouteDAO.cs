@@ -4,7 +4,7 @@ using SafeRide.src.Models;
 
 namespace SafeRide.src.DataAccess
 {
-    public class SavedRoutesDAO :  ISavedRouteDAO
+    public class SaveARouteDAO :  ISaveARoute
     {
         private string _cs = "Server=tcp:saferidewithus.database.windows.net,1433;Initial Catalog=SafeRideDB;User ID=andyadmin;Password=Whoaman!123";
         private const string TABLE_NAME = "UserRoutes";

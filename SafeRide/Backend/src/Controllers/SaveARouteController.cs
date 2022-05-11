@@ -10,15 +10,15 @@ using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace Backend.Controllers;
 
-public class SavedRouteController : ControllerBase
+public class SaveARouteController : ControllerBase
 {
-    private ISavedRouteDAO _savedRoutesDAO;
-    private SavedRouteService _routeService;
+    private ISaveARoute _iSaveARouteDAO;
+    private SaveARouteService _routeService;
     private string api_key = "pk.eyJ1IjoiY2FudGRyaW5rbWlsayIsImEiOiJjbDAwZnFiOHkwM3kyM3FwaG1qcmFhazh6In0.ytVFjAsRLDJra61yH0ZT-w";
 
-    public SavedRouteController(ISavedRouteDAO savedRouteDAO)
+    public SaveARouteController(ISaveARoute iSaveARouteDAO)
     {
-        _savedRoutesDAO = savedRouteDAO;
+        _iSaveARouteDAO = iSaveARouteDAO;
     }
     
 
@@ -71,7 +71,7 @@ public class SavedRouteController : ControllerBase
     public async Task<IActionResult> GetSavedRoutes(string userRequest) 
     {
         var listOfJsonResponse = new List<string>();
-        var userRoutes = _savedRoutesDAO.GetSavedRoutes("apple@gmail.com", "userRoutes");
+        var userRoutes = _iSaveARouteDAO.GetSavedRoutes("apple@gmail.com", "userRoutes");
 
 
         HttpClient client = new HttpClient();
@@ -106,7 +106,7 @@ public class SavedRouteController : ControllerBase
     public async Task<IActionResult> GetRecentRoutes(string userRequest)
     {
         var listOfJsonResponse = new List<string>();
-        var userRoutes = _savedRoutesDAO.GetSavedRoutes("apple@gmail.com", "userTempRoutes");
+        var userRoutes = _iSaveARouteDAO.GetSavedRoutes("apple@gmail.com", "userTempRoutes");
 
 
         HttpClient client = new HttpClient();

@@ -1,7 +1,7 @@
 ﻿ 
 namespace SafeRide.src.Services
 {
-    public interface ISavedRouteService
+    public interface ISaveARouteService
     {
         public int AddSavedRoute(string userEmail, int routeId, string route, string tableName);
         public int DeleteSavedRoute(string userEmail, int routeId, string tableName);

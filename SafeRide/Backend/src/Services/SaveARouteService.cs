@@ -4,26 +4,22 @@ using SafeRide.src.DataAccess;
 
 namespace SafeRide.src.Services
 {
-    public class SavedRouteService : ISavedRouteService
+    public class SaveARouteService : ISaveARouteService
     {
-        private ISavedRouteDAO _isavedRouteDAO;
-        private ISavedRouteService _isavedRouteService;
+        private ISaveARoute _iSaveARouteDAO;
+        private ISaveARouteService _isaveARouteServie;
       
         private static HttpClient _httpClient;
         private string api_key = "pk.eyJ1IjoiY2FudGRyaW5rbWlsayIsImEiOiJjbDAwZnFiOHkwM3kyM3FwaG1qcmFhazh6In0.ytVFjAsRLDJra61yH0ZT-w"; 
         
 
 
-        public SavedRouteService(ISavedRouteDAO isavedRouteDAO)
+        public SaveARouteService(ISaveARoute iSavedARouteDAO)
         {
-            _isavedRouteDAO = isavedRouteDAO;
+            _iSaveARouteDAO = iSavedARouteDAO;
           
             
         }
-
-
-
-
 
         //<Summary>
         //@param string UserID
@@ -34,17 +30,17 @@ namespace SafeRide.src.Services
         //<Summary>
         public int AddSavedRoute(string userEmail, int routeId, string route, string tableName)
         {
-            return _isavedRouteDAO.AddSavedRoute(userEmail, routeId, route, tableName);
+            return _iSaveARouteDAO.AddSavedRoute(userEmail, routeId, route, tableName);
         }
 
         public List<string> GetSavedRoutes(string userEmail, string tableName)
         {
-            return _isavedRouteDAO.GetSavedRoutes(userEmail, tableName);
+            return _iSaveARouteDAO.GetSavedRoutes(userEmail, tableName);
         }
 
         public int DeleteSavedRoute(string userEmail, int routeId, string tableName)
         { 
-            return _isavedRouteDAO.DeleteSavedRoute(userEmail, routeId, tableName); 
+            return _iSaveARouteDAO.DeleteSavedRoute(userEmail, routeId, tableName); 
         }
 
         // <Summary>

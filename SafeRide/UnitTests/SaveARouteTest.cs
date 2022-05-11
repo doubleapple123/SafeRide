@@ -9,7 +9,7 @@ using Xunit;
 
 namespace SRUnitTests
 {
-    public class SavedRouteTest
+    public class SaveARouteTest
     {
         [Fact]
         public void GetSavedRoutesTest()
@@ -28,7 +28,7 @@ namespace SRUnitTests
             };
 
 
-            var testDAO = new SavedRoutesDAO();
+            var testDAO = new SaveARouteDAO();
             List<string> results = new List<string>();
             results = testDAO.GetSavedRoutes("testUser@gmail.com", "testUserTempRoute");
 
@@ -39,9 +39,10 @@ namespace SRUnitTests
         [Fact]
         public void AddSavedRouteTest()
         {
-            var testDAO = new SavedRoutesDAO();
+            var testDAO = new SaveARouteDAO();
             int results = testDAO.AddSavedRoute("testUser@gmail.com", 4, "routeurlTEST", "testUserRoute");
             int expected = 1;
+
 
             Assert.Equal(expected, results);
         }
@@ -49,7 +50,8 @@ namespace SRUnitTests
         public void DeleteASavedRoute()
         {
 
-            var testDAO = new SavedRoutesDAO();
+            var testDAO = new SaveARouteDAO();
+            
             int results = testDAO.DeleteSavedRoute("testUser@gmail.com", 4, "testUserRoute");
             int expected = 1;
 
