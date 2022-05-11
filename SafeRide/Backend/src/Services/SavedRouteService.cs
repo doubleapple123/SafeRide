@@ -1,7 +1,9 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Web.Helpers;
+using Backend.src.DataAccess;
+using Backend.src.Models;
 using SafeRide.src.DataAccess;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
@@ -11,6 +13,7 @@ namespace Backend.Services;
 public class SavedRouteService
 {
     private ISavedRouteDAO _IsavedRouteDao;
+    private RouteHistoryDAO _routeHistoryDao;
     public SavedRouteService(ISavedRouteDAO savedRouteDao)
     {
         _IsavedRouteDao = savedRouteDao;
@@ -25,7 +28,11 @@ public class SavedRouteService
     {
         return _IsavedRouteDao.AddSavedRoute(UserName, RouteName, encodedJson);
     }
-
+    public List<RouteInformation> GetAllRoutesTwo(string UserName)
+    {
+        var routeList = _routeHistoryDao.getRouteHistory(UserName);
+        return routeList;
+    }
     public List<string> GetAllRoutes(string UserName)
     {
         var routeList = _IsavedRouteDao.GetAllSavedRoutes(UserName);

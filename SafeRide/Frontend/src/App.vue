@@ -4,13 +4,17 @@
     <br />
     <router-link to="/login">Login</router-link>
     <br />
-    <router-link to="/UserRegistration">UserRegistration</router-link>
+    <router-link to="/UserRegistration">User Registration</router-link>
     <br />
     <router-link to="/User">User</router-link>
     <br />
-    <router-link to="/Map">DefaultMap</router-link>
+    <router-link to="/Map">Default Map</router-link>
     <br />
-    <router-link to="/Analytics">AnalyticsDashboard</router-link>
+    <router-link to="/Analytics">Analytics Dashboard</router-link>
+    <br />
+    <router-link to="/RouteHistory">Routes History</router-link>
+    <br />
+    <router-link to="/SearchRoute">Search Route</router-link>
   </div>
   <router-view/>
 </template>

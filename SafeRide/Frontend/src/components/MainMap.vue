@@ -20,6 +20,7 @@ export default {
     MapHeader,
     SavedRoutes
   },
+  props: ['api_key', ' startLocation', 'endLocation', 'api_key'],
   methods: {
     addSavedRoute (data) {
       let geoFeature = {
@@ -134,12 +135,11 @@ export default {
       }
     }
   },
-  props: ['api_key'],
   mounted () {
     mapboxgl.accessToken = this.api_key
     this.map = new mapboxgl.Map({
       container: 'map', // container ID
-      style: 'mapbox://styles/mapbox/satellite-v9', // style URL
+      style: 'mapbox://styles/mapbox/streets-v11', // style URL
       center: [-118.1109043, 33.7827241], // starting position [lng, lat]
       zoom: 14 // starting zoom
     })

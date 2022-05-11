@@ -5,6 +5,7 @@
 
 <script>
 import MainMap from '@/components/MainMap'
+// import SearchRoute from '@/components/SearchRoute'
 import axios from 'axios'
 export default {
   components: {
