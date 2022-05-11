@@ -19,9 +19,9 @@ namespace Backend.src.Services.Security.UserSecurity
 
         public EmailService()
         {
-            this._server = "smtp.gmail.com";
+            this._server = "smtp.office365.com";
             this._serverPort = 587;
-            this._serverAddress = "safe.riderzz@gmail.com";
+            this._serverAddress = "saferiderzz@outlook.com";
             this._serverPassword = "safeAF_bruh";
         }
 
@@ -52,7 +52,9 @@ namespace Backend.src.Services.Security.UserSecurity
                 {
                     smtpServer.UseDefaultCredentials = false;
                     smtpServer.Credentials = new System.Net.NetworkCredential(_serverAddress, _serverPassword);
+                    smtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpServer.EnableSsl = true;
+
                     try
                     {
                         smtpServer.Send(mail);
