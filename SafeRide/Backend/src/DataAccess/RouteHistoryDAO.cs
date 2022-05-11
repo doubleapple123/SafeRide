@@ -9,22 +9,14 @@ namespace Backend.src.DataAccess
 {
     public class RouteHistoryDAO
     {
-        private SqlConnectionStringBuilder builder;
+        private string _cs = "Server=tcp:saferidedb.database.windows.net,1433;Initial Catalog=SafeRide_DB;Persist Security Info=False;User ID=azureuser;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         private const string TABLE_NAME = "RouteInfo";
 
-        public RouteHistoryDAO(IConfiguration config)
-        {
-            builder = new SqlConnectionStringBuilder();
-            builder.DataSource = "saferidedb.database.windows.net";
-            builder.UserID = "azureuser";
-            builder.Password = config["passkey123'"];
-            builder.InitialCatalog = "SafeRide_DB";
-        }
 
         public bool searchRoute(string startpoint, string endpoint, string instructions, string username)
         {
             string query = $"INSERT INTO {TABLE_NAME} values ('{startpoint}','{endpoint}','{instructions}', '{username}'";
-            return ExecuteQuery.ExecuteCommand(builder.ConnectionString, query);
+            return ExecuteQuery.ExecuteCommand(_cs, query);
         }
         public List<RouteInformation> getRouteHistory(string UserName)
         {
@@ -32,7 +24,7 @@ namespace Backend.src.DataAccess
             string query = $"SELECT startpoint, endpoint, instructions, username FROM {TABLE_NAME} WHERE username='{UserName}'";
             try
             {
-                using (var sqlConn = new SqlConnection(builder.ConnectionString))
+                using (var sqlConn = new SqlConnection(_cs))
                 {
                     using (SqlCommand cmd = new SqlCommand(query, sqlConn))
                     {
