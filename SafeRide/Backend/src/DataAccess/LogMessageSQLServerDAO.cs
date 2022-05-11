@@ -18,8 +18,8 @@ namespace SafeRide.src.DataAccess
         /// <summary>
         /// The connection string is retrieved from the App.config file so it can be easily changed without having to refactor this code.
         /// </summary>
-        private string _cs = System.Configuration.ConfigurationManager.ConnectionStrings["SafeRideDB"].ConnectionString;
-        
+        private string _cs = "Server=tcp:updatedbackend.database.windows.net,1433;Initial Catalog=UpdatedDatabase;Persist Security Info=False;User ID=colincreasman;Password=saferide.714;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
         /// <summary>
         /// Inserts a log message into the database's "Logs" table
         /// </summary>

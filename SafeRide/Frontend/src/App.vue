@@ -15,6 +15,10 @@
     <router-link to="/RouteHistory">Routes History</router-link>
     <br />
     <router-link to="/SearchRoute">Search Route</router-link>
+    <br />
+    <router-link to="/Analytics">AnalyticsDashboard</router-link>
+    <br />
+    <!-- <router-link to="/Hazards">Home</router-link> -->
   </div>
   <router-view/>
 </template>

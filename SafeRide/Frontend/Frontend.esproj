@@ -3,7 +3,7 @@
     <ProjectGuid>b9081e2b-0b17-443a-9753-cdf9c392e081</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <StartupCommand>npm run serve -- --port 5002 --fix</StartupCommand>
+    <StartupCommand>npm run serve -- --port 5001 --fix</StartupCommand>
     <JavaScriptTestRoot>.\</JavaScriptTestRoot>
     <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
   </PropertyGroup>
@@ -18,6 +18,8 @@
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />    
+    <Exec Command="export NODE_OPTIONS=--openssl-legacy-provider">
+    </Exec>
   </Target>
 </Project>
