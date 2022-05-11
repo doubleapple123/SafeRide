@@ -11,7 +11,7 @@
     <h2>Email Confirmation</h2>
     <form class="form-group">
       <input v-model="otp" type="text" class="form-control" placeholder="One-Time Passphrase" required>
-      <input type="submit" class="btn btn-primary" @click="verifyOTP">
+      <input type="submit" class="btn btn-primary" @click="verifyEmail">
     </form>
   </div>
 </template>
@@ -27,26 +27,29 @@ export default {
         axios.post('https://updatedbackend-apim.azure-api.net/v1/user/createUser', {
           Username: this.userName,
           Email: this.userEmail,
-          Passphrase: this.userPassphrase,
+         //Passphrase: this.userPassphrase,
           Role: 'User',
           Valid: true
         },
         {
-          withCredentials: false
+          withCredentials: false,
+          params: { 
+            passphrase: this.userPassphrase
+            }
         })
           .then(function (response) {
             console.log(response)
-            window.alert('Email Confirmation Sent - Please enter the unique one-time passphrase sent to your email to complete registration')
+            window.alert(JSON.stringify(response.data.message))
           })
           .catch(function (error) {
             console.log(error)
-            window.alert('Account creation error. Could not send out OTP to complete registration. Please retry again or contact system administrator')
+            window.alert(error)
           })
       }
     },
-    verifyOTP () {
+    verifyEmail() {
       if (this.otp) {
-        axios.get('https://updatedbackend-apim.azure-api.net/v1/api/verifyOTP', {
+        axios.get('https://updatedbackend-apim.azure-api.net/v1/api/verifyEmail', {
           withCredentials: true,
           params: {
             otpPassphrase: this.otp
@@ -56,11 +59,11 @@ export default {
             var token = response.data.token
             localStorage.setItem('token', JSON.stringify(token))
             console.log(response)
-            window.alert('OTP Verified. User sucessfully logged in with token = ' + localStorage.getItem('token'))
+            window.alert(JSON.stringify(response.data.message))
           })
           .catch(function (error) {
             console.log(error)
-            window.alert('OTP error')
+            window.alert(error)
           })
       }
     }

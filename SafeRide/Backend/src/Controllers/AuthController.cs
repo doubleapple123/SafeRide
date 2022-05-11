@@ -74,23 +74,27 @@ namespace SafeRide.src.Services
            // _user = user;
             IActionResult response = Unauthorized();
             var valid = true;
-            UserSecurityModel validUser = null;
+            UserSecurityModel? validUser = null;
+            _user = user;
+
 
             try
             {
                 validUser = this.userRepository.GetUser(user);
-                if (validUser.UserName != user.UserName)
-                {
-                    valid = false;
-                    string message = "Login failed - Incorrect username and/or password.";
-                    response = Ok(new { message });
-                    return response;
-                }
-                else
-                {
-                    _user = validUser;
-                }
             }
+
+            //    if (validUser.UserName == null)
+            //    {
+            //        valid = false;
+            //        string message = "Login failed - Incorrect username and/or password.";
+            //        response = Ok(new { message });
+            //        return response;
+            //    }
+            //    else
+            //    {
+            //        _user = validUser;
+            //    }
+            //}
             catch (Exception ex)
             {
 
