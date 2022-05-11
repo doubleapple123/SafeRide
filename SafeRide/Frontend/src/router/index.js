@@ -37,11 +37,6 @@ const routes = [
       component: LoggedInInitialView
   },
   {
-    path: '/analytics',
-    name: 'Analytics',
-    component: AnalysisDashboard
-  },
-  {
     path: "/usermanagement",
     name: "UserManage",
     component: UserManagement

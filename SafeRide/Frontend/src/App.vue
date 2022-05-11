@@ -12,14 +12,9 @@
     <br />
     <router-link to="/UserManagement">Manage Users</router-link>
     <br />
-    <router-link to="/Analytics">Analytics Dashboard</router-link>
-    <br />
     <router-link to="/RouteHistory">Routes History</router-link>
     <br />
     <router-link to="/SearchRoute">Search Route</router-link>
-    <br />
-    <router-link to="/Analytics">AnalyticsDashboard</router-link>
-    <br />
     <!-- <router-link to="/Hazards">Home</router-link> -->
   </div>
   <router-view/>
@@ -37,7 +32,7 @@ export default {
     async checkToken () {
       let ret = false
       axios.defaults.headers.common.Authorization = localStorage.getItem('token')
-      await axios.post('https://localhost:5001/api/verifyToken')
+      await axios.post('https://updatedbackend-apim.azure-api.net/v1/api/verifyToken')
         .then(async function (){
           ret = true
         })
