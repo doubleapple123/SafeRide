@@ -33,7 +33,7 @@ export default {
           .then(function (response) {
             
             console.log(response)
-            window.alert('OTP Sent - Please verify your account login by entering the temporary one-time passphrase sent to your email address')
+            window.alert('A temporary one-time passphrase has been sent to your email address - Please enter your unique OTP to complete verification. \n Note: This OTP will expire 2 minutes after being sent')
           })
           .catch(function (error) {
             console.log(error)

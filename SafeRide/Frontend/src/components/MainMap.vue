@@ -101,7 +101,7 @@ export default {
     },
     excludeHazard () {
       if (this.excludeHazard != undefined) {
-      axios.post('https://backendsaferideapi.azure-api.net/overlayAPI/api/hazard/simpleHazard', {
+      axios.post('https://updatedbackend-apim.azure-api.net/v1/overlayAPI/api/hazard/simpleHazard', {
         Hazard: this.excludedHazard
       }, {
         withCredentials: false
