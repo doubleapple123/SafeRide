@@ -12,11 +12,13 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
 
     public UserSQLSecurityDAO(IConfiguration config)
     {
-        builder = new SqlConnectionStringBuilder();
-        builder.DataSource = "saferidesql.database.windows.net";
-        builder.UserID = "saferideapple";
-        builder.Password = config["AppKey:DBKey"];
-        builder.InitialCatalog = "SafeRide_DB";
+        //builder = new SqlConnectionStringBuilder();
+        //builder.DataSource = "saferidesql.database.windows.net";
+        //builder.UserID = "saferideapple";
+        //builder.Password = config["AppKey:DBKey"];
+        //builder.InitialCatalog = "SafeRide_DB";
+
+        string _cs = "";
     }
     
     private bool ExecuteCommand(SqlCommand cmd)

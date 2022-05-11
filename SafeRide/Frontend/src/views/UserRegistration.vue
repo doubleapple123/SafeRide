@@ -2,11 +2,11 @@
   <div class="UserRegistration">
     <h1>Registration</h1>
     <p>Enter desired Username, Email, and passphrase</p>
-    <form class="form-group">
-      <input v-model="userName" type="text" class="form-control" placeholder="Username" required>
+    <form @submit.prevent="doRegistration" class="form-group">
+      
       <input v-model="userEmail" type="text" class="form-control" placeholder="Email Address" required>
-      <input v-model="userOTP" type="text" class="form-control" placeholder="Passphrase" required>
-      <input type="submit" class="btn btn-primary" @click="doRegistration">
+      <input v-model="userPassphrase" type="text" class="form-control" placeholder="Passphrase" required>
+      <input type="submit" class="btn btn-primary">
     </form>
   </div>
 </template>
@@ -18,11 +18,11 @@ export default {
   name: 'Home',
   methods: {
     doRegistration () {
-      if (this.userName !== undefined && this.userEmail !== undefined && this.userOTP !== undefined) {
+      if (this.userEmail !== undefined && this.userOTP !== undefined) {
         axios.post('https://localhost:5001/user/createUser', {
-          Username: this.userName,
+          
           Email: this.userEmail,
-          Passphrase: this.userTOP,
+          Passphrase: this.userPassphrase,
           Role: 'User',
           Valid: true
         })
