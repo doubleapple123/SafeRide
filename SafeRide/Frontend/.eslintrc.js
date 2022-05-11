@@ -18,6 +18,8 @@ module.exports = {
     'space-before-function-paren': 'off',
     'no-unused-vars': 'off',
     'no-multiple-empty-lines': 'off',
-    'padded-blocks': 'off'
+    'padded-blocks': 'off',
+    'quotes': 'off',
+    'quote-props': 'off'
   }
 }

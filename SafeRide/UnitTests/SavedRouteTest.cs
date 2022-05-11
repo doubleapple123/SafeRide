@@ -14,7 +14,7 @@ namespace SRUnitTests
         {
             
             var testDAO = new SavedRoutesDAO();
-            List<string> results = new List<string>;
+            List<string> results = new List<string>();
             results = testDAO.GetRecentRoutes("1");
             List<string> expected = new List<string> { "routeurl", "routeurl2" };
             

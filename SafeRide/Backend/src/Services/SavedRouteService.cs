@@ -29,19 +29,19 @@ namespace SafeRide.src.Services
         //
         //Method to add saved route to Database.
         //<Summary>
-        public int AddSavedRoute(string UserID, int routeId, string route)
+        public int AddSavedRoute(string UserID, int routeId, string route, string tableName)
         {
-            return _isavedRouteDAO.AddSavedRoute(UserID, routeId, route);
+            return _isavedRouteDAO.AddSavedRoute(UserID, routeId, route, tableName);
         }
 
-        public List<string> GetRecentRoutes(string userId)
+        public List<string> GetRecentRoutes(string userId, string tableName)
         {
-            return _isavedRouteDAO.GetRecentRoutes(userId);
+            return _isavedRouteDAO.GetRecentRoutes(userId, tableName);
         }
 
-        public List<string> GetSavedRoutes(string userId)
+        public List<string> GetSavedRoutes(string userId, string tableName)
         {
-            return _isavedRouteDAO.GetSavedRoutes(userId);
+            return _isavedRouteDAO.GetSavedRoutes(userId, tableName);
         }
 
 

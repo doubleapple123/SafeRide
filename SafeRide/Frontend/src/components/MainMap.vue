@@ -34,7 +34,40 @@ export default {
   data () {
     return {
       userStartLocation: '',
-      userEndLocation: ''
+      userEndLocation: '',
+      varHazards: [{
+        "type": 0,
+        "latitude": 33.7838,
+        "longitude": -118.1141,
+        "timeReported": "2022-03-07T00:00:00",
+        "state": "CA",
+        "zip": 95376,
+        "city": "Tracy",
+        "expired": 0,
+        "reportedBy": "203971hXhcFO"
+      },
+      {
+        "type": 0,
+        "latitude": 33.781662,
+        "longitude": -118.122361,
+        "timeReported": "2022-03-07T00:00:00",
+        "state": "CA",
+        "zip": 95376,
+        "city": "Tracy",
+        "expired": 0,
+        "reportedBy": "203971hXhcFO"
+      },
+      {
+        "type": 0,
+        "latitude": 33.781510,
+        "longitude": -118.109003,
+        "timeReported": "2022-03-07T00:00:00",
+        "state": "CA",
+        "zip": 95376,
+        "city": "Tracy",
+        "expired": 0,
+        "reportedBy": "203971hXhcFO"
+      }]
     }
     },
   // summary
@@ -60,7 +93,17 @@ export default {
     },
 
     saveUserRoute() {
-      console.log(this.userStartLocation + ' ' + this.userEndLocation)
+
+     
+
+      for (var obj of this.varHazards) {
+        const myLatlng = new mapboxgl.LngLat(obj.longitude, obj.latitude)
+        const marker = new mapboxgl.Marker()
+          .setLngLat(myLatlng)
+          .setPopup(new mapboxgl.Popup({ offset: 25 })
+            .setHTML('<h3>' + obj.timeReported + '</h3><p>' + obj.reportedBy + '</p>'))
+          .addTo(this.map)
+      }
     },
 
     buildRoute() {
@@ -77,6 +120,7 @@ export default {
         zoom: 14 // starting zoom
        })
 
+      this.saveUserRoute()
       
   },
     updated() {
