@@ -22,6 +22,7 @@ namespace SafeRide.src.Services
         private readonly ITokenService tokenService;
         private readonly IOTPService otpService;
         private readonly IEmailService emailService;
+        private static OTP _otp;
         private UserSecurityModel _user;
 
 
@@ -40,16 +41,16 @@ namespace SafeRide.src.Services
             //this.otpService = otpService;
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         [Microsoft.AspNetCore.Mvc.Route("verifyOTP")]
-        public IActionResult VerifyOTP([Microsoft.AspNetCore.Mvc.FromBody] OTP otp) {
+        public IActionResult VerifyOTP([FromUri] string otpPassphrase,[Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user)  {
             IActionResult response = Unauthorized();
-            string otpPassphrase = otp.Passphrase;
-            if (otpService.ValidateOTP(otpPassphrase))
+            //string otpPassphrase = otp.Passphrase;
+            if (otpService.ValidateOTP(_otp, otpPassphrase))
             {
                 try
                 {
-                    generatedToken = tokenService.BuildToken(SECRET_KEY, ISSUER, _user);
+                    generatedToken = tokenService.BuildToken(SECRET_KEY, ISSUER, user);
                     if (generatedToken != null)
                     {
                         response = Ok(new { token = generatedToken });
@@ -69,6 +70,7 @@ namespace SafeRide.src.Services
         [Microsoft.AspNetCore.Mvc.Route("login")]
         public IActionResult Login([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user)
         {
+            _user = user;
             IActionResult response = Unauthorized();
             var valid = true;
             UserSecurityModel validUser = null;
@@ -86,30 +88,30 @@ namespace SafeRide.src.Services
 
             //if (valid && validUser != null)
             //{
-               
-                try
-                {
+
+            try
+            {
                 otpService.GenerateOTP();
-                   var otp = otpService.GetOTP();
-                   bool success = emailService.SendOTP(user.Email, otp);
+                _otp = otpService.GetOTP();
+                bool success = emailService.SendOTP(user.Email, _otp);
 
-                    if (success)
-                    {
-                        string message = "A temporary One-Time password has been sent to your email. Please verify the your account by entering the OTP that was sent to: ";
-                        Console.WriteLine(message);
-                        response = Ok(new { message });
-                    }
-                }
-
-                catch (Exception ex)
+                if (success)
                 {
-                    response = Unauthorized();
+                    string message = "A temporary One-Time password has been sent to your email. Please verify the your account by entering the OTP that was sent to: ";
+                    Console.WriteLine(message);
+                    response = Ok(new { message });
                 }
-          //  }
+            }
+
+            catch (Exception ex)
+            {
+                response = Unauthorized();
+            }
+            //  }
             return response;
         }
 
-        
+
         [AuthorizeAttribute.ClaimRequirementAttribute("role", "admin")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
         [Microsoft.AspNetCore.Mvc.Route("verifyToken")]
@@ -130,3 +132,4 @@ namespace SafeRide.src.Services
         }
     }
 }
+

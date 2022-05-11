@@ -44,18 +44,20 @@ public class OTPService : IOTPService
         // }
     }
 
+  
+
     public void GenerateOTP()
     {
         _generatedOTP = new OTP();      
     }
 
 
-    public bool ValidateOTP(string providedOTP)
+    public bool ValidateOTP(OTP generatedOTP, string providedOTP)
     {
         // if current otp is expired or has been used, create a new OTP before sending 
-        if (_generatedOTP.IsExpired || _generatedOTP.IsUsed)
+        if (generatedOTP.IsExpired || generatedOTP.IsUsed)
         {
-            _generatedOTP = new OTP();
+            generatedOTP = new OTP();
         }
 
         // Console.WriteLine("Please enter the OTP sent to your email: ");
@@ -78,10 +80,10 @@ public class OTPService : IOTPService
         */
         }
 
-        if (_generatedOTP.Compare(providedOTP))
+        if (generatedOTP.Compare(providedOTP))
         {
             _isValidated = true;
-            _generatedOTP.IsUsed = true;  // set IsUsed to true so that the OTP cannot be used again
+            generatedOTP.IsUsed = true;  // set IsUsed to true so that the OTP cannot be used again
             //return true;
         }
         return _isValidated;

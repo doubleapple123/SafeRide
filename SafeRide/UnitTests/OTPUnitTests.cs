@@ -67,7 +67,7 @@ namespace SRUnitTests
 			string actualOTP = otp.Passphrase;
 
 			bool expected = true;
-			bool actual = otpService.ValidateOTP(actualOTP);
+			bool actual = otpService.ValidateOTP(otp, actualOTP);
 			Assert.Equal(expected, actual);
 		}
 
@@ -95,7 +95,63 @@ namespace SRUnitTests
 
 			Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 		}
+
+
+		//[Fact]
+		//public async Task VerifyOTP()
+		//{
+
+		//	//OTPService otpService = new OTPService();
+		//	//EmailService emailService = new EmailService();
+		//	//otpService.GenerateOTP();
+		//	//OTP otp = otpService.GetOTP();
+		//	//string otpPass = otp.Passphrase;
+		//	//string testEmail = "colincreasman@gmail.com";
+		//	//bool success = emailService.SendOTP(testEmail, otp);
+
+
+		//	await using var application = new CustomWebAppFactory();
+		//	using var client = application.CreateClient();
+
+		//	var request1 = new HttpRequestMessage(HttpMethod.Post, "api/login");
+
+		//	request1.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(new
+		//	{
+		//		UserName = "colin",
+		//		Email = "colincreasman@gmail.com",
+		//		Role = "Admin",
+		//		Valid = true
+		//	}), Encoding.UTF8, "application/json");
+
+		//	// act
+
+		//	using var response1 = await client.SendAsync(request1);
+
+
+
+
+		//	var queryString = new Dictionary<string, string>()
+		//	{
+		//		{ "otpPassphrase", otpPass }
+		//	};
+
+		//	var requestUri = QueryHelpers.AddQueryString("api/verifyOTP", queryString);
+
+		//	var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+		//	request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(new
+		//	{
+		//		UserName = "colin",
+		//		Email = "colincreasman@gmail.com",
+		//		Role = "Admin",
+		//		Valid = true
+		//	}), Encoding.UTF8, "application/json");
+
+		//	using var response = await client.SendAsync(request);
+
+		//	Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+		//}
 	}
 }
-
 
