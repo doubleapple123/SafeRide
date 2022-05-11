@@ -23,7 +23,7 @@ namespace SafeRide.src.Services
         private readonly IOTPService otpService;
         private readonly IEmailService emailService;
         private static OTP _otp;
-        private UserSecurityModel _user;
+        private static UserSecurityModel _user;
 
 
         private string generatedToken = null;
@@ -43,14 +43,15 @@ namespace SafeRide.src.Services
 
         [Microsoft.AspNetCore.Mvc.HttpGet]
         [Microsoft.AspNetCore.Mvc.Route("verifyOTP")]
-        public IActionResult VerifyOTP([FromUri] string otpPassphrase,[Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user)  {
+        public IActionResult VerifyOTP([FromUri] string otpPassphrase)  {
+
             IActionResult response = Unauthorized();
             //string otpPassphrase = otp.Passphrase;
             if (otpService.ValidateOTP(_otp, otpPassphrase))
             {
                 try
                 {
-                    generatedToken = tokenService.BuildToken(SECRET_KEY, ISSUER, user);
+                    generatedToken = tokenService.BuildToken(SECRET_KEY, ISSUER, _user);
                     if (generatedToken != null)
                     {
                         response = Ok(new { token = generatedToken });
