@@ -18,7 +18,7 @@ namespace SafeRide.src.DataAccess
                 using (SqlConnection conn = new SqlConnection(_cs))
                 {
                     conn.Open();
-                    string query = $"SELECT { route }, WHERE userID= {userId}";
+                    string query = $"SELECT route WHERE userID= {userId}";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         using (var reader = cmd.ExecuteReader())
