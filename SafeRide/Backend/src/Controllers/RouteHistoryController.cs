@@ -2,7 +2,6 @@
 using System.Web.Http;
 using Backend.src.Models;
 using Backend.src.Interfaces;
-using Backend.src.Services;
 using Backend.Services;
 
 namespace Backend.src.Controllers;
@@ -25,7 +24,7 @@ namespace Backend.src.Controllers;
             // var user = JwtDecoder.GetUser(authorization);
             // if (user == null) return Unauthorized();
 
-            var routeInfo = RouteService.GetAllRoutes(userName);
+            var routeInfo = RouteService.GetAllRoutesTwo(userName);
             return Ok(new { routeInfo });
 
         }

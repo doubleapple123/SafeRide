@@ -59,6 +59,7 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
     options.AddPolicy("TokenAuth", policy => policy.Requirements.Add(new )
 });*/
 
+builder.Services.AddTransient<ISavedRouteDAO, SavedRouteDAO>();
 builder.Services.AddTransient<IUserSecurityDAO, UserSQLSecurityDAO>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ITokenService, TokenService>();
@@ -117,7 +118,7 @@ app.MapControllers();
 
 
 // for testing OTP auth
-OTPService auth = new OTPService();
+//OTPService auth = new OTPService();
 // auth.SendEmail();
 // Console.WriteLine("OTP Sent");
 // Console.WriteLine("Enter OTP:");
