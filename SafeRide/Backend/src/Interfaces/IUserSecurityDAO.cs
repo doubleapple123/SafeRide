@@ -8,4 +8,6 @@ public interface IUserSecurityDAO
     public UserSecurityModel Read(string username);
     public bool Update(string username, UserSecurityModel user);
     public bool Delete(string username);
+    public bool Disable(string username);
+    public bool Enable(string username);
 }

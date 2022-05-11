@@ -111,7 +111,25 @@ namespace SafeRide.src.Services
             //  }
             return response;
         }
+        
+        //[Microsoft.AspNetCore.Mvc.HttpPost]
+        //[Microsoft.AspNetCore.Mvc.Route("otp")]
+        //public IActionResult Validate([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user, [FromUri] string providedOTP)
+        //{
+        //    IActionResult response = Unauthorized();
+        //    if (otpService.ValidateOTP(providedOTP)) {
+        //        response = Ok();
+        //    //otpService = new OTPService(validUser);
+        //    UserSecurityModel validUser = null;
 
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
+
+        //    return response;
+        //}
 
         [AuthorizeAttribute.ClaimRequirementAttribute("role", "admin")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
@@ -131,6 +149,8 @@ namespace SafeRide.src.Services
                 return BadRequest();
             }
         }
+        
+        
     }
 }
 

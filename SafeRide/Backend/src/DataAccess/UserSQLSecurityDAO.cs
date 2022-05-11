@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
 
@@ -19,14 +20,14 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
         builder.InitialCatalog = "UpdatedDatabase";
     }
     
-    
-    private bool ExecuteCommand(string queryStr)
+    private bool ExecuteCommand(SqlCommand cmd)
+
     {
         try
         {
             using (var sqlConn = new SqlConnection(builder.ConnectionString))
             {
-                SqlCommand cmd = new SqlCommand(queryStr, sqlConn);
+                cmd.Connection = sqlConn;
                 cmd.Connection.Open();
                 cmd.ExecuteNonQuery();
 
@@ -45,8 +46,9 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
         string query = $"INSERT INTO {TABLE_NAME} (username, email, role, valid) VALUES" +
                        $" ('{user.UserName}', '{user.Email}', '{user.Role}', '{user.Valid}');";
 
-        Console.WriteLine(query);
-        return ExecuteCommand(query);
+        SqlCommand command = new SqlCommand();
+        command.CommandText = query;
+        return ExecuteCommand(command);
     }
 
     public UserSecurityModel Read(string username)
@@ -90,15 +92,32 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
     {
         string query = $"update {TABLE_NAME} set " +
                        $"username='{user.UserName}', email='{user.Email}',role='{user.Role}', valid='{user.Valid}' " +
-                       $"where username='{user.UserName}';";
+                       $"where username='{username}';";
 
-        Console.WriteLine(query);
-        return ExecuteCommand(query);
+        SqlCommand command = new SqlCommand();
+        command.CommandText = query;
+        return ExecuteCommand(command);
     }
 
     public bool Delete(string username)
     {
-        String query = $"DELETE FROM {TABLE_NAME} WHERE username = '{username}'";
-        return ExecuteCommand(query);
+        string query = $"DELETE FROM {TABLE_NAME} WHERE username = '{username}'";
+        SqlCommand command = new SqlCommand();
+        command.CommandText = query;
+        return ExecuteCommand(command);
+    }
+
+    public bool Disable(string username)
+    {
+        SqlCommand command = new SqlCommand();
+        command.CommandText = $"UPDATE {TABLE_NAME} SET valid='False' where username='{username}'";
+        return ExecuteCommand(command);
+    }
+
+    public bool Enable(string username)
+    {
+        SqlCommand command = new SqlCommand();
+        command.CommandText = $"UPDATE {TABLE_NAME} SET valid='True' where username='{username}'";
+        return ExecuteCommand(command);
     }
 }
