@@ -71,44 +71,62 @@ namespace SafeRide.src.Services
         [Microsoft.AspNetCore.Mvc.Route("login")]
         public IActionResult Login([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user)
         {
-            _user = user;
+           // _user = user;
             IActionResult response = Unauthorized();
             var valid = true;
             UserSecurityModel validUser = null;
 
-            //try
-            //{
-            //    validUser = this.userRepository.GetUser(user);
-            //    _user = validUser;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine(ex.Message);
-            //    valid = false;
-            //}
-
-            //if (valid && validUser != null)
-            //{
-
             try
             {
-                otpService.GenerateOTP();
-                _otp = otpService.GetOTP();
-                bool success = emailService.SendOTP(user.Email, _otp);
-
-                if (success)
+                validUser = this.userRepository.GetUser(user);
+                if (validUser.UserName != user.UserName)
                 {
-                    string message = "A temporary One-Time password has been sent to your email. Please verify the your account by entering the OTP that was sent to: ";
-                    Console.WriteLine(message);
+                    valid = false;
+                    string message = "Login failed - Incorrect username and/or password.";
                     response = Ok(new { message });
+                    return response;
+                }
+                else
+                {
+                    _user = validUser;
                 }
             }
-
             catch (Exception ex)
             {
-                response = Unauthorized();
+
+                Console.WriteLine(ex.Message);
+                valid = false;
+
             }
-            //  }
+
+            if (valid == true && validUser != null)
+            {
+
+                try
+                {
+                    otpService.GenerateOTP();
+                    _otp = otpService.GetOTP();
+                    bool success = emailService.SendOTP(user.Email, _otp);
+
+                    if (success)
+                    {
+                        string message = "A temporary One-Time password has been sent to your email. Pleae enter your unique OTP to verify your credentials and complete login";
+                        // Console.WriteLine(message);
+                        response = Ok(new { message });
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    response = Unauthorized();
+                }
+            }
+            else
+            {
+                string message = "Login failed - Incorrect username and/or password.";
+                response = Ok(new { message });
+               // return response;
+            }
             return response;
         }
 
