@@ -31,6 +31,13 @@ namespace SRUnitTests
         }
 
         [Fact]
+
+        public void TestGetAllRoutes()
+        {
+
+        }
+
+        [Fact]
         public void TestOTPGeneration()
         {
             OTPService otpService = new OTPService();
