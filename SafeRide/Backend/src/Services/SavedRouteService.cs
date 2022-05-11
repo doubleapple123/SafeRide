@@ -7,17 +7,20 @@ namespace SafeRide.src.Services
     public class SavedRouteService : ISavedRouteService
     {
         private ISavedRouteDAO _isavedRouteDAO;
+        private ISavedRouteService _isavedRouteService;
       
         private static HttpClient _httpClient;
-        private string api_key = "";
-        private string baseUrl = "";
+        private string api_key = "pk.eyJ1IjoiY2FudGRyaW5rbWlsayIsImEiOiJjbDAwZnFiOHkwM3kyM3FwaG1qcmFhazh6In0.ytVFjAsRLDJra61yH0ZT-w"; 
+        
 
 
         public SavedRouteService(ISavedRouteDAO isavedRouteDAO)
         {
             _isavedRouteDAO = isavedRouteDAO;
-            _httpClient = new HttpClient();
+          
+            
         }
+
 
 
 
@@ -49,17 +52,20 @@ namespace SafeRide.src.Services
         // @Param string End Location as coordinates
         // Method makes call to mapBox directions API to retrieve json response
         // </summary>
-        public async Task<string> GetRouteData(string routeUrl)
-        {
-          
-            var request = new HttpRequestMessage(HttpMethod.Get,$"{routeUrl}");
-            var response = await _httpClient.SendAsync(request);
-
-            return await response.Content.ReadAsStringAsync();
+        //public async Task<string> GetRouteData(List<string> routeCoords)
+        //{
+        //    var requestURL =
+        //        "https://api.mapbox.com/directions/v5/mapbox/cycling/${routeCoords[0]},${routeCoords[1]};${routeCoords[2]},${routeCoords[3]}?steps=true&geometries=geojson&access_token=${api_key}";
 
 
-        }
+        //    var request = new HttpRequestMessage(HttpMethod.Get,$"{ requestURL}");
+        //    var response = await _httpClient.SendAsync(request);
 
+        //    return await response.Content.ReadAsStringAsync();
+
+
+        //}
+        
 
 
     }
