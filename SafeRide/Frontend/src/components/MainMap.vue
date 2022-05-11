@@ -3,6 +3,7 @@
 
   <div>
     <div id='mapControllers'>
+      {{allHazards}}
       <form @submit.prevent="handleUserRoute">
         <MapSearchRectangle v-model="userStartLocation" placeholder="Start Location" />
         <MapSearchRectangle v-model="userEndLocation" placeholder="End Location" />
@@ -27,6 +28,8 @@ import MapHeader from '@/components/MapHeader.vue'
 import MapFooter from '@/components/MapFooter'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import mapboxgl from 'mapbox-gl'
+import axios from 'axios'
+
 export default {
   components: {
     MapSearchRectangle,
@@ -41,7 +44,8 @@ export default {
     data() {
       return {
         userStartLocation: '',
-        userEndLocation: ''
+        userEndLocation: '',
+        allHazards: []
       }
     },
     // summary
@@ -71,11 +75,28 @@ export default {
       },
 
       buildRoute() {
+      },
+
+      showHazards() {
+        for (var obj of this.allHazards) {
+          const myLatlng = new mapboxgl.LngLat(obj.longitude, obj.latitude)
+          const marker = new mapboxgl.Marker()
+            .setLngLat(myLatlng)
+            .setPopup(new mapboxgl.Popup({ offset: 25 })
+              .setHTML('<h3>' + obj.timeReported + '</h3><p>' + obj.reportedBy + '</p>'))
+            .addTo(this.map)
+        }
       }
 
     },
     props: ['api_key'],
+    beforeMount() {
+      axios
+        .get('https://backend20220418173746.azurewebsites.net/api/hazards/getHazards')
+        .then(response => (this.allHazards = response.data))
+    },
     mounted() {
+      console.log("meow", this.allHazards)
       mapboxgl.accessToken = this.api_key
       this.map = new mapboxgl.Map({
         container: 'map', // container ID
@@ -83,8 +104,7 @@ export default {
         center: [-118.1141, 33.7838], // starting position [lng, lat]
         zoom: 14 // starting zoom
       })
-
-
+      this.showHazards()
     },
     updated() {
       console.log('updated')
