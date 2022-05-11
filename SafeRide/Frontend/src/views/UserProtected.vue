@@ -2,7 +2,7 @@
   <h1 v-if=loggedIn>
     <a href="#">Home </a>
     <a href="#">AddRoute </a>
-    <a v-on:click="logout" href="#">LogOut</a>
+    <button v-on:click="logout">Logout></button>
   </h1>
   <h1 v-else>
     not logged in, {{ loggedIn }}
@@ -36,7 +36,7 @@ export default {
   name: 'UserProtected',
   methods: {
     logout () {
-      localStorage.clear()
+      localStorage.setItem('token', "")
       this.$router.push({ name: 'Login' })
     }
   }
