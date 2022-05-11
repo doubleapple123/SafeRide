@@ -34,7 +34,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Backend\Backend.csproj" />
-    <ProjectReference Include="..\SafeRide\Backend.csproj" />
   </ItemGroup>
 
 

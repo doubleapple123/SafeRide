@@ -23,27 +23,8 @@
     <None Remove="System.Web.Http.Common" />
     <None Remove="Microsoft.AspNet.WebApi.Core" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs" />
-    <Compile Include="obj\Debug\net6.0\Backend.GlobalUsings.g.cs" />
-  </ItemGroup>
-
-    <ItemGroup>
-     <InternalsVisibleTo Include="SRUnitTests" />
-    </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="bin\Debug\net6.0\SafeRide.deps.json" />
-    <Content Include="bin\Debug\net6.0\SafeRide.runtimeconfig.json" />
-    <Content Include="obj\Debug\net6.0\project.razor.json" />
-    <Content Include="obj\Debug\net6.0\SafeRide.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\project.assets.json" />
-    <Content Include="obj\SafeRide.csproj.nuget.dgspec.json" />
-  </ItemGroup>
    
   <ItemGroup>
-    <Folder Include="obj\Debug\net6.0\staticwebassets\" />
     <Folder Include="src\Attributes" />
     <Folder Include="src\Services\OverlayFeature" />
     <Folder Include="wwwroot\" />
