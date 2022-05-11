@@ -3,7 +3,7 @@
 
   <div>
     <div id='mapControllers'>
-      {{allHazards}}
+      <p hidden>{{allHazards}}</p>
       <form @submit.prevent="handleUserRoute">
         <MapSearchRectangle v-model="userStartLocation" placeholder="Start Location" />
         <MapSearchRectangle v-model="userEndLocation" placeholder="End Location" />
@@ -16,6 +16,15 @@
     </div>
 
     <div id="instructions" class="instructions"></div>
+  </div>
+
+  <div id="markerReport">
+    <h1>Report Hazard</h1>
+    <select v-model="selectedHazard">
+      <option v-for="hazardType in possibleHazards" v-bind:key="hazardType.value">
+        {{hazardType}}
+      </option>
+    </select>
   </div>
 
   <MapFooter></MapFooter>
@@ -45,7 +54,9 @@ export default {
       return {
         userStartLocation: '',
         userEndLocation: '',
-        allHazards: []
+        allHazards: [],
+        possibleHazards: ['Accident', 'Obstruction', 'Bike Lane', 'Vehicle', 'Closure'],
+        selectedHazard: ''
       }
     },
     // summary
@@ -78,25 +89,44 @@ export default {
       },
 
       showHazards() {
+        console.log("woof", this.allHazards)
         for (var obj of this.allHazards) {
+          var typeString
+          switch (obj.type) {
+            case 0: typeString = "Accident"
+              break
+            case 1: typeString = "Obstruction"
+              break
+            case 2: typeString = "Bike Lane"
+              break
+            case 3: typeString = "Vehicle"
+              break
+            case 4: typeString = "Closure"
+            default: typeString = "Default Hazard"
+              break
+          }
+
           const myLatlng = new mapboxgl.LngLat(obj.longitude, obj.latitude)
           const marker = new mapboxgl.Marker()
             .setLngLat(myLatlng)
             .setPopup(new mapboxgl.Popup({ offset: 25 })
-              .setHTML('<h3>' + obj.timeReported + '</h3><p>' + obj.reportedBy + '</p>'))
+              .setHTML('<h3>Type: ' + typeString + '</h3><p>Time reported: ' + obj.timeReported + '</p>'))
             .addTo(this.map)
         }
+      },
+
+      reportHazard() {
+        
       }
 
     },
     props: ['api_key'],
-    beforeMount() {
+    created() {
       axios
         .get('https://backend20220418173746.azurewebsites.net/api/hazards/getHazards')
         .then(response => (this.allHazards = response.data))
     },
     mounted() {
-      console.log("meow", this.allHazards)
       mapboxgl.accessToken = this.api_key
       this.map = new mapboxgl.Map({
         container: 'map', // container ID
@@ -104,10 +134,12 @@ export default {
         center: [-118.1141, 33.7838], // starting position [lng, lat]
         zoom: 14 // starting zoom
       })
-      this.showHazards()
     },
     updated() {
-      console.log('updated')
+      this.showHazards()
+      if (this.selectedHazard !== 'None' && this.selectedHazard !== '') {
+        console.log(this.selectedHazard)
+      }
     }
   }
 </script>
@@ -146,5 +178,12 @@ export default {
     background-color: #fff;
     overflow-y: scroll;
     font-family: sans-serif;
+  }
+
+  #markerReport {
+    position: relative;
+    width: 100px;
+    bottom: 300px;
+    left: 90%
   }
 </style>
