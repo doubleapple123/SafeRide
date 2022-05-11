@@ -1,0 +1,146 @@
+﻿ParseResponseUnitTest:
+	- Unit Test: ParseStepCoordinates()
+		- input coords:
+				-73.99045550189928,40.73225479503364;-73.9886679569091,40.72716860725768
+		- request URL:
+				https://api.mapbox.com/directions/v5/mapbox/driving/-73.99045550189928%2C40.73225479503364%3B-73.97962084116241%2C40.73551564560131%3B-73.9886679569091%2C40.72716860725768?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ
+		- actual step coordinates from response (as dict):
+				{
+					[-73.990147] = 40.732215,
+					[-73.990027] = 40.732756,
+					[-73.985909] = 40.731019,
+					[-73.9887] = 40.727182
+				};
+
+	- Unit Test: ParseDirectionsReponse()
+		- input coords:
+				-73.99045550189928,40.73225479503364;-73.9886679569091,40.72716860725768
+		- request URL:
+				https://api.mapbox.com/directions/v5/mapbox/driving/-73.99045550189928%2C40.73225479503364%3B-73.97962084116241%2C40.73551564560131%3B-73.9886679569091%2C40.72716860725768?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ
+
+
+************************** ExcludeHazardUnitTests ***********************
+
+ - Unit Test: IsInsideRadius()
+
+	- *** Test Scenario 1 *** Checking if a test coordinate is within a target radius around the origin coordinate that is less than the actual distance between them; thus lying outside the target radius
+		- origin coordinate:
+			-121.5519422062582, 37.77904292167199
+		- test coordinate:
+			-121.39962701098186, 37.711694879433495
+		- target radius:
+			5 miles (8046.72 meters)
+		- expected result:
+			false
+
+	- *** Test Scenario 2 *** Checking if a test coordinate is within a target radius around the origin coordinate that is greater than the actual distance between them; thus lying inside the target radius
+		- origin coordinate:
+			-121.5519422062582, 37.77904292167199
+		- test coordinate:
+			-121.39962701098186, 37.711694879433495
+		- target radius:
+			15 miles (24140.2 meters)
+		- expected result:
+			true
+
+- Unit Test: FindSearchCoordinates()
+
+	- *** Test Scenario 1 *** Finding all search coordinates on a route whose total distance is less than the target search radius, thus requiring only a single search around the origin to be fully covered
+		- input coordinates:
+			-73.832902,40.736744; -73.834413,40.736805
+		- request URL:
+			https://api.mapbox.com/directions/v5/mapbox/driving/-73.832902%2C40.736744%3B-73.834413%2C40.736805?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ
+		- target search radius:
+			5 miles (8046.72 meters)
+		- total route distance:
+			0.1 miles (160.934 meters)
+		- total search coordinates to cover route:
+			1
+		- expected result (as dict):
+			{
+				[-73.832902] = 40.736744
+			};
+
+//TODO - Implement this scenario in ExcludeHazardUnitTests
+	- *** Test Scenario 2 *** Finding all search coodinates on a route whose total distance is greater than the target search radius, thus requiring searches around multiple coordinates along the route. To fully cover the route, the result should include a minimum of 2 coordinates (origin and destination) as the first and last coordinates searched, respectively
+		- input coordinates:
+			-73.832902,40.736744; -73.834413,40.736805
+		- request URL:
+			https://api.mapbox.com/directions/v5/mapbox/driving/-73.8328880362624%2C40.73694490579592%3B-73.69219102734228%2C40.70530642622367?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ
+		- target search radius:
+			5 miles (8046.72 meters)
+		- total route distance:
+			0.1 miles (160.934 meters)
+		- total search coordinates to cover route:
+			3
+		- expected result (as dict):
+			{
+				[-73.832902] = 40.736744
+			};
+
+ - Unit Test: GetByTypeInRadius()
+	- test coordinate:
+		-74.002917, 40.73992
+	- target search radius:
+		5 miles (8046.72 meters)
+	- hazards pre-populated into the system database:
+		- 5 "Accident" hazards within the target radius
+		- 4 "Accident" hazards outside the target radius
+		- 1 "Obstruction" hazard within the target radius
+		- 3 "BikeLane" hazard within the target radius
+		- 4 "Vehicle" hazards within the target radius
+		- 0 "Closure" hazards within the target radius
+	- SQL query to find expected results:
+		"SELECT longitude, latitude FROM Hazards 
+			WHERE hazardType = 0 AND (
+				acos(
+					sin(latitude * 0.0175) * sin(40.73992 * 0.0175) 
+					+ cos(latitude * 0.0175) * cos(40.73992 * 0.0175) 
+					* cos((-74.002917 * 0.0175) - (longitude* 0.0175)) 
+					- 0.0000000000001) 
+					* 3959) <= 5;"
+
+	- *** Test Scenario 1 *** Searching for the coordinates of all "Accident" hazards around the test coordinate
+		- total hazard coordinates expected:
+			5
+	- *** Test Scenario 2 *** Searching for the coordinates of all "Obstruction" hazards around the test coordinate
+		- total hazard coordinates expected:
+			1
+	- *** Test Scenario 3 *** Searching for the coordinates of all "BikeLane" hazards around the test coordinate
+		- total hazard coordinates expected:
+			3
+	- *** Test Scenario 4 *** Searching for the coordinates of all "Vehicle" hazards around the test coordinate
+		- total hazard coordinates expected:
+			4
+	- *** Test Scenario 5 *** Searching for the coordinates of all "Closure" hazards around the test coordinate
+		- total hazard coordinates expected:
+			0
+			
+			
+			
+
+
+SELECT longitude, latitude FROM Hazards WHERE hazardType = 0 
+AND (acos(sin(latitude * 0.0175) * sin(40.73992 * 0.0175) + 
+cos(latitude * 0.0175) * cos(40.73992 * 0.0175) * cos((74.002917 * 0.0175) 
+- (longitude * 0.0175)) - 0.0000000000000000000000001) * 3959) <= 8046.72;
+
+
+
+request URL for testing SearchCoordinates: https://api.mapbox.com/directions/v5/mapbox/driving/-121.5519422062582%2C37.77904292167199%3B-121.39962701098186%2C37.711694879433495?alternatives=true&annotations=distance&geometries=geojson&language=en&overview=full&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ
+input coordinates: 
+-73.99045550189928,40.73225479503364;-73.97962084116241,40.73551564560131;-73.9886679569091,40.72716860725768
+
+token:
+pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ
+
+
+
+input coordinates for IsInsideRadius unit test:
+-121.5519422062582,37.77904292167199;-121.39962701098186,37.711694879433495
+
+
+search coordinates using 11mi route
+-73.8328880362624,40.73694490579592;-73.69219102734228,40.70530642622367
+
+https://api.mapbox.com/directions/v5/mapbox/driving/-73.8328880362624%2C40.73694490579592%3B-73.69219102734228%2C40.70530642622367?alternatives=true&geometries=geojson&language=en&overview=simplified&steps=true&access_token=pk.eyJ1IjoiY29saW5jcmVhc21hbiIsImEiOiJjbDIxbGhnZ2QxMW1pM2Jwamp4YW42M25zIn0.WJD2zPxATbnf2utML0OOCQ

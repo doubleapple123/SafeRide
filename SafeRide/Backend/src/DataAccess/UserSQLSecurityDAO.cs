@@ -9,17 +9,19 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
 {
     private SqlConnectionStringBuilder builder;
     private const string TABLE_NAME = "UserSecurity";
+    //private string _cs = "Server=tcp:updatedbackend.database.windows.net,1433;Initial Catalog=UpdatedDatabase;Persist Security Info=False;User ID=colincreasman;Password=saferide.714;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
     public UserSQLSecurityDAO(IConfiguration config)
     {
         builder = new SqlConnectionStringBuilder();
-        builder.DataSource = "saferidesql.database.windows.net";
-        builder.UserID = "saferideapple";
-        builder.Password = config["AppKey:DBKey"];
-        builder.InitialCatalog = "SafeRide_DB";
+        builder.DataSource = "updatedbackend.database.windows.net";
+        builder.UserID = "colincreasman";
+        builder.Password = "saferide.714";
+        builder.InitialCatalog = "UpdatedDatabase";
     }
     
     private bool ExecuteCommand(SqlCommand cmd)
+
     {
         try
         {

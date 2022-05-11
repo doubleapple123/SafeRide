@@ -7,6 +7,8 @@ import LoggedInInitialView from '../views/LoggedInInitialView.vue'
 import AnalysisDashboard from '../views/AnalysisDashboard.vue'
 import UserManagement from "../views/UserManagementPath";
 import axios from "axios";
+import RouteHistory from '@/components/RouteHistory.vue'
+import SearchRoute from '@/components/SearchRoute.vue'
 
 const routes = [
   {
@@ -43,8 +45,17 @@ const routes = [
     path: "/usermanagement",
     name: "UserManage",
     component: UserManagement
+  },
+  {
+    path: '/RouteHistory',
+    name: 'History',
+    component: RouteHistory
+  },
+  {
+    path: '/SearchRoute',
+    name: 'Search',
+    component: SearchRoute
   }
-
 ]
 
 const router = createRouter({

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading;
 using SafeRide.src.Interfaces;
@@ -22,6 +22,15 @@ namespace SafeRide.src.Models
             IsExpired = false;
             Passphrase = "";
             Generate();
+        }
+
+        public OTP(string passphrase)
+        {
+            Timer = new Stopwatch();
+            IsUsed = false;
+            IsExpired = false;
+            Passphrase = passphrase;
+
         }
 
         

@@ -25,16 +25,16 @@ export default {
   methods: {
     getData () {
       axios
-        .get('https://localhost:5001/api/analytics/topViews')
+        .get('https://updatedbackend-apim.azure-api.net/v1/api/analytics/topViews')
         .then(response => (this.topViews = response.data))
       axios
-        .get('https://localhost:5001/api/analytics/topDurations')
+        .get('https://updatedbackend-apim.azure-api.net/v1/api/analytics/topDurations')
         .then(response => (this.topDurations = response.data))
       axios
-        .get('https://localhost:5001/api/analytics/lastThreeMonthLogins')
+        .get('https://updatedbackend-apim.azure-api.net/v1/api/analytics/lastThreeMonthLogins')
         .then(response => (this.lastThreeMonthLogins = response.data))
       axios
-        .get('https://localhost:5001/api/analytics/lastThreeMonthRegistrations')
+        .get('https://updatedbackend-apim.azure-api.net/v1/api/analytics/lastThreeMonthRegistrations')
         .then(response => (this.lastThreeMonthRegistrations = response.data))
     }
   }

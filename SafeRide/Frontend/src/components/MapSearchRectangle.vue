@@ -1,24 +1,26 @@
 <template>
   <div id="mapSearchBox">
-    <form>
-      <input type="text" id="startLocation" placeholder="Start Location"><br>
-      <input v-on:keyup.enter="onSearchEnter" type="text" id="destinationLocation" placeholder="Destination Location"><br>
-      <input type="submit" hidden />
-    </form>
+    <label>
+      <input type='text' v-model='inputValue'/>
+    </label>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MapSearchRectangle',
-  methods: {
-    onSearchEnter: function () {
-      console.log('test')
+    name: 'MapSearchRectangle',
+    props: ['modelValue'],
+    computed: {
+      inputValue: {
+        get() {
+          return this.modelValue
+        },
+        set(value) {
+          this.$emit('update:modelValue', value)
+        }
+      }
     }
   }
-}
 </script>
-
 <style scoped>
-
 </style>

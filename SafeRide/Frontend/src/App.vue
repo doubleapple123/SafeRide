@@ -4,15 +4,23 @@
     <br />
     <router-link to="/login">Login</router-link>
     <br />
-    <router-link to="/UserRegistration">UserRegistration</router-link>
+    <router-link to="/UserRegistration">User Registration</router-link>
     <br />
     <router-link to="/User">User</router-link>
     <br />
     <router-link v-if="isAuthorized" to="/Map">DefaultMap</router-link>
     <br />
+    <router-link to="/UserManagement">Manage Users</router-link>
+    <br />
+    <router-link to="/Analytics">Analytics Dashboard</router-link>
+    <br />
+    <router-link to="/RouteHistory">Routes History</router-link>
+    <br />
+    <router-link to="/SearchRoute">Search Route</router-link>
+    <br />
     <router-link to="/Analytics">AnalyticsDashboard</router-link>
     <br />
-    <router-link to="/UserManagement">Manage Users</router-link>
+    <!-- <router-link to="/Hazards">Home</router-link> -->
   </div>
   <router-view/>
 </template>
