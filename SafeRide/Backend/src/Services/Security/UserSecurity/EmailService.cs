@@ -10,20 +10,20 @@ using System.Threading;
 
 namespace Backend.src.Services.Security.UserSecurity
 {
-	public class EmailService : IEmailService
-	{
-		private string _server;
-		private int _serverPort;
-		private string _serverAddress;
-		private string _serverPassword;
+    public class EmailService : IEmailService
+    {
+        private string _server;
+        private int _serverPort;
+        private string _serverAddress;
+        private string _serverPassword;
 
-		public EmailService()
-		{
-			this._server = "smtp.gmail.com";
-			this._serverPort = 587;
-			this._serverAddress = "safe.riderzz@gmail.com";
-			this._serverPassword = "safeAF_bruh";
-		}
+        public EmailService()
+        {
+            this._server = "smtp.gmail.com";
+            this._serverPort = 587;
+            this._serverAddress = "safe.riderzz@gmail.com";
+            this._serverPassword = "safeAF_bruh";
+        }
 
         public bool SendOTP(string userAddress, OTP generatedOTP)
         {
@@ -70,4 +70,5 @@ namespace Backend.src.Services.Security.UserSecurity
         }
     }
 }
+
 

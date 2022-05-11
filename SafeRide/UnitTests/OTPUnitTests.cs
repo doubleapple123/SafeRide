@@ -32,7 +32,7 @@ namespace SRUnitTests
 
 		[Fact]
 		public void TestOTPGeneration()
-        {
+		{
 			OTPService otpService = new OTPService();
 			EmailService emailService = new EmailService();
 			otpService.GenerateOTP();
@@ -42,11 +42,11 @@ namespace SRUnitTests
 			output.WriteLine(actual);
 			Assert.Equal(expected, actual);
 
-        }
+		}
 
 		[Fact]
 		public void TestOTPEmail()
-        {
+		{
 			OTPService otpService = new OTPService();
 			EmailService emailService = new EmailService();
 			otpService.GenerateOTP();
@@ -60,7 +60,7 @@ namespace SRUnitTests
 
 		[Fact]
 		public void TestOTPValidation()
-        {
+		{
 			OTPService otpService = new OTPService();
 			otpService.GenerateOTP();
 			OTP otp = otpService.GetOTP();
@@ -70,6 +70,32 @@ namespace SRUnitTests
 			bool actual = otpService.ValidateOTP(actualOTP);
 			Assert.Equal(expected, actual);
 		}
+
+		[Fact]
+		public async Task RequestOTP()
+		{
+			await using var application = new CustomWebAppFactory();
+			using var client = application.CreateClient();
+
+			var request = new HttpRequestMessage(HttpMethod.Post, "api/login");
+
+			request.Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(new
+			{
+				UserName = "colin",
+				Email = "colincreasman@gmail.com",
+				Role = "Admin",
+				Valid = true
+			}), Encoding.UTF8, "application/json");
+
+			// act
+
+			using var response = await client.SendAsync(request);
+
+			// assert
+
+			Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+		}
 	}
 }
+
 

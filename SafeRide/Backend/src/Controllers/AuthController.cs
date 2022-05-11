@@ -65,32 +65,34 @@ namespace SafeRide.src.Services
 
 
 
-    [Microsoft.AspNetCore.Mvc.HttpPost]
-    [Microsoft.AspNetCore.Mvc.Route("login")]
-    public IActionResult Login([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user)
-    {
-        _user = user;
-        IActionResult response = Unauthorized();
-        var valid = true;
-        
-        UserSecurityModel validUser = null;
-        try
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        [Microsoft.AspNetCore.Mvc.Route("login")]
+        public IActionResult Login([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user)
         {
-            validUser = this.userRepository.GetUser(user);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            valid = false;
-        }
+            IActionResult response = Unauthorized();
+            var valid = true;
+            UserSecurityModel validUser = null;
 
-            if (valid && validUser != null)
-            {
+            //try
+            //{
+            //    validUser = this.userRepository.GetUser(user);
+            //    _user = validUser;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //    valid = false;
+            //}
+
+            //if (valid && validUser != null)
+            //{
+               
                 try
                 {
+                otpService.GenerateOTP();
+                   var otp = otpService.GetOTP();
+                   bool success = emailService.SendOTP(user.Email, otp);
 
-                    otpService.GenerateOTP();
-                    bool success = emailService.SendOTP(user.Email, otpService.GetOTP());
                     if (success)
                     {
                         string message = "A temporary One-Time password has been sent to your email. Please verify the your account by entering the OTP that was sent to: ";
@@ -103,9 +105,9 @@ namespace SafeRide.src.Services
                 {
                     response = Unauthorized();
                 }
-            }
-        return response;
-    }
+          //  }
+            return response;
+        }
 
         
         [AuthorizeAttribute.ClaimRequirementAttribute("role", "admin")]
