@@ -10,7 +10,6 @@
   "profiles": {
     "SafeRide": {
       "commandName": "Project",
-      "commandLineArgs": "--port 443",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
