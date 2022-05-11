@@ -10,27 +10,29 @@ namespace SRUnitTests
 {
     public class RouteHistoryUnitTest
     {
-        private IRouteInformationDAO _dao;
-        private ISaveRouteService _srs;
-        private readonly ITestOutputHelper output;
-
-        public RouteHistoryUnitTest()
-        {
-            _dao = new RouteHistoryDAO();
-            _srs = new SavedRouteService(_dao);
-        }
 
         [Fact]
         public void TestGetAllRoutes()
         {
+            List<string> expected = new List<string>
+            {
+                "CSULB",
+                "2PCH",
+                "Turn left. Turn right",
+                "Orange"
+            };
             List<RouteInformation> list = new List<RouteInformation>();
-            string startpoint = "CSULB";
-            string endpoint = "2PCH";
+            string start = "CSULB";
+            string end = "2PCH";
             string ins = "Turn left. Turn right";
             string username = "Orange";
+            var route = new RouteInformation(start, end, ins, username);
+            list.Add(route);
+            var testDAO = new RouteHistoryDAO();
+            List<RouteInformation> routes = new List<RouteInformation>();
+            routes = testDAO.getRouteHistory("Orange");
 
-            list.Add("CLUB", "2PCH", "Turn left > Turn right", "Orange");
-
+            Assert.Equal(expected, routes);
         }
     }
 }
