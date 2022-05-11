@@ -17,12 +17,13 @@ namespace Backend.Controllers;
 public class SaveARouteController : ControllerBase
 {
     private ISaveARoute _iSaveARouteDAO;
-    private SaveARouteService _routeService;
+    private ISaveARouteService _routeService;
     private string api_key = "pk.eyJ1IjoiY2FudGRyaW5rbWlsayIsImEiOiJjbDAwZnFiOHkwM3kyM3FwaG1qcmFhazh6In0.ytVFjAsRLDJra61yH0ZT-w";
 
-    public SaveARouteController(ISaveARoute iSaveARouteDAO)
+    public SaveARouteController(ISaveARoute iSaveARouteDAO, ISaveARouteService iSaveARouteService)
     {
         _iSaveARouteDAO = iSaveARouteDAO;
+        _routeService = iSaveARouteService;
     }
     
 
@@ -50,7 +51,7 @@ public class SaveARouteController : ControllerBase
         // var user = new User("apple@gmail.com", setOfCoords );
 
         //Service to add route in database store
-        if ((_routeService.AddSavedRoute("apple@gmail.com", 1, requestURL, "userRoutes")) == 1) 
+        if (_routeService.AddSavedRoute("apple@gmail.com", 1, requestURL, "userRoute") == 1) 
         {
             string successMessage = "Route successfully added.";
             return Ok(new { successMessage});

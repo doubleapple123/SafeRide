@@ -29,7 +29,7 @@ namespace SafeRide.src.DataAccess
                         {
                             while (reader.Read())
                             {
-                                var route = reader["route"].ToString();
+                                var route = reader["routeName"].ToString();
 
                                 listOfRoute.Add(route);
                             }
@@ -55,7 +55,7 @@ namespace SafeRide.src.DataAccess
                 {
                     cmd.Parameters.Add("@param1", System.Data.SqlDbType.VarChar, 50).Value = userEmail;
                     cmd.Parameters.Add("@param2", System.Data.SqlDbType.Int).Value = routeId;
-                    cmd.Parameters.Add("@Param3", System.Data.SqlDbType.VarChar, 200).Value = routeName;
+                    cmd.Parameters.Add("@Param3", System.Data.SqlDbType.VarChar, 500).Value = routeName;
                     numRowsAffected = cmd.ExecuteNonQuery();
                 }
             }
