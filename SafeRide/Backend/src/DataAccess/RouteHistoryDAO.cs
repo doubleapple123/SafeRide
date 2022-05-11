@@ -9,7 +9,7 @@ namespace Backend.src.DataAccess
 {
     public class RouteHistoryDAO
     {
-        private string _cs = "Server=tcp:saferidedb.database.windows.net,1433;Initial Catalog=SafeRide_DB;Persist Security Info=False;User ID=azureuser;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private string _cs = "Server=tcp:saferidedb.database.windows.net,1433;Initial Catalog=SafeRide_DB;Persist Security Info=False;User ID=azureuser;Password=passkey123';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         private const string TABLE_NAME = "RouteInfo";
 
 
