@@ -2,7 +2,6 @@
 using SafeRide.src.Models;
 using System.Data;
 using System.Data.SqlClient;
-using SafeRide.src.Models;
 
 namespace SafeRide.src.DataAccess
 {

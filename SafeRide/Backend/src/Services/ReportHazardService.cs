@@ -38,7 +38,7 @@ namespace SafeRide.src.Services
         /// <returns>integer representing number of hazards reported (should be 1 per method call)</returns>
         public int Report(Hazard hazard)
         {
-            if (hazard.TimeReported == null)
+            if (hazard.TimeReported == DateTime.UnixEpoch)
                 hazard.TimeReported = DateTime.Now;
             return _hazardDAO.Report(hazard);
         }
