@@ -1,81 +1,36 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.WebUtilities;
-using Backend.Services;
-using Xunit;
-using SafeRide.src.Models;
-using SafeRide.src.Services;
-using Newtonsoft.Json;
-using System;
-using SafeRide.src.DataAccess;
+﻿using Xunit;
 using Xunit.Abstractions;
-using System.Net.Http.Headers;
-using Backend.src.Services.Security.UserSecurity;
-using SafeRide.src.Security.UserSecurity;
+using SafeRide.src.Interfaces;
+using SafeRide.src.Models;
+using SafeRide.src.DataAccess;
+using SafeRide.src.Services;
+using System.Collections.Generic;
 
 namespace SRUnitTests
 {
     public class RouteHistoryUnitTest
     {
+        private IRouteInformationDAO _dao;
+        private ISaveRouteService _srs;
         private readonly ITestOutputHelper output;
 
-        public RouteHistoryUnitTest(ITestOutputHelper output)
+        public RouteHistoryUnitTest()
         {
-            this.output = output;
+            _dao = new RouteHistoryDAO();
+            _srs = new SavedRouteService(_dao);
         }
 
         [Fact]
-
         public void TestGetAllRoutes()
         {
+            List<RouteInformation> list = new List<RouteInformation>();
+            string startpoint = "CSULB";
+            string endpoint = "2PCH";
+            string ins = "Turn left. Turn right";
+            string username = "Orange";
 
-        }
+            list.Add("CLUB", "2PCH", "Turn left > Turn right", "Orange");
 
-        [Fact]
-        public void TestOTPGeneration()
-        {
-            OTPService otpService = new OTPService();
-            EmailService emailService = new EmailService();
-            otpService.GenerateOTP();
-
-            string actual = otpService.GetOTP().Passphrase;
-            string expected = "aishjdjshndfjkajkr23";
-            output.WriteLine(actual);
-            Assert.Equal(expected, actual);
-
-        }
-
-        [Fact]
-        public void TestOTPEmail()
-        {
-            OTPService otpService = new OTPService();
-            EmailService emailService = new EmailService();
-            otpService.GenerateOTP();
-            OTP otp = otpService.GetOTP();
-            string testEmail = "colincreasman@gmail.com";
-
-            bool expected = true;
-            bool actual = emailService.SendOTP(testEmail, otp);
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void TestOTPValidation()
-        {
-            OTPService otpService = new OTPService();
-            otpService.GenerateOTP();
-            OTP otp = otpService.GetOTP();
-            string actualOTP = otp.Passphrase;
-
-            bool expected = true;
-            bool actual = otpService.ValidateOTP(actualOTP);
-            Assert.Equal(expected, actual);
         }
     }
 }

@@ -6,6 +6,8 @@ using SafeRide.src.Archiving;
 using System.IO.Compression;
 using System.Threading;
 using SafeRide.src.Services;
+using SafeRide.src.Interfaces;
+using SafeRide.src.DataAccess;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -66,6 +68,9 @@ builder.Services.AddTransient<IUserDAO, UserSQLServerDAO>();
 builder.Services.AddTransient<IViewEventDAO, ViewEventSQLServerDAO>();
 builder.Services.AddTransient<IAnalyticsService, AnalyticsService>();
 builder.Services.AddTransient<IOverlayStructureDAO, OverlayStructureDAO>();
+builder.Services.AddTransient<IRouteInformationDAO, RouteHistoryDAO>();
+builder.Services.AddTransient<ISaveRouteService, SavedRouteService>();
+
 
 var env = builder.Environment;
 var app = builder.Build();

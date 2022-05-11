@@ -1,3 +1,23 @@
+using SafeRide.src.Interfaces;
+using SafeRide.src.DataAccess;
+using SafeRide.src.Models;
+using SafeRide.src.Managers;
+using SafeRide.src.Archiving;
+using System.IO.Compression;
+using System.Threading;
+using SafeRide.src.Services;
+using SafeRide.src.Interfaces;
+using SafeRide.src.DataAccess;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using SafeRide.src.Security;
+using SafeRide.src.Security.UserSecurity;
+
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

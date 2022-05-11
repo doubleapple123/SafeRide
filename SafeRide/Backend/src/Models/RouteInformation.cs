@@ -1,4 +1,4 @@
-﻿namespace Backend.src.Models
+﻿namespace SafeRide.src.Models
 {
     public class RouteInformation
     {

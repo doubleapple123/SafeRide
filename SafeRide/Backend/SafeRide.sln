@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend", "Backend.csproj",
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Frontend", "..\Frontend\Frontend.esproj", "{B9081E2B-0B17-443A-9753-CDF9C392E081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SRUnitTests", "..\SRUnitTests\SRUnitTests.csproj", "{884416A0-DD64-4577-A30E-1DE5F8110AD6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SRUnitTests", "..\SRUnitTests\SRUnitTests.csproj", "{884416A0-DD64-4577-A30E-1DE5F8110AD6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4784148D-99E4-4960-AC17-447EF7BF3781}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
-﻿using Backend.src.Models;
+﻿using SafeRide.src.Models;
 
-namespace Backend.src.Interfaces
+namespace SafeRide.src.Interfaces
 {
     public interface IRouteInformationDAO
     {

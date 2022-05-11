@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Data.SqlClient;
 using System.Globalization;
-using Backend.src.Interfaces;
-using Backend.src.Models;
+using SafeRide.src.Interfaces;
+using SafeRide.src.Models;
 using SafeRide.src.DataAccess;
 
-namespace Backend.src.DataAccess
+namespace SafeRide.src.DataAccess
 {
     public class RouteHistoryDAO
     {
         private string _cs = "Server=tcp:saferidedb.database.windows.net,1433;Initial Catalog = saferidedb; User ID = azureuser; Password=passkey123'";
         private const string TABLE_NAME = "RouteInfo";
+        private string username;
 
-
+        public RouteHistoryDAO()
+        {
+            this.username = "";
+        }
         public bool searchRoute(string startpoint, string endpoint, string instructions, string username)
         {
             string query = $"INSERT INTO {TABLE_NAME} values ('{startpoint}','{endpoint}','{instructions}', '{username}'";
