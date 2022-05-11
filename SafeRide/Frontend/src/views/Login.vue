@@ -6,7 +6,7 @@
       <input v-model="emailLogin" type="text" class="form-control" placeholder="Email" required>
       <input type="submit" class="btn btn-primary" @click="doLogin">
     </form>
-    <h2>Verify One-Time Passphrase</h2>
+    <h2>Two-Factor Verification</h2>
     <form class="form-group">
       <input v-model="otp" type="text" class="form-control" placeholder="One-Time Passphrase" required>
       <input type="submit" class="btn btn-primary" @click="verifyOTP">
@@ -22,18 +22,18 @@ export default {
   methods: {
     doLogin () {
       if (this.userLogin !== undefined && this.emailLogin !== undefined) {
-        axios.post('https://backendsaferideapi.azure-api.net/overlayAPI/api/login', {
+        axios.post('https://updatedbackend-apim.azure-api.net/v1/api/login', {
           UserName: this.userLogin,
           Email: this.emailLogin,
-          Role: 'Admin',
+          Role: 'admin',
           Valid: true
         }, {
-          withCredentials: true
+          withCredentials: false
         })
           .then(function (response) {
-            var message = response.data.message
+            
             console.log(response)
-            window.alert(JSON.stringify(message) + this.emailLogin)
+            window.alert('OTP Sent - Please verify your account login by entering the temporary one-time passphrase sent to your email address')
           })
           .catch(function (error) {
             console.log(error)
@@ -43,19 +43,17 @@ export default {
     },
      verifyOTP () {
       if (this.otp) {
-        axios.post('https://backendsaferideapi.azure-api.net/overlayAPI/api/verifyOTP', {
-          Passphrase: this.otp,
-          Timer: null,
-          IsUsed: false,
-          IsExpired: false,
-        }, {
-          withCredentials: true
+        axios.get('https://updatedbackend-apim.azure-api.net/v1/api/verifyOTP', {
+          withCredentials: true,
+          params: {
+            otpPassphrase: this.otp
+          }
         })
           .then(function (response) {
             var token = response.data.token
             localStorage.setItem('token', JSON.stringify(token))
             console.log(response)
-            window.alert('Successful Login and OTP verification with token = ' + localStorage.getItem('token'))
+            window.alert('OTP Verified. User sucessfully logged in with token = ' + localStorage.getItem('token'))
           })
           .catch(function (error) {
             console.log(error)
