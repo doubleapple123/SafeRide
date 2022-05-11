@@ -68,7 +68,7 @@ namespace SafeRide.src.DataAccess
             using (SqlConnection conn = new SqlConnection(_cs))
             {
                 conn.Open();
-                string queryString = "SELECT * FROM Hazards WHERE expired = 0";
+                string queryString = "SELECT * FROM Hazards WHERE  dateReported >= DATEADD(day, -1, GETDATE() AT TIME ZONE 'UTC' AT TIME ZONE 'PACIFIC STANDARD TIME')";
                 using (SqlCommand cmd = new SqlCommand(queryString, conn))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())

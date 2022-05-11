@@ -38,20 +38,16 @@ namespace SafeRide.src.Controllers
         /// <returns>OkResult upon successful report with JSON reprsenting number of rows affected in underlying database</returns>
         [HttpPost]
         [Route("report")]
-        public IActionResult Report([FromBody] Hazard h)
+        public IActionResult Report(double lat, double lon, int type)
         {
             try
             {
-                if (h == null)
-                {
-                    return BadRequest("hazard object is null.");
-                }
-
                 if (!ModelState.IsValid)
                 {
                     return BadRequest("Invalid model object");
                 }
 
+                Hazard h = new Hazard((HazardType)type, lat, lon, "user", " ", 00000, " ", TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "Pacific Standard Time"), 0);
 
                 return Ok(this._reportHazardService.Report(h));
             }catch (Exception ex)

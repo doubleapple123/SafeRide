@@ -129,26 +129,29 @@ export default {
         const lngLat = this.markerToReport.getLngLat()
         if (confirm("Report hazard here?") == true) {
           //posts hazard to backend, resets markerToReport and alerts user of successful report. 
-          var type = this.selectedHazard.replaceAll("\\s", "")
+          var type = 0
+          switch (this.selectedHazard) {
+            case "Accident": type = 0
+              break
+            case "Obstruction": type = 1
+              break
+            case "Bike Lane": type = 2
+              break
+            case "Vehicle": type= 3
+              break
+            case "Closure": type = 4
+              break
+            default: type = 0
+              break
+          }
+          console.log(lngLat.lat, lngLat.lng, type)
 
-          axios({
-            url: `https://backend20220418173746.azurewebsites.net/api/hazards/report`,
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            data: {
-              Type: 0,
-              Latitude: 90,
-              Longitude: 90,
-              ReportedBy: "user",
-              State: "CA",
-              Zip: 92602,
-              City: "Long Beach",
-              Expired: 0
-            },
-            method: 'POST'
-          }).then(res => { })
-            .catch(error => console.log(error))
+         axios.post('https://backend20220418173746.azurewebsites.net/api/hazards/report?' + 'lat=' + lngLat.lat + '&lon=' + lngLat.lng + '&type=' + type)
+            .then(async function () {
+              location.reload()
+            })
+            .catch(function () {
+            })
 
           this.selectedHazard = "None"
           this.markerToReport.remove()

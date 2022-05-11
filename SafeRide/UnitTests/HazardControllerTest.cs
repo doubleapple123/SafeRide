@@ -54,7 +54,7 @@ namespace SRUnitTests
         {
             //act 
             Hazard h = new Hazard(HazardType.BikeLane, -70.21414, -71.45392, "dshfguj82", "CA", 00000, "San Francisco", new DateTime(2015, 12, 31, 5, 10, 20), 0);
-            var okResult = _controller.Report(h);
+            var okResult = _controller.Report(90, 90, 0);
 
             //assert
             Assert.IsType<OkObjectResult>(okResult as OkObjectResult);
