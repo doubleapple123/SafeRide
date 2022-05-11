@@ -47,7 +47,7 @@ export default {
       const startCoord = this.userStartLocation.split(", ")
       const endCoord = this.userEndLocation.split(", ")
 
-      axios.post('https://saferidewithus.database.windows.net/api/add?' + 'startLon=' + startCoord[0] + '&startLan' + startCoord[1] + 'endLon=' + endCoord[0] + '&endLan' + endCoord[1])
+      axios.post('https://saferidebackend.azurewebsites.net/api/addSaveRoute?' + 'startLon=' + startCoord[0] + '&startLan=' + startCoord[1] + '&endLon=' + endCoord[0] + '&endLan=' + endCoord[1])
         .then(async function () {
           console.log(startCoord[0] + ' ' + startCoord[1])
         })
@@ -56,7 +56,7 @@ export default {
     },
 
     saveUserRoute() {
-
+      
     
     },
 

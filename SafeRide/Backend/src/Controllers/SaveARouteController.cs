@@ -7,9 +7,13 @@ using AuthorizeAttribute = Backend.Attributes.AuthorizeAttribute.AuthorizeAttrib
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Net.Http;
 
 namespace Backend.Controllers;
 
+[Route("/api")]
 public class SaveARouteController : ControllerBase
 {
     private ISaveARoute _iSaveARouteDAO;
@@ -33,7 +37,7 @@ public class SaveARouteController : ControllerBase
     @return returns success messsage if user is successful
      */
     [HttpPost]
-    [Route("/api/add")]
+    [Route("addSaveRoute")]
     public async Task<IActionResult> AddSavedRoute(string startLon, string startLan, string endLon, string endLan)
     {
         // create string request from user coordinates
@@ -67,7 +71,7 @@ public class SaveARouteController : ControllerBase
     */
 
     [HttpGet]
-    [Route("/api/getSavedRoutes")]
+    [Route("getSavedRoutes")]
     public async Task<IActionResult> GetSavedRoutes(string userRequest) 
     {
         var listOfJsonResponse = new List<string>();
@@ -102,7 +106,7 @@ public class SaveARouteController : ControllerBase
      * return List of JsonResponse for map route building
      */
     [HttpGet]
-    [Route("/api/getRecentRoutes")]
+    [Route("getRecentRoutes")]
     public async Task<IActionResult> GetRecentRoutes(string userRequest)
     {
         var listOfJsonResponse = new List<string>();
