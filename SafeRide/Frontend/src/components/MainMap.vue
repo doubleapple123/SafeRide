@@ -24,8 +24,8 @@
 import MapSearchRectangle from '@/components/MapSearchRectangle'
 import MapHeader from '@/components/MapHeader.vue'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import mapboxgl from 'mapbox-gl'
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'
+  import mapboxgl from 'mapbox-gl'
+  import axios from 'axios'
 export default {
   components: {
     MapHeader,
@@ -34,40 +34,7 @@ export default {
   data () {
     return {
       userStartLocation: '',
-      userEndLocation: '',
-      varHazards: [{
-        "type": 0,
-        "latitude": 33.7838,
-        "longitude": -118.1141,
-        "timeReported": "2022-03-07T00:00:00",
-        "state": "CA",
-        "zip": 95376,
-        "city": "Tracy",
-        "expired": 0,
-        "reportedBy": "203971hXhcFO"
-      },
-      {
-        "type": 0,
-        "latitude": 33.781662,
-        "longitude": -118.122361,
-        "timeReported": "2022-03-07T00:00:00",
-        "state": "CA",
-        "zip": 95376,
-        "city": "Tracy",
-        "expired": 0,
-        "reportedBy": "203971hXhcFO"
-      },
-      {
-        "type": 0,
-        "latitude": 33.781510,
-        "longitude": -118.109003,
-        "timeReported": "2022-03-07T00:00:00",
-        "state": "CA",
-        "zip": 95376,
-        "city": "Tracy",
-        "expired": 0,
-        "reportedBy": "203971hXhcFO"
-      }]
+      userEndLocation: ''
     }
     },
   // summary
@@ -77,33 +44,20 @@ export default {
   */
   methods: {
     handleUserRoute() {
+      const startCoord = this.userStartLocation.split(", ")
+      const endCoord = this.userEndLocation.split(", ")
 
-      const startLocation = this.userStartLocation.split(', ')
-      const endLocation = this.userEndLocation.split(', ')
-
-
-      const startMarker = new mapboxgl.Marker()
-        .setLngLat([startLocation[0], startLocation[1]])
-        .addTo(this.map)
-
-
-      const endMarker = new mapboxgl.Marker()
-        .setLngLat([endLocation[0], endLocation[1]])
-        .addTo(this.map)
+      axios.post('https://saferidewithus.database.windows.net/api/add?' + 'startLon=' + startCoord[0] + '&startLan' + startCoord[1] + 'endLon=' + endCoord[0] + '&endLan' + endCoord[1])
+        .then(async function () {
+          console.log(startCoord[0] + ' ' + startCoord[1])
+        })
+        .catch(function () {
+        })
     },
 
     saveUserRoute() {
 
-     
-
-      for (var obj of this.varHazards) {
-        const myLatlng = new mapboxgl.LngLat(obj.longitude, obj.latitude)
-        const marker = new mapboxgl.Marker()
-          .setLngLat(myLatlng)
-          .setPopup(new mapboxgl.Popup({ offset: 25 })
-            .setHTML('<h3>' + obj.timeReported + '</h3><p>' + obj.reportedBy + '</p>'))
-          .addTo(this.map)
-      }
+    
     },
 
     buildRoute() {

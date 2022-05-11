@@ -2,14 +2,14 @@
 {
     public class User
     {
-        public string UserId { get; set; }
+        public string UserEmail { get; set; }
         public int RouteId { get; set; }
         public string Route { get; set; }
 
-        public User(string userId, int routeId, string route)
+        public User(string userEmail, int routeId, string route)
         {
 
-            UserId = userId;
+            UserEmail = userEmail;
             RouteId = routeId;
             Route = route;
         }

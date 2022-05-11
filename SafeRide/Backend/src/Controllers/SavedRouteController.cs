@@ -21,10 +21,10 @@ public class SavedRouteController : ControllerBase
 
     [HttpPost]
     [Route("/api/add")]
-    public IActionResult AddSavedRoute([FromUri] string routeName)
+    public IActionResult AddSavedRoute(string startLon, string startLan, string endLon, string endLan)
     {
         
-        return Ok(new { routeName });
+        return Ok(new {startLon });
     }
 
     [HttpGet]
