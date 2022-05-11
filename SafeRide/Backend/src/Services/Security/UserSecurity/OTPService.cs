@@ -18,13 +18,13 @@ public class OTPService : IOTPService
     private Stopwatch _authTimer;
     private bool _isValidated;
 
-    public OTPService(UserSecurityModel user)
+    public OTPService()
     {
-        _userEmail = user.Email;
-        _generatedOTP = new OTP();
+       // _userEmail = user.Email;
+     
         _attempts = 0;
         _authTimer = new Stopwatch();
-        
+        //_generatedOTP = new OTP();        
         //_disableAcct = false; 
         _isValidated = false;  
         
@@ -44,44 +44,11 @@ public class OTPService : IOTPService
         // }
     }
 
-    public void SendEmail()
+    public void GenerateOTP()
     {
-
-        string server = "smtp.gmail.com";
-        int servPort = 587;
-        string serverAddress = "safe.riderzz@gmail.com";
-        string serverPass = "safeAF_bruh";
-        string userAddress = _userEmail;
-        string subject = "SafeRide - Your Temporary One-Time Password for Authentication";
-        string body = _generatedOTP.Passphrase;
-
-        using (MailMessage mail = new MailMessage())
-        {
-            mail.From = new MailAddress(serverAddress);
-            mail.To.Add(userAddress);
-            mail.Subject = subject;
-            mail.Body = @$"
-                    <html>
-                        <body>
-                            <p></p>Hello,</p>
-                            <p>Your one-time password for authentication is: {body}</p>
-                            <p>This is a temporary password that will expire 2 minutes after this email was sent.</p><br>
-                            <p>Sincerely,<br><br>
-                            SafeRide Security</p>
-                        </body>
-                    </html>";
-            mail.IsBodyHtml = true;
-
-            using (SmtpClient smtpServer = new SmtpClient(server, servPort))
-            {
-                smtpServer.UseDefaultCredentials = false;
-                smtpServer.Credentials = new System.Net.NetworkCredential(serverAddress, serverPass);
-                smtpServer.EnableSsl = true;
-                smtpServer.Send(mail);
-                Console.WriteLine("Email sent successfully.");
-            }
-        }
+        _generatedOTP = new OTP();      
     }
+
 
     public bool ValidateOTP(string providedOTP)
     {
@@ -119,6 +86,13 @@ public class OTPService : IOTPService
         }
         return _isValidated;
     }
+
+    public OTP GetOTP()
+    {
+        return this._generatedOTP;
+    }
+
+
     // continue calling ValidateOTP until user successfuly completes validation 
     //while (!_isValidated) {
     // stop validating if the user has reached the 24hr limit

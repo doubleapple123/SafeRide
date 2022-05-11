@@ -8,6 +8,8 @@ using SafeRide.src.Interfaces;
 using SafeRide.src.Security.Interfaces;
 using System.Web.Http;
 using AuthorizeAttribute = Backend.Attributes.AuthorizeAttribute.AuthorizeAttribute;
+using SafeRide.src.Security.UserSecurity;
+using Backend.src.Services.Security.UserSecurity;
 
 namespace SafeRide.src.Services
 {
@@ -18,9 +20,11 @@ namespace SafeRide.src.Services
     {
         private readonly IUserRepository userRepository;
         private readonly ITokenService tokenService;
+        private readonly IOTPService otpService;
+        private readonly IEmailService emailService;
+        private UserSecurityModel _user;
 
-        //private readonly IOTPService otpService;
-        
+
         private string generatedToken = null;
 
         private readonly string SECRET_KEY = "this is my custom Secret key for authnetication"; //needs many characters
@@ -30,48 +34,22 @@ namespace SafeRide.src.Services
         {
             this.userRepository = userRepository;
             this.tokenService = tokenService;
+            this.otpService = new OTPService();
+            this.emailService = new EmailService();
+            
             //this.otpService = otpService;
         }
 
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        [Microsoft.AspNetCore.Mvc.Route("login")]
-        public IActionResult Login([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user)
-        {
+        [Microsoft.AspNetCore.Mvc.Route("verify")]
+        public IActionResult VerifyOTP([Microsoft.AspNetCore.Mvc.FromBody] string providedOTP) {
             IActionResult response = Unauthorized();
-            var valid = true;
-            UserSecurityModel validUser = null;
-            try
-            {
-                validUser = this.userRepository.GetUser(user);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                valid = false;
-            }
 
-            if (valid && validUser != null)
+            if (otpService.ValidateOTP(providedOTP))
             {
-                ////promt user on frontend to input their otp
-                //otpService.SetUser(validUser);
-                //// continue calling ValidateOTP until user successfuly completes validation 
-                //while (otpService._isValidated == false) {
-                //    // stop validating if the user has reached the 24hr limit
-                //    if (_disableAcct) {
-                //        Console.WriteLine("User has failed 5 consecutive authentication attempts in the last 24hrs. Account must be disabled");
-                //        // TODO: figure out how to disable the account at this point
-                //        break; 
-                //    }
-                //    else {
-                //        otpService.SendEmail();
-                //        //ValidateOTP();
-                //    }
-                //}
-                /*otpService.SetUser(validUser);*/
                 try
                 {
-                    generatedToken = tokenService.BuildToken(SECRET_KEY, ISSUER, validUser);
-
+                    generatedToken = tokenService.BuildToken(SECRET_KEY, ISSUER, _user);
                     if (generatedToken != null)
                     {
                         response = Ok(new { token = generatedToken });
@@ -81,30 +59,47 @@ namespace SafeRide.src.Services
                 {
                     response = Unauthorized();
                 }
-
             }
             return response;
         }
-        
-        
-        //[Microsoft.AspNetCore.Mvc.HttpPost]
-        //[Microsoft.AspNetCore.Mvc.Route("otp")]
-        //public IActionResult Validate([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user, [FromUri] string providedOTP)
-        //{
-        //    IActionResult response = Unauthorized();
-        //    if (otpService.ValidateOTP(providedOTP)) {
-        //        response = Ok();
-        //    //otpService = new OTPService(validUser);
-        //    UserSecurityModel validUser = null;
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
 
-        //    return response;
-        //}
+
+    [Microsoft.AspNetCore.Mvc.HttpPost]
+    [Microsoft.AspNetCore.Mvc.Route("login")]
+    public IActionResult Login([Microsoft.AspNetCore.Mvc.FromBody] UserSecurityModel user)
+    {
+        _user = user;
+        IActionResult response = Unauthorized();
+        var valid = true;
+        
+        UserSecurityModel validUser = null;
+        try
+        {
+            validUser = this.userRepository.GetUser(user);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            valid = false;
+        }
+
+            if (valid && validUser != null)
+            {
+                
+                otpService.GenerateOTP();
+                emailService.SendOTP(user.Email, otpService.GetOTP());
+                string message = "A temporary One-Time password has been sent to your email. Please verify the provided OTP to complete login";
+                Console.WriteLine(message);
+               response = Ok(new { message });
+            }
+            else
+            {
+                response = Unauthorized();
+            }    
+        return response;
+    }
+
         
         [AuthorizeAttribute.ClaimRequirementAttribute("role", "admin")]
         [Microsoft.AspNetCore.Mvc.HttpPost]
