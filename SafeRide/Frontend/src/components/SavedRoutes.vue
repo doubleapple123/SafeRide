@@ -33,7 +33,7 @@ export default {
   methods:{
     async submitNewRoute(){
       axios.defaults.headers.common.Authorization = localStorage.getItem('token')
-      await axios.post('https://backendsaferideapi.azure-api.net/overlayAPI/' + 'api/route/add', JSON.parse(this.newRouteJson), {
+      await axios.post('https://updatedbackend-apim.azure-api.net/v1/overlayAPI/' + 'api/route/add', JSON.parse(this.newRouteJson), {
         params: {routeName: this.newRouteName}
       })
         .then(async function() {
@@ -59,7 +59,7 @@ export default {
     async getSavedRoutes(){
       let routes = []
       axios.defaults.headers.common.Authorization = localStorage.getItem('token')
-      await axios.get('https://backendsaferideapi.azure-api.net/overlayAPI/' + 'api/route/all')
+      await axios.get('https://updatedbackend-apim.azure-api.net/v1/overlayAPI/' + 'api/route/all')
         .then(async function(res) {
           routes = await res
         })
@@ -72,7 +72,7 @@ export default {
     async getSavedRoute(routeName) {
       axios.defaults.headers.common.Authorization = localStorage.getItem('token')
       let routeData = {}
-      await axios.get('https://backendsaferideapi.azure-api.net/overlayAPI/' + 'api/route/get', {params: {routeName: routeName}})
+      await axios.get('https://updatedbackend-apim.azure-api.net/v1/overlayAPI/' + 'api/route/get', {params: {routeName: routeName}})
         .then(async function (res) {
           routeData = await res
         })
