@@ -41,11 +41,11 @@ namespace SafeRide.src.Services
         }
 
         [Microsoft.AspNetCore.Mvc.HttpPost]
-        [Microsoft.AspNetCore.Mvc.Route("verify")]
-        public IActionResult VerifyOTP([Microsoft.AspNetCore.Mvc.FromBody] string providedOTP) {
+        [Microsoft.AspNetCore.Mvc.Route("verifyOTP")]
+        public IActionResult VerifyOTP([Microsoft.AspNetCore.Mvc.FromBody] OTP otp) {
             IActionResult response = Unauthorized();
-
-            if (otpService.ValidateOTP(providedOTP))
+            string otpPassphrase = otp.Passphrase;
+            if (otpService.ValidateOTP(otpPassphrase))
             {
                 try
                 {
@@ -86,17 +86,24 @@ namespace SafeRide.src.Services
 
             if (valid && validUser != null)
             {
-                
-                otpService.GenerateOTP();
-                emailService.SendOTP(user.Email, otpService.GetOTP());
-                string message = "A temporary One-Time password has been sent to your email. Please verify the provided OTP to complete login";
-                Console.WriteLine(message);
-               response = Ok(new { message });
+                try
+                {
+
+                    otpService.GenerateOTP();
+                    bool success = emailService.SendOTP(user.Email, otpService.GetOTP());
+                    if (success)
+                    {
+                        string message = "A temporary One-Time password has been sent to your email. Please verify the your account by entering the OTP that was sent to: ";
+                        Console.WriteLine(message);
+                        response = Ok(new { message });
+                    }
+                }
+
+                catch (Exception ex)
+                {
+                    response = Unauthorized();
+                }
             }
-            else
-            {
-                response = Unauthorized();
-            }    
         return response;
     }
 

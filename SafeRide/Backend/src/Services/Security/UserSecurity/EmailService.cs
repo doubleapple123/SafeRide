@@ -25,11 +25,11 @@ namespace Backend.src.Services.Security.UserSecurity
 			this._serverPassword = "safeAF_bruh";
 		}
 
-        public void SendOTP(string userAddress, OTP generatedOTP)
+        public bool SendOTP(string userAddress, OTP generatedOTP)
         {
             string body = generatedOTP.Passphrase;
-            string subject = "Attempted SafeRide Login - Your Temporary One-Time Password for Authentication";
-
+            string subject = "SafeRide Login Attempt - Your Temporary One-Time Password for Authentication";
+            bool isSuccess;
 
             using (MailMessage mail = new MailMessage())
             {
@@ -53,10 +53,20 @@ namespace Backend.src.Services.Security.UserSecurity
                     smtpServer.UseDefaultCredentials = false;
                     smtpServer.Credentials = new System.Net.NetworkCredential(_serverAddress, _serverPassword);
                     smtpServer.EnableSsl = true;
-                    smtpServer.Send(mail);
-                    Console.WriteLine("Email sent successfully.");
+                    try
+                    {
+                        smtpServer.Send(mail);
+                        Console.WriteLine("Email sent successfully.");
+                        isSuccess = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        isSuccess = false;
+                    }
                 }
             }
+            return isSuccess;
         }
     }
 }

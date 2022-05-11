@@ -4,5 +4,5 @@ namespace SafeRide.src.Security.Interfaces;
 
 public interface IEmailService
 {
-    public void SendOTP(string userAddress, OTP otp);
+    public bool SendOTP(string userAddress, OTP otp);
 }
