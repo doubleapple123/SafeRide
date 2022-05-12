@@ -71,6 +71,8 @@ builder.Services.AddTransient<IHazardDAO, HazardDAO>();
 builder.Services.AddTransient<IParseResponseService, ParseResponseService>();
 builder.Services.AddTransient<IExcludeHazardService, ExcludeHazardService>();
 builder.Services.AddTransient<IReportHazardService, ReportHazardService>();
+builder.Services.AddTransient<ISaveARoute, SaveARouteDAO>();
+builder.Services.AddTransient<ISaveARouteService, ISaveARouteService>();
 
 var env = builder.Environment;
 var app = builder.Build();
