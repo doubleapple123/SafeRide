@@ -4,18 +4,48 @@
     <br />
     <router-link to="/login">Login</router-link>
     <br />
-    <router-link to="/UserRegistration">UserRegistration</router-link>
+    <router-link to="/UserRegistration">User Registration</router-link>
     <br />
     <router-link to="/User">User</router-link>
     <br />
-    <router-link to="/Map">DefaultMap</router-link>
+    <router-link v-if="isAuthorized" to="/Map">DefaultMap</router-link>
     <br />
-    <router-link to="/Analytics">AnalyticsDashboard</router-link>
+    <router-link to="/UserManagement">Manage Users</router-link>
     <br />
+    <router-link to="/RouteHistory">Routes History</router-link>
+    <br />
+    <router-link to="/SearchRoute">Search Route</router-link>
     <!-- <router-link to="/Hazards">Home</router-link> -->
   </div>
   <router-view/>
 </template>
+
+<script>
+import axios from 'axios'
+export default {
+  data(){
+    return {
+      isAuthorized: false
+    }
+  },
+  methods:{
+    async checkToken () {
+      let ret = false
+      axios.defaults.headers.common.Authorization = localStorage.getItem('token')
+      await axios.post('https://updatedbackend-apim.azure-api.net/v1/api/verifyToken')
+        .then(async function (){
+          ret = true
+        })
+      return ret
+    }
+  },
+  created(){
+    this.checkToken().then((res) => {
+      this.isAuthorized = res
+    })
+  }
+}
+</script>
 
 <style>
 #app {

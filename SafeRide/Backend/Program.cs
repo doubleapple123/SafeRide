@@ -70,6 +70,9 @@ builder.Services.AddTransient<IOverlayStructureDAO, OverlayStructureDAO>();
 builder.Services.AddTransient<IHazardDAO, HazardDAO>();
 builder.Services.AddTransient<IParseResponseService, ParseResponseService>();
 builder.Services.AddTransient<IExcludeHazardService, ExcludeHazardService>();
+builder.Services.AddTransient<IReportHazardService, ReportHazardService>();
+builder.Services.AddTransient<ISaveARoute, SaveARouteDAO>();
+builder.Services.AddTransient<ISaveARouteService, ISaveARouteService>();
 
 var env = builder.Environment;
 var app = builder.Build();
@@ -257,12 +260,12 @@ if (userAuthorized)
 }
 */
 
-public enum HazardType
-{
-    Accident,
-    Obstruction,
-    BikeLane,
-    Vehicle,
-    Closure
-    }
+//public enum HazardType
+//{
+//    Accident,
+//    Obstruction,
+//    BikeLane,
+//    Vehicle,
+//    Closure
+//    }
 

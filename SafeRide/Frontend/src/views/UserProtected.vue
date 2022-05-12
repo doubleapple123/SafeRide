@@ -1,8 +1,6 @@
 <template>
   <h1 v-if=loggedIn>
-    <a href="#">Home </a>
-    <a href="#">AddRoute </a>
-    <a v-on:click="logout" href="#">LogOut</a>
+    <button v-on:click="logout">Logout</button>
   </h1>
   <h1 v-else>
     not logged in, {{ loggedIn }}
@@ -15,7 +13,7 @@ import axios from 'axios'
 async function getUserInfo () {
   let res = false
   axios.defaults.headers.common.Authorization = localStorage.getItem('token')
-  await axios.post('https://updatedbackend-apim.azure-api.net/v1/api/getToken')
+  await axios.post('https://updatedbackend-apim.azure-api.net/v1/api/verifyToken')
     .then(function () { // do something with res here
       res = true
     })
@@ -36,7 +34,7 @@ export default {
   name: 'UserProtected',
   methods: {
     logout () {
-      localStorage.clear()
+      localStorage.setItem('token', "")
       this.$router.push({ name: 'Login' })
     }
   }
