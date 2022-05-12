@@ -44,7 +44,7 @@ public class UserSQLSecurityDAO : IUserSecurityDAO
     public bool Create(UserSecurityModel user)
     {
         string query = $"INSERT INTO {TABLE_NAME} (username, email, role, valid) VALUES" +
-                       $" ('{user.UserName}', '{user.Email}', '{user.Role}', '{user.Valid}');";
+                       $" ('{user.UserName}', '{user.Email}', '{user.Role}', '1');";
 
         SqlCommand command = new SqlCommand();
         command.CommandText = query;

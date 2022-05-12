@@ -22,7 +22,7 @@ namespace Backend.src.Services.Security.UserSecurity
             this._server = "smtp.office365.com";
             this._serverPort = 587;
             this._serverAddress = "saferiderzz@outlook.com";
-            this._serverPassword = "safeAF_bruh";
+            this._serverPassword = "safeAFbruh";
         }
 
         public bool SendOTP(string userAddress, OTP generatedOTP)
@@ -52,6 +52,7 @@ namespace Backend.src.Services.Security.UserSecurity
                 {
                     smtpServer.UseDefaultCredentials = false;
                     smtpServer.Credentials = new System.Net.NetworkCredential(_serverAddress, _serverPassword);
+                   // MailAddress from = new MailAddress(_serverAddress);
                     smtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
                     smtpServer.EnableSsl = true;
 
