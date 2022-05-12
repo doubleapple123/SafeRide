@@ -24,7 +24,7 @@ export default {
   methods: {
     doRegistration () {
       if (this.userName !== undefined && this.userEmail !== undefined && this.userPassphrase !== undefined) {
-        axios.post('https://updatedbackend-apim.azure-api.net/v1/user/createUser', {
+        axios.post('https://updatedbackend-apim.azure-api.net/user/createUser', {
           Username: this.userName,
           Email: this.userEmail,
          //Passphrase: this.userPassphrase,
@@ -49,8 +49,8 @@ export default {
     },
     verifyEmail() {
       if (this.otp) {
-        axios.get('https://updatedbackend-apim.azure-api.net/v1/api/verifyEmail', {
-          withCredentials: true,
+        axios.get('https://updatedbackend-apim.azure-api.net/user/verifyEmail', {
+          withCredentials: false,
           params: {
             otpPassphrase: this.otp
           }

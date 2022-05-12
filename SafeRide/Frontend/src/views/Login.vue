@@ -22,7 +22,7 @@ export default {
   methods: {
     doLogin () {
       if (this.userLogin !== undefined && this.emailLogin !== undefined) {
-        axios.post('https://updatedbackend-apim.azure-api.net/v1/api/login', {
+        axios.post('https://updatedbackend-apim.azure-api.net/api/login', {
           UserName: this.userLogin,
           Email: this.emailLogin,
           Role: 'admin',
@@ -43,7 +43,7 @@ export default {
     },
      verifyOTP () {
       if (this.otp) {
-        axios.get('https://updatedbackend-apim.azure-api.net/v1/api/verifyOTP', {
+        axios.get('https://updatedbackend-apim.azure-api.net/api/verifyOTP', {
           withCredentials: true,
           params: {
             otpPassphrase: this.otp
