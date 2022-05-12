@@ -44,19 +44,20 @@ export default {
   */
   methods: {
     handleUserRoute() {
-      const startCoord = this.userStartLocation.split(", ")
-      const endCoord = this.userEndLocation.split(", ")
-
-      axios.post('https://saferidebackend.azurewebsites.net/api/addSaveRoute?' + 'startLon=' + startCoord[0] + '&startLan=' + startCoord[1] + '&endLon=' + endCoord[0] + '&endLan=' + endCoord[1])
-        .then(async function () {
-          console.log(startCoord[0] + ' ' + startCoord[1])
-        })
-        .catch(function () {
-        })
+      
+    
+      
     },
 
     saveUserRoute() {
-      
+      const startCoord = this.userStartLocation.split(", ")
+      const endCoord = this.userEndLocation.split(", ")
+      axios.post('https://updatedfrontend.azurewebsites.net/?' + 'startLon=' + startCoord[0] + '&startLan=' + startCoord[1] + '&endLon=' + endCoord[0] + '&endLan=' + endCoord[1])
+        .then(async function () {
+          
+        })
+        .catch(function () {
+        })
     
     },
 

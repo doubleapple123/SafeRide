@@ -20,6 +20,7 @@ module.exports = {
     'no-multiple-empty-lines': 'off',
     'padded-blocks': 'off',
     'quotes': 'off',
-    'quote-props': 'off'
+    'quote-props': 'off',
+    'no-undef': 'off'
   }
 }

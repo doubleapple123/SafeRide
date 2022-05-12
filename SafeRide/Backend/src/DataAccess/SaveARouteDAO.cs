@@ -6,10 +6,16 @@ namespace SafeRide.src.DataAccess
 {
     public class SaveARouteDAO :  ISaveARoute
     {
-        private string _cs = "Server=tcp:saferidewithus.database.windows.net,1433;Initial Catalog=SafeRideDB;User ID=andyadmin;Password=Whoaman!123";
-        private const string TABLE_NAME = "UserRoutes";
+        private string _cs = "Server=tcp:saferidewithus.database.windows.net,1433;Initial Catalog=SafeRideDB;Persist Security Info=False;User ID=andyadmin;Password=Whoaman!123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
 
+
+        /*
+         <summary>
+        GetSavedRoutes executes SQL command and populates array grabbing @Param routes
+        returns List of routes from database
+         
+         */
         public List<string> GetSavedRoutes(string userEmail, string tableName)
         {
             var listOfRoute = new List<string>();
@@ -19,17 +25,17 @@ namespace SafeRide.src.DataAccess
                 using (SqlConnection conn = new SqlConnection(_cs))
                 {
                     conn.Open();
-                    string query = $"SELECT routeName FROM {tableName} WHERE userEmail= @param1";
+                    string query = $"SELECT route FROM { tableName } WHERE userEmail= @param1";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@param1", System.Data.SqlDbType.VarChar, 50).Value = userEmail;
                        
 
                         using (var reader = cmd.ExecuteReader())
-                        {
+                        { 
                             while (reader.Read())
                             {
-                                var route = reader["routeName"].ToString();
+                                var route = reader["route"].ToString();
 
                                 listOfRoute.Add(route);
                             }
@@ -45,6 +51,18 @@ namespace SafeRide.src.DataAccess
 
             return listOfRoute;
         }
+
+
+        /*'
+         Summary
+         @param userEmail
+         @param routeID
+         @param routeName
+         @param tableName
+            Method adds selected route in the format of the maprequest API call.
+          
+         returns returns number of rows affected, which should reflect one row changed.
+         */
         public int AddSavedRoute(string userEmail, int routeId, string routeName, string tableName)
         {
             int numRowsAffected = -1;
@@ -61,6 +79,19 @@ namespace SafeRide.src.DataAccess
             }
             return numRowsAffected;
         }
+
+
+
+        /*'
+         Summary
+         @param userEmail
+         @param routeID
+         @param routeName
+         @param tableName
+            Method to detele selected route from user database.
+          
+         returns returns number of rows affected, which should reflect one row changed.
+         */
         public int DeleteSavedRoute(string userEmail, int routeId, string tableName) 
         {
             int numRowsAffected = -1;
