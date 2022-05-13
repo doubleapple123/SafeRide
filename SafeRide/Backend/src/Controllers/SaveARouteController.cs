@@ -13,10 +13,23 @@ using System.Net.Http;
 
 namespace Backend.Controllers;
 
+/// <summary>
+/// TO-DO
+/// TO-DO
+/// @AddSavedRoute 
+///     Add error checks, wasted time because column-name didn't exist.
+/// @GetSavedRoutes
+///     ADD @param for either SavedRoutes, or RecentSaved routes, or look into saving Cache, if possible?
+///     ADD find out how to add userEmail from current log in user.
+///
+///     ADD geoForwarding Service to return coordinates from string input vs handling user inputted coordinates 
+/// 
+/// 
+/// </summary>
 [Route("/api")]
 public class SaveARouteController : ControllerBase
 {
-    private ISaveARoute _iSaveARouteDAO;
+    private ISaveARoute _iSaveARouteDAO; 
     private ISaveARouteService _routeService;
     private string api_key = "pk.eyJ1IjoiY2FudGRyaW5rbWlsayIsImEiOiJjbDAwZnFiOHkwM3kyM3FwaG1qcmFhazh6In0.ytVFjAsRLDJra61yH0ZT-w";
 
@@ -37,6 +50,10 @@ public class SaveARouteController : ControllerBase
      
     @return returns success messsage if user is successful
      */
+
+    //TO-DO
+    // error check bad entries, and look for more errors.
+    // **** LEARN STORED-PROCEDURES ******
     [HttpPost]
     [Route("addSaveRoute")]
     public async Task<IActionResult> AddSavedRoute(string startLon, string startLan, string endLon, string endLan)
@@ -62,15 +79,13 @@ public class SaveARouteController : ControllerBase
        
         return BadRequest(new { failMessage });
     }
-   /**
-    * Summary
-    * API GET
-    * API call to get saved routes
-    * saved routes are routes that are distinctively saved by the userwww
-    * 
-    * return List of JsonResponse for map route building
-    */
-
+  
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="userRequest"> User coordinates / String location for @geocode forward service</param>
+    /// <returns>LIST OF JSON OBJECTS</returns>
     [HttpGet]
     [Route("getSavedRoutes")]
     public async Task<IActionResult> GetSavedRoutes(string userRequest) 
