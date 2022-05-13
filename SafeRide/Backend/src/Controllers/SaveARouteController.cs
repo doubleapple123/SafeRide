@@ -59,7 +59,7 @@ public class SaveARouteController : ControllerBase
 
         string failMessage = "Route save unsuccessful";
 
-        
+       
         return BadRequest(new { failMessage });
     }
    /**
@@ -75,25 +75,29 @@ public class SaveARouteController : ControllerBase
     [Route("getSavedRoutes")]
     public async Task<IActionResult> GetSavedRoutes(string userRequest) 
     {
-        var listOfJsonResponse = new List<string>();
-        var userRoutes = _iSaveARouteDAO.GetSavedRoutes("apple@gmail.com", "userRoutes");
+        List<string> listOfJsonResponse = new List<string>();
+        var userRoutes = _iSaveARouteDAO.GetSavedRoutes("apple@gmail.com", "userRoute");
 
 
-        HttpClient client = new();
+        
 
-        foreach (var userCoords in  userRoutes)
-        {
-            
-            HttpResponseMessage response = await client.GetAsync(userCoords);
+         HttpClient client = new HttpClient();
+         
+            HttpResponseMessage response = await client.GetAsync(userRoutes[1]);
             response.EnsureSuccessStatusCode();
 
             string jsonResponse = await response.Content.ReadAsStringAsync();
             listOfJsonResponse.Add(jsonResponse);
+        
+        
+            
+            
+     
 
             
-        }
+        
 
-        return Ok( new { listOfJsonResponse });
+        return Ok( listOfJsonResponse );
     
     }
 

@@ -25,22 +25,23 @@ namespace SafeRide.src.DataAccess
                 using (SqlConnection conn = new SqlConnection(_cs))
                 {
                     conn.Open();
-                    string query = $"SELECT route FROM { tableName } WHERE userEmail= @param1";
+                    string query = $"SELECT routeName FROM { tableName } WHERE userEmail= @param1";
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.Add("@param1", System.Data.SqlDbType.VarChar, 50).Value = userEmail;
-                       
+                        
 
                         using (var reader = cmd.ExecuteReader())
                         { 
                             while (reader.Read())
                             {
-                                var route = reader["route"].ToString();
+                                var route = reader["routeName"].ToString();
 
                                 listOfRoute.Add(route);
                             }
                         }
                     }
+                    conn.Close();
                 }
 
             }

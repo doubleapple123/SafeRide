@@ -40,7 +40,7 @@ namespace SRUnitTests
         public void AddSavedRouteTest()
         {
             var testDAO = new SaveARouteDAO();
-            int results = testDAO.AddSavedRoute("testUser@gmail.com", 4, "routeurlTEST", "testUserRoute");
+            int results = testDAO.AddSavedRoute("testUser@gmail.com", 4, "routeurddlTEST", "testUserRoute");
             int expected = 1;
 
 
