@@ -13,7 +13,7 @@ namespace SRUnitTests
     {
 
         [Fact]
-        public void TestGetAllRoutes()
+        public void TestRouteHistory()
         {
             List<string> expected = new List<string>()
             {
@@ -23,8 +23,8 @@ namespace SRUnitTests
             };
 
             var testDAO = new RouteHistoryDAO();
-            List<string> results = new List<string>();
-            results = testDAO.getRouteHistory("Apple");
+            _ = new List<string>();
+            List<string> results = testDAO.getRouteHistory("Apple");
 
             Assert.Equal(expected, results);
         }

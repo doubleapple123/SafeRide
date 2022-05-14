@@ -12,7 +12,7 @@ namespace SafeRide.src.Services
             _ISavedRouteDAO = iSavedRouteDAO;
         }
 
-        public List<string> GetAllRoutes(string UserName, string tableName)
+        public List<string> GetAllRoutes(string UserName)
         {
             return _ISavedRouteDAO.getRouteHistory(UserName);
         }

@@ -9,8 +9,8 @@ namespace SafeRide.src.DataAccess
 {
     public class RouteHistoryDAO
     {
-        private string _cs = "Server=tcp:saferidedb.database.windows.net,1433;Initial Catalog=SafeRide_DB;Persist Security Info=False;User ID=azureuser;Password={;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        private string TABLE_NAME = "RoutesHistory";
+        private string _cs = "Server=tcp:saferidedb.database.windows.net,1433;Initial Catalog=SafeRide_DB;Persist Security Info=False;User ID=azureuser;Password=passkey123';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        // private string TABLE_NAME = "[dbo].[RoutesHistory]";
 /*
         public bool searchRoute(string startpoint, string endpoint, string instructions, string username)
         {
@@ -20,16 +20,14 @@ namespace SafeRide.src.DataAccess
         public List<string> getRouteHistory(string UserName)
         {
             var recentRoutes = new List<string>();
-            string query = $"SELECT routes FROM {TABLE_NAME} WHERE username='{UserName}'";
+            string query = $"SELECT routes FROM [dbo].[RoutesHistory] WHERE username=UserName";
             try
             {
                 using (SqlConnection sqlConn = new SqlConnection(_cs))
                 {
                     sqlConn.Open();
                     using (SqlCommand cmd = new SqlCommand(query, sqlConn))
-                    {
-                        // cmd.Parameters.Add(UserName, System.Data.SqlDbType.VarChar, 50).Value = UserName;
-                        
+                    {   
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
