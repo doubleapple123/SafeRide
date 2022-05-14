@@ -4,6 +4,6 @@ namespace SafeRide.src.Interfaces
 {
     public interface ISaveRouteService
     {
-        public List<RouteInformation> GetAllRoutes(string UserName);
+        public List<string> GetAllRoutes(string UserName, string tableName);
     }
 }

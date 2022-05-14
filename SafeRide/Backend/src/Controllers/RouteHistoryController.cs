@@ -3,6 +3,7 @@ using System.Web.Http;
 using SafeRide.src.Models;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Services;
+using System.Net.Http;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
@@ -11,23 +12,30 @@ namespace SafeRide.src.Controllers;
     [Route("/api")]
     public class RouteHistoryController : Controller
     {
-        private ISaveRouteService _iRouteService;
-        private IRouteInformationDAO _routeInfoDao;
+        private IRouteInformationDAO _iRouteInfoDao;
         private string api_key = "";
 
-        public RouteHistoryController(IRouteInformationDAO iRouteInfoDao, ISaveRouteService iSaveRouteService)
+        public RouteHistoryController(IRouteInformationDAO iRouteInfoDao)
         {
-            _routeInfoDao = iRouteInfoDao;
-            _iRouteService = iSaveRouteService;
+            _iRouteInfoDao = iRouteInfoDao;
         }
 
         [HttpGet]
         [Route("routeinfo/getinfo")]
-        public async Task<IActionResult> GetRouteInformation (string userName)
+        public async Task<IActionResult> GetRouteInformation (string request)
         {
             // var routeInfo = RouteService.GetAllRoutes(userName);
-
-            return Ok(new { routeInfo });
+            var jsonResponses = new List<string>();
+            var recentRoutes = _iRouteInfoDao.getRouteHistory("Orange", "recentSearches");
+            HttpClient client = new HttpClient();
+            foreach (var route in recentRoutes)
+            {
+                HttpResponseMessage response = await client.GetAsync(route);
+                response.EnsureSuccessStatusCode();
+                string jResponse = await response.Content.ReadAsStringAsync();
+                jsonResponses.Add(jResponse); 
+            }
+            return Ok(new { jsonResponses });
 
         }
     }

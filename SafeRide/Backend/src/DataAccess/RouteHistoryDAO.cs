@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Globalization;
 using SafeRide.src.Interfaces;
@@ -10,51 +10,42 @@ namespace SafeRide.src.DataAccess
     public class RouteHistoryDAO
     {
         private string _cs = "Server=tcp:saferidedb.database.windows.net,1433;Initial Catalog = saferidedb; User ID = azureuser; Password=passkey123'";
-        private const string TABLE_NAME = "RouteInfo";
-        private string username;
-
-        public RouteHistoryDAO()
-        {
-            this.username = "";
-        }
+/*
         public bool searchRoute(string startpoint, string endpoint, string instructions, string username)
         {
             string query = $"INSERT INTO {TABLE_NAME} values ('{startpoint}','{endpoint}','{instructions}', '{username}'";
             return ExecuteQuery.ExecuteCommand(_cs, query);
-        }
-        public List<RouteInformation> getRouteHistory(string UserName)
+        }*/
+        public List<string> getRouteHistory(string UserName, string tableName)
         {
-            var routeInfo = new List<RouteInformation>();
-            string query = $"SELECT startpoint, endpoint, instructions, username FROM {TABLE_NAME} WHERE username='{UserName}'";
+            var recentRoutes = new List<string>();
+            string query = $"SELECT route FROM {tableName} WHERE userName='{UserName}'";
             try
             {
-                using (var sqlConn = new SqlConnection(_cs))
+                using (SqlConnection sqlConn = new SqlConnection(_cs))
                 {
+                    sqlConn.Open();
                     using (SqlCommand cmd = new SqlCommand(query, sqlConn))
                     {
-                        cmd.Connection.Open();
+                        // cmd.Parameters.Add(UserName, System.Data.SqlDbType.VarChar, 50).Value = UserName;
                         
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                var start = reader["startpoint"].ToString();
-                                var end = reader["endpoint"].ToString();
-                                var instructions = reader["instructions"].ToString();
-                                var username = reader["username"].ToString();
-                                var route = new RouteInformation(start, end, instructions, username);
-                                routeInfo.Add(route);
+                                var route = reader["route"].ToString();
+                                recentRoutes.Add(route);
                             }
                         }
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 // log error
             }
 
-            return routeInfo;
+            return recentRoutes;
         }
     }
 

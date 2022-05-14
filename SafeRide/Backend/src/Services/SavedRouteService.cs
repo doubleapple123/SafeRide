@@ -1,9 +1,10 @@
 ﻿using SafeRide.src.DataAccess;
+using SafeRide.src.Interfaces;
 using SafeRide.src.Models;
 
 namespace SafeRide.src.Services
 {
-    public class SavedRouteService
+    public class SavedRouteService : ISaveRouteService
     {
         private RouteHistoryDAO _ISavedRouteDAO;
         public SavedRouteService(RouteHistoryDAO iSavedRouteDAO)
@@ -11,10 +12,9 @@ namespace SafeRide.src.Services
             _ISavedRouteDAO = iSavedRouteDAO;
         }
 
-        public List<RouteInformation> GetAllRoutes(string UserName)
+        public List<string> GetAllRoutes(string UserName, string tableName)
         {
-            var routeList = _ISavedRouteDAO.getRouteHistory(UserName);
-            return routeList;
+            return _ISavedRouteDAO.getRouteHistory(UserName, tableName);
         }
 
      }
