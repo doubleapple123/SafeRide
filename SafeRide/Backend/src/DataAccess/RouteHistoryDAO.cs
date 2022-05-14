@@ -20,7 +20,7 @@ namespace SafeRide.src.DataAccess
         public List<string> getRouteHistory(string UserName)
         {
             var recentRoutes = new List<string>();
-            string query = $"SELECT routes FROM [dbo].[RoutesHistory] WHERE username=UserName";
+            string query = $"SELECT routes FROM [dbo].[RoutesHistory] WHERE username = @param1";
             try
             {
                 using (SqlConnection sqlConn = new SqlConnection(_cs))
@@ -28,6 +28,7 @@ namespace SafeRide.src.DataAccess
                     sqlConn.Open();
                     using (SqlCommand cmd = new SqlCommand(query, sqlConn))
                     {   
+                        cmd.Parameters.Add("@param1", System.Data.SqlDbType.VarChar,50).Value = UserName;
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
