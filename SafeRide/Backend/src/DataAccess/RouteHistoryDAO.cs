@@ -9,7 +9,7 @@ namespace SafeRide.src.DataAccess
 {
     public class RouteHistoryDAO
     {
-        private string _cs = "Server=tcp:saferidedb.database.windows.net,1433;Initial Catalog = saferidedb; User ID = azureuser; Password=passkey123'";
+        private string _cs = "Server=tcp:saferidedb.database.windows.net,1433;Initial Catalog=SafeRide_DB;Persist Security Info=False;User ID=azureuser;Password=passkey123';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 /*
         public bool searchRoute(string startpoint, string endpoint, string instructions, string username)
         {
