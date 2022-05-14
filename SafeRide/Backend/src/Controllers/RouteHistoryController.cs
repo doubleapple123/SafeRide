@@ -13,7 +13,6 @@ namespace SafeRide.src.Controllers;
     public class RouteHistoryController : Controller
     {
         private IRouteInformationDAO _iRouteInfoDao;
-        private string api_key = "";
 
         public RouteHistoryController(IRouteInformationDAO iRouteInfoDao)
         {
