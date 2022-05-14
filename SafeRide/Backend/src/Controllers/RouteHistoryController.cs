@@ -3,28 +3,30 @@ using System.Web.Http;
 using SafeRide.src.Models;
 using SafeRide.src.Interfaces;
 using SafeRide.src.Services;
+using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
+using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace SafeRide.src.Controllers;
 
-    [ApiController]
+    [Route("/api")]
     public class RouteHistoryController : Controller
     {
-        private SavedRouteService RouteService;
+        private ISaveRouteService _iRouteService;
         private IRouteInformationDAO _routeInfoDao;
+        private string api_key = "";
 
-        public RouteHistoryController(IRouteInformationDAO routeInfoDao)
+        public RouteHistoryController(IRouteInformationDAO iRouteInfoDao, ISaveRouteService iSaveRouteService)
         {
-            _routeInfoDao = routeInfoDao;
+            _routeInfoDao = iRouteInfoDao;
+            _iRouteService = iSaveRouteService;
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpGet]
-        [Microsoft.AspNetCore.Mvc.Route("api/routeinfo/getinfo")]
-        public IActionResult GetRouteInformation ([FromUri] string userName)
+        [HttpGet]
+        [Route("routeinfo/getinfo")]
+        public async Task<IActionResult> GetRouteInformation (string userName)
         {
-            // var user = JwtDecoder.GetUser(authorization);
-            // if (user == null) return Unauthorized();
+            // var routeInfo = RouteService.GetAllRoutes(userName);
 
-            var routeInfo = RouteService.GetAllRoutes(userName);
             return Ok(new { routeInfo });
 
         }

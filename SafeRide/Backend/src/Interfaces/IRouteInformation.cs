@@ -2,8 +2,8 @@
 {
     public interface IRouteInformation
     {
-        public int RouteId(int id);
-        public string StringUrl(string url);
+        public int RouteId { get; set; }
+        public string StringUrl { get; set; }
         
     }
 }
