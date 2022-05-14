@@ -68,8 +68,8 @@ builder.Services.AddTransient<IUserDAO, UserSQLServerDAO>();
 builder.Services.AddTransient<IViewEventDAO, ViewEventSQLServerDAO>();
 builder.Services.AddTransient<IAnalyticsService, AnalyticsService>();
 builder.Services.AddTransient<IOverlayStructureDAO, OverlayStructureDAO>();
-builder.Services.AddTransient<IRouteInformationDAO, RouteHistoryDAO>();
-builder.Services.AddTransient<ISaveRouteService, SavedRouteService>();
+// builder.Services.AddTransient<IRouteInformationDAO, RouteHistoryDAO>();
+// builder.Services.AddTransient<ISaveRouteService, SavedRouteService>();
 
 
 var env = builder.Environment;
