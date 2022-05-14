@@ -24,7 +24,7 @@ namespace SRUnitTests
 
             var testDAO = new RouteHistoryDAO();
             List<string> results = new List<string>();
-            results = testDAO.getRouteHistory("Apple", "appleRecentSearches");
+            results = testDAO.getRouteHistory("Apple");
 
             Assert.Equal(expected, results);
         }

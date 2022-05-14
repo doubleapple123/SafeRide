@@ -25,7 +25,7 @@ namespace SafeRide.src.Controllers;
         {
             // var routeInfo = RouteService.GetAllRoutes(userName);
             var jsonResponses = new List<string>();
-            var recentRoutes = _iRouteInfoDao.getRouteHistory("Orange", "recentSearches");
+            var recentRoutes = _iRouteInfoDao.getRouteHistory("Orange");
             HttpClient client = new HttpClient();
             foreach (var route in recentRoutes)
             {
